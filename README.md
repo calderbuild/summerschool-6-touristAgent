@@ -2,13 +2,12 @@
 
 AI chatbot project for the EPSI/BISTU Paris summer school (2026-07-21 to 2026-07-29).
 
-## Team
+## Team (学习小组)
 
 - 罗林 (Lin Luo) — team lead
 - 侯臻瑞
 - 陆苏睿
 - 白澎宇
-- 舒童
 
 ## Project
 
