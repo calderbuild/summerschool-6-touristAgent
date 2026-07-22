@@ -87,6 +87,48 @@ const DICT: Record<string, Entry> = {
     zh: "别的行程助手会编造营业时间、价格和路线。这里每一条都来自公开的交通与地图数据；缺失的部分标为未知，绝不填补。",
   },
 
+  chat_intro_title: {
+    en: "Where do you need to go?",
+    fr: "Où devez-vous aller ?",
+    zh: "你想去哪里？",
+  },
+  chat_intro_body: {
+    en: "Tell me your start, your destination, and how you travel. I plan the step-free way and I am honest when the data is unknown.",
+    fr: "Dites-moi votre départ, votre destination et comment vous voyagez. Je trace l'itinéraire sans marches et je reste honnête quand la donnée est inconnue.",
+    zh: "告诉我起点、终点和你的出行方式。我会规划无楼梯路线，数据未知时如实说明。",
+  },
+  chat_placeholder: {
+    en: "e.g. I use a wheelchair, Gare de Lyon to the Eiffel Tower",
+    fr: "ex. je suis en fauteuil, de Gare de Lyon à la Tour Eiffel",
+    zh: "例如：我坐轮椅，从里昂车站到埃菲尔铁塔",
+  },
+  chat_send: { en: "Send", fr: "Envoyer", zh: "发送" },
+  chat_thinking: { en: "Thinking", fr: "Réflexion", zh: "思考中" },
+  chat_reasoning: { en: "Reasoning", fr: "Raisonnement", zh: "推理过程" },
+  chat_show_reasoning: { en: "Show reasoning", fr: "Voir le raisonnement", zh: "查看推理" },
+  chat_hide_reasoning: { en: "Hide reasoning", fr: "Masquer le raisonnement", zh: "收起推理" },
+  chat_new: { en: "New chat", fr: "Nouvelle conversation", zh: "新对话" },
+  chat_error: {
+    en: "Something went wrong reaching the assistant. Please try again.",
+    fr: "Impossible de joindre l'assistant. Veuillez réessayer.",
+    zh: "连接助手时出错，请重试。",
+  },
+  chat_suggest_1: {
+    en: "I use a wheelchair, Gare de Lyon to the Eiffel Tower today",
+    fr: "En fauteuil, de Gare de Lyon à la Tour Eiffel aujourd'hui",
+    zh: "我坐轮椅，今天从里昂车站到埃菲尔铁塔",
+  },
+  chat_suggest_2: {
+    en: "Step-free from Bastille to the Louvre with a stroller",
+    fr: "Sans marches de Bastille au Louvre avec une poussette",
+    zh: "推婴儿车，从巴士底到卢浮宫的无楼梯路线",
+  },
+  chat_suggest_3: {
+    en: "Reaching Notre-Dame from Gare du Nord without stairs",
+    fr: "Aller à Notre-Dame depuis Gare du Nord sans escaliers",
+    zh: "从北站到巴黎圣母院，避开楼梯",
+  },
+
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
   disclaimer: {
     en: "Prototype with curated demo data. Live lift status and routing connect to IDFM, RATP, OpenStreetMap and Google Maps.",

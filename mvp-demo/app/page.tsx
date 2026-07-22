@@ -1,10 +1,10 @@
 import { I18nProvider } from "@/lib/i18n";
-import App from "@/components/App";
+import ChatShell from "@/components/chat/ChatShell";
 
 export default function Page() {
   return (
     <I18nProvider>
-      <App />
+      <ChatShell />
     </I18nProvider>
   );
 }
