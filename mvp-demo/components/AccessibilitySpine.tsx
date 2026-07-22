@@ -61,7 +61,6 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
         const topInto = node.into?.status;
         const bottomInto = route.nodes[i + 1]?.into?.status;
         const color = statusColorVar(node.at);
-        const isWalkIn = node.into && !node.line;
 
         return (
           <li key={i} className="flex gap-3">
@@ -81,7 +80,7 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
             <div className="min-w-0 flex-1 pb-7">
               {/* arriving segment */}
               {node.into && (
-                <p className="mb-2 flex items-start gap-2 text-[13px] leading-snug text-ink/60">
+                <p className="mb-2 flex items-start gap-2 text-[13px] leading-snug text-ink-soft">
                   {node.line ? (
                     <LineBadge line={node.line} />
                   ) : (
@@ -102,9 +101,9 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
                 {node.name}
               </h3>
 
-              {/* status note at this node */}
-              <p className="mt-1 flex items-start gap-1.5 text-[13.5px] leading-snug" style={{ color }}>
-                <span className="mt-0.5 shrink-0">
+              {/* status note at this node — glyph carries the hue, text stays readable */}
+              <p className="mt-1 flex items-start gap-1.5 text-[13.5px] leading-snug text-ink-soft">
+                <span className="mt-0.5 shrink-0" style={{ color }}>
                   <NodeGlyph status={node.at} />
                 </span>
                 <span>{node.atText[lang]}</span>
@@ -129,7 +128,7 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
                   </span>
                 )}
                 {node.restroom && (
-                  <span className="inline-flex items-center gap-1 rounded bg-ok/10 px-2 py-0.5 text-[11px] font-semibold text-ok">
+                  <span className="inline-flex items-center gap-1 rounded bg-ok/10 px-2 py-0.5 text-[11px] font-semibold text-ok-ink">
                     <Accessibility size={13} strokeWidth={2} aria-hidden /> {t("restroom_ok")}
                   </span>
                 )}
@@ -147,7 +146,7 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
                     </span>
                   </p>
                   {node.alt && (
-                    <p className="mt-2 flex items-start gap-1.5 border-t border-barrier/15 pt-2 text-[13px] leading-snug text-signal">
+                    <p className="mt-2 flex items-start gap-1.5 border-t border-ok/20 pt-2 text-[13px] leading-snug text-ok-ink">
                       <CornerDownRight size={15} strokeWidth={2.2} className="mt-0.5 shrink-0" aria-hidden />
                       <span>
                         <span className="font-semibold">{t("alt_label")}: </span>

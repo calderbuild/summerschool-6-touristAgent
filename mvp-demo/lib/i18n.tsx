@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Lang = "en" | "fr" | "zh";
 
@@ -18,7 +18,6 @@ const DICT: Record<string, Entry> = {
     fr: "itinéraires sans marches dans Paris",
     zh: "巴黎无楼梯路线",
   },
-  nav_how: { en: "How it reads", fr: "Comment lire", zh: "如何解读" },
 
   hero_title: {
     en: "Get across Paris without the stairs.",
@@ -50,11 +49,7 @@ const DICT: Record<string, Entry> = {
     fr: "Cela règle le nombre de marches et la distance de marche acceptés.",
     zh: "这会设定路线可接受的台阶数与步行距离。",
   },
-
-  from_label: { en: "From", fr: "Départ", zh: "起点" },
-  to_label: { en: "To", fr: "Arrivée", zh: "终点" },
-  cta_find: { en: "Find step-free route", fr: "Trouver l'itinéraire sans marches", zh: "查找无楼梯路线" },
-  pick_route: { en: "Or try a prepared route", fr: "Ou essayez un itinéraire prêt", zh: "或试用一条预设路线" },
+  for_word: { en: "For", fr: "Pour", zh: "为" },
 
   disruption_today: { en: "Today", fr: "Aujourd'hui", zh: "今日" },
 
@@ -65,6 +60,7 @@ const DICT: Record<string, Entry> = {
     fr: "La carte s'affiche dès qu'une clé Google Maps est configurée. L'itinéraire ci-dessous fonctionne sans elle.",
     zh: "配置 Google Maps 密钥后即显示实时地图。下方路线无需地图即可使用。",
   },
+  route_map_label: { en: "Route diagram", fr: "Schéma d'itinéraire", zh: "路线示意图" },
 
   legend_ok: { en: "Step-free", fr: "Sans marches", zh: "无楼梯" },
   legend_lift: { en: "Working lift", fr: "Ascenseur en service", zh: "电梯可用" },
@@ -74,11 +70,19 @@ const DICT: Record<string, Entry> = {
 
   steps_unit: { en: "steps", fr: "marches", zh: "级台阶" },
   steps_unknown: { en: "step count unknown", fr: "nombre de marches inconnu", zh: "台阶数未知" },
-  lift_unknown: { en: "Lift status unknown", fr: "État de l'ascenseur inconnu", zh: "电梯状态未知" },
   barrier_label: { en: "Barrier", fr: "Obstacle", zh: "障碍" },
   alt_label: { en: "Step-free alternative", fr: "Alternative sans marches", zh: "无楼梯替代方案" },
   walk_label: { en: "walk", fr: "à pied", zh: "步行" },
   restroom_ok: { en: "Accessible toilet on site", fr: "Toilettes accessibles sur place", zh: "现场有无障碍厕所" },
+
+  verdict_clear: { en: "Step-free the whole way", fr: "Sans marches sur tout le trajet", zh: "全程无楼梯" },
+  verdict_barrier: { en: "step barrier", fr: "obstacle", zh: "处台阶障碍" },
+  verdict_unknown: { en: "lift status unknown", fr: "ascenseur inconnu", zh: "电梯状态未知" },
+  freshness_note: {
+    en: "Lift status is as of this morning, not a live feed.",
+    fr: "État des ascenseurs de ce matin, pas un flux en direct.",
+    zh: "电梯状态为今晨数据，非实时更新。",
+  },
 
   honesty_title: { en: "We would rather say “unknown” than guess", fr: "Nous préférons dire « inconnu » plutôt que deviner", zh: "我们宁可说“未知”，也不猜测" },
   honesty_body: {
@@ -102,16 +106,30 @@ const DICT: Record<string, Entry> = {
     fr: "ex. je suis en fauteuil, de Gare de Lyon à la Tour Eiffel",
     zh: "例如：我坐轮椅，从里昂车站到埃菲尔铁塔",
   },
+  chat_input_label: {
+    en: "Ask for a step-free route",
+    fr: "Demandez un itinéraire sans marches",
+    zh: "询问无楼梯路线",
+  },
   chat_send: { en: "Send", fr: "Envoyer", zh: "发送" },
+  chat_stop: { en: "Stop", fr: "Arrêter", zh: "停止" },
+  voice_input: { en: "Speak your request", fr: "Dictez votre demande", zh: "语音输入" },
+  voice_listening: { en: "Listening — tap to stop", fr: "Écoute — touchez pour arrêter", zh: "聆听中 —— 点击停止" },
+  read_aloud: { en: "Read answer aloud", fr: "Lire la réponse à voix haute", zh: "朗读回答" },
+  stop_reading: { en: "Stop reading", fr: "Arrêter la lecture", zh: "停止朗读" },
+  chat_retry: { en: "Retry", fr: "Réessayer", zh: "重试" },
   chat_thinking: { en: "Thinking", fr: "Réflexion", zh: "思考中" },
   chat_reasoning: { en: "Reasoning", fr: "Raisonnement", zh: "推理过程" },
-  chat_show_reasoning: { en: "Show reasoning", fr: "Voir le raisonnement", zh: "查看推理" },
-  chat_hide_reasoning: { en: "Hide reasoning", fr: "Masquer le raisonnement", zh: "收起推理" },
   chat_new: { en: "New chat", fr: "Nouvelle conversation", zh: "新对话" },
+  chat_taking_longer: {
+    en: "This is taking longer than expected…",
+    fr: "Cela prend plus de temps que prévu…",
+    zh: "响应时间比预期长……",
+  },
   chat_error: {
-    en: "Something went wrong reaching the assistant. Please try again.",
-    fr: "Impossible de joindre l'assistant. Veuillez réessayer.",
-    zh: "连接助手时出错，请重试。",
+    en: "Something went wrong reaching the assistant.",
+    fr: "Impossible de joindre l'assistant.",
+    zh: "连接助手时出错。",
   },
   chat_suggest_1: {
     en: "I use a wheelchair, Gare de Lyon to the Eiffel Tower today",
@@ -128,11 +146,19 @@ const DICT: Record<string, Entry> = {
     fr: "Aller à Notre-Dame depuis Gare du Nord sans escaliers",
     zh: "从北站到巴黎圣母院，避开楼梯",
   },
+  chat_example_intro: {
+    en: "One prepared route — real step counts, honest unknowns:",
+    fr: "Un itinéraire préparé — vraies marches, inconnus assumés :",
+    zh: "一条预设路线 —— 真实台阶数，诚实标注未知：",
+  },
+  conversation_label: { en: "Conversation", fr: "Conversation", zh: "对话" },
+  routes_link: { en: "Route browser", fr: "Parcourir", zh: "浏览路线" },
+  lang_group: { en: "Language", fr: "Langue", zh: "语言" },
 
   map_legend_lines: {
-    en: "Segments coloured by line · dashed = walking",
-    fr: "Segments colorés par ligne · pointillés = à pied",
-    zh: "路段按线路配色 · 虚线为步行",
+    en: "Segments coloured by line · dashed = walking or unknown",
+    fr: "Segments colorés par ligne · pointillés = à pied ou inconnu",
+    zh: "路段按线路配色 · 虚线为步行或未知",
   },
 
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
@@ -151,10 +177,12 @@ const I18nCtx = createContext<{
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("en");
+  // Keep the document language in sync so screen readers pronounce FR/中 correctly.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
   const t = (k: string) => DICT[k]?.[lang] ?? k;
-  return (
-    <I18nCtx.Provider value={{ lang, setLang, t }}>{children}</I18nCtx.Provider>
-  );
+  return <I18nCtx.Provider value={{ lang, setLang, t }}>{children}</I18nCtx.Provider>;
 }
 
 export const useI18n = () => useContext(I18nCtx);

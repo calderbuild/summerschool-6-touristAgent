@@ -17,12 +17,14 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
     const overlays: google.maps.Polyline[] = [];
 
     // One segment per leg, coloured by the transit line ridden into the next
-    // stop (M14 purple, RER C yellow, ...) or dashed grey for a walking leg.
-    // This makes the map read as a transit diagram, not a plain pin-drop line.
+    // stop (M14 purple, RER C yellow, ...); dashed grey for a walking leg and
+    // dashed in the line colour when that leg's accessibility status is unknown,
+    // so the map speaks the same honesty language as the spine.
     for (let i = 0; i < nodes.length - 1; i++) {
       const leg = [nodes[i].coord, nodes[i + 1].coord];
       const ridden = nodes[i + 1].line;
-      if (ridden) {
+      const unknown = nodes[i + 1].into?.status === "unknown";
+      if (ridden && !unknown) {
         overlays.push(
           new google.maps.Polyline({
             path: leg,
@@ -33,6 +35,7 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
           })
         );
       } else {
+        const color = ridden ? ridden.color : "#6b7280";
         overlays.push(
           new google.maps.Polyline({
             path: leg,
@@ -40,7 +43,7 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
             strokeOpacity: 0,
             icons: [
               {
-                icon: { path: "M 0,-1 0,1", strokeColor: "#6b7280", strokeOpacity: 1, scale: 3 },
+                icon: { path: "M 0,-1 0,1", strokeColor: color, strokeOpacity: 1, scale: 3 },
                 offset: "0",
                 repeat: "12px",
               },
@@ -91,14 +94,18 @@ export default function RouteMap({ route }: { route: DemoRoute }) {
 
   if (!KEY) {
     return (
-      <div className="grid h-full min-h-[280px] place-items-center rounded-xl border border-dashed border-ink/25 bg-ink/[0.03] p-6 text-center text-[13px] leading-snug text-ink/55">
+      <div className="grid h-full min-h-[220px] place-items-center rounded-xl border border-dashed border-ink/25 bg-ink/[0.03] p-6 text-center text-[13px] leading-snug text-ink-soft">
         {t("map_missing")}
       </div>
     );
   }
 
   return (
-    <div className="h-full min-h-[280px] overflow-hidden rounded-xl border border-ink/10">
+    <div
+      className="h-full w-full overflow-hidden rounded-xl border border-ink/10"
+      role="img"
+      aria-label={`${t("route_map_label")}: ${route.from} → ${route.to}`}
+    >
       <APIProvider apiKey={KEY}>
         <Map
           defaultCenter={{ lat: 48.858, lng: 2.34 }}

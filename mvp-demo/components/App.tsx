@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { ROUTES, type ProfileId } from "@/lib/data";
 import { statusColorVar } from "@/lib/status";
@@ -42,16 +43,16 @@ function Logo() {
 }
 
 function LangSwitch() {
-  const { lang, setLang } = useI18n();
+  const { lang, setLang, t } = useI18n();
   return (
-    <div className="flex items-center gap-0.5 rounded-lg bg-white/10 p-0.5" role="group" aria-label="Language">
+    <div className="flex items-center gap-0.5 rounded-lg bg-white/10 p-0.5" role="group" aria-label={t("lang_group")}>
       {LANGS.map((l) => (
         <button
           key={l.id}
           onClick={() => setLang(l.id as Lang)}
           aria-pressed={lang === l.id}
           aria-label={l.a11y}
-          className={`min-h-8 rounded-md px-2.5 py-1 text-[13px] font-bold transition-colors ${
+          className={`grid min-h-11 min-w-9 place-items-center rounded-md px-2.5 text-[13px] font-bold transition-colors ${
             lang === l.id ? "bg-white text-navy" : "text-white/75 hover:text-white"
           }`}
         >
@@ -98,17 +99,17 @@ export default function App() {
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-navy text-white">
+      <header className="sticky top-0 z-20 bg-navy pt-[env(safe-area-inset-top)] text-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Voie Libre">
             <span className="text-white">
               <Logo />
             </span>
             <span className="leading-none">
               <span className="block font-display text-[19px] font-bold tracking-tight">Voie Libre</span>
-              <span className="block text-[11px] text-white/60">{t("brand_tag")}</span>
+              <span className="block text-[11px] text-white/65">{t("brand_tag")}</span>
             </span>
-          </div>
+          </Link>
           <LangSwitch />
         </div>
       </header>
@@ -122,7 +123,7 @@ export default function App() {
           <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-ink/70 sm:text-[16px]">
             {t("hero_sub")}
           </p>
-          <p className="mt-4 max-w-xl border-l-2 border-signal/45 pl-3 text-[13px] leading-relaxed text-ink/60">
+          <p className="mt-4 max-w-xl border-l-2 border-signal/45 pl-3 text-[13px] leading-relaxed text-ink-soft">
             {t("hero_reality")}
           </p>
         </section>
@@ -153,7 +154,7 @@ export default function App() {
               );
             })}
           </div>
-          <p className="mt-2.5 text-[12.5px] text-ink/50">{t("profile_note")}</p>
+          <p className="mt-2.5 text-[12.5px] text-ink-soft">{t("profile_note")}</p>
         </section>
 
         {/* Disruption */}
@@ -161,7 +162,7 @@ export default function App() {
           <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-caution/30 bg-caution/10 p-3.5 text-[13.5px] leading-snug text-ink">
             <TriangleAlert size={18} strokeWidth={2.2} className="mt-0.5 shrink-0 text-caution" aria-hidden />
             <p>
-              <span className="font-bold uppercase tracking-wide text-caution">{t("disruption_today")}</span>{" "}
+              <span className="font-bold uppercase tracking-wide text-caution-ink">{t("disruption_today")}</span>{" "}
               {route.disruption[lang]}
             </p>
           </div>
@@ -173,7 +174,7 @@ export default function App() {
             <div className="flex items-baseline justify-between gap-3">
               <h2 className="font-display text-[16px] font-bold text-ink">{t("result_title")}</h2>
             </div>
-            <p className="mt-0.5 text-[13px] text-ink/55">{route.title[lang]}</p>
+            <p className="mt-0.5 text-[13px] text-ink-soft">{route.title[lang]}</p>
             <div className="mt-3 border-t border-ink/10 pt-3">
               <Legend />
             </div>
@@ -188,10 +189,10 @@ export default function App() {
               </div>
             </div>
             <div className="rounded-2xl border border-ink/10 bg-white p-4 sm:p-5">
-              <h3 className="text-[11px] font-bold uppercase tracking-wide text-ink/45">
+              <h3 className="text-[11px] font-bold uppercase tracking-wide text-ink-soft">
                 {t("sources_label")}
               </h3>
-              <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11.5px] text-ink/60">
+              <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11.5px] text-ink-soft">
                 {route.sources.map((s) => (
                   <li key={s}>{s}</li>
                 ))}
@@ -212,7 +213,7 @@ export default function App() {
       </main>
 
       <footer className="mx-auto w-full max-w-5xl px-4 py-6">
-        <p className="text-[12px] leading-relaxed text-ink/45">{t("disclaimer")}</p>
+        <p className="text-[12px] leading-relaxed text-ink-soft">{t("disclaimer")}</p>
       </footer>
     </>
   );
