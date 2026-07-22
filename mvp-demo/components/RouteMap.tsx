@@ -13,17 +13,44 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
 
   useEffect(() => {
     if (!map) return;
-    const path = route.nodes.map((n) => n.coord);
+    const nodes = route.nodes;
+    const overlays: google.maps.Polyline[] = [];
 
-    const line = new google.maps.Polyline({
-      path,
-      strokeColor: "#12202e",
-      strokeOpacity: 0.85,
-      strokeWeight: 4,
-      map,
-    });
+    // One segment per leg, coloured by the transit line ridden into the next
+    // stop (M14 purple, RER C yellow, ...) or dashed grey for a walking leg.
+    // This makes the map read as a transit diagram, not a plain pin-drop line.
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const leg = [nodes[i].coord, nodes[i + 1].coord];
+      const ridden = nodes[i + 1].line;
+      if (ridden) {
+        overlays.push(
+          new google.maps.Polyline({
+            path: leg,
+            map,
+            strokeColor: ridden.color,
+            strokeOpacity: 0.95,
+            strokeWeight: 5,
+          })
+        );
+      } else {
+        overlays.push(
+          new google.maps.Polyline({
+            path: leg,
+            map,
+            strokeOpacity: 0,
+            icons: [
+              {
+                icon: { path: "M 0,-1 0,1", strokeColor: "#6b7280", strokeOpacity: 1, scale: 3 },
+                offset: "0",
+                repeat: "12px",
+              },
+            ],
+          })
+        );
+      }
+    }
 
-    const markers = route.nodes.map(
+    const markers = nodes.map(
       (n, i) =>
         new google.maps.Marker({
           position: n.coord,
@@ -37,7 +64,7 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
           },
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            scale: 12,
+            scale: 11,
             fillColor: statusHex(n.at),
             fillOpacity: 1,
             strokeColor: "#ffffff",
@@ -47,11 +74,11 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
     );
 
     const bounds = new google.maps.LatLngBounds();
-    path.forEach((p) => bounds.extend(p));
+    nodes.forEach((n) => bounds.extend(n.coord));
     map.fitBounds(bounds, 56);
 
     return () => {
-      line.setMap(null);
+      overlays.forEach((o) => o.setMap(null));
       markers.forEach((m) => m.setMap(null));
     };
   }, [map, route]);

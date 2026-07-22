@@ -74,11 +74,12 @@ export default function ChatRouteCard({ id }: { id: string }) {
         </div>
       )}
 
-      {/* small map for spatial context */}
+      {/* small map, drawn as a transit diagram (lines coloured, walks dashed) */}
       <div className="border-t border-ink/10 p-2.5">
         <div className="h-40 overflow-hidden rounded-lg">
           <RouteMap route={route} />
         </div>
+        <p className="mt-1.5 px-0.5 text-[10.5px] text-ink/45">{t("map_legend_lines")}</p>
       </div>
     </div>
   );

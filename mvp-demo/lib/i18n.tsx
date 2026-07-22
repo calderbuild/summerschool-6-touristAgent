@@ -129,6 +129,12 @@ const DICT: Record<string, Entry> = {
     zh: "从北站到巴黎圣母院，避开楼梯",
   },
 
+  map_legend_lines: {
+    en: "Segments coloured by line · dashed = walking",
+    fr: "Segments colorés par ligne · pointillés = à pied",
+    zh: "路段按线路配色 · 虚线为步行",
+  },
+
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
   disclaimer: {
     en: "Prototype with curated demo data. Live lift status and routing connect to IDFM, RATP, OpenStreetMap and Google Maps.",
