@@ -193,18 +193,18 @@ export default function ChatShell() {
             <Logo />
             <span className="leading-none">
               <span className="block font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
-              <span className="block text-[11px] text-white/60">{t("brand_tag")}</span>
+              <span className="hidden text-[11px] text-white/60 sm:block">{t("brand_tag")}</span>
             </span>
           </div>
           <div className="flex items-center gap-2">
             {!empty && (
               <button
                 onClick={() => !streaming && setMessages([])}
-                className="flex min-h-8 items-center gap-1 rounded-lg bg-white/10 px-2.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white disabled:opacity-40"
+                className="flex min-h-8 items-center gap-1 rounded-lg bg-white/10 px-2 text-[13px] font-semibold text-white/80 transition-colors hover:text-white disabled:opacity-40 sm:px-2.5"
                 disabled={streaming}
               >
                 <Plus size={14} strokeWidth={2.4} aria-hidden />
-                {t("chat_new")}
+                <span className="hidden sm:inline">{t("chat_new")}</span>
               </button>
             )}
             <LangSwitch />
