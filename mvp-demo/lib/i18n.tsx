@@ -30,6 +30,11 @@ const DICT: Record<string, Entry> = {
     fr: "Des itinéraires sans marches qui indiquent si l'ascenseur fonctionne, s'il y a des marches, et quand nous ne le savons pas.",
     zh: "无楼梯路线：电梯是否可用、哪里有台阶、以及我们确实不确定的地方，都如实告诉你。",
   },
+  hero_reality: {
+    en: "The honest baseline: only Métro Line 14 is fully step-free, and about 30 of 300+ stations have a working lift.",
+    fr: "Le constat honnête : seule la ligne 14 est entièrement sans marches, et environ 30 stations sur plus de 300 ont un ascenseur en service.",
+    zh: "诚实的现状：只有 14 号线全线无楼梯，300 多座车站中约 30 座有可用电梯。",
+  },
 
   profile_q: {
     en: "Who is travelling?",

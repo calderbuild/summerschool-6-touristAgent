@@ -9,10 +9,12 @@ itinerary assistant whose differentiator is **physical accessibility** (stairs, 
 mobility/fatigue constraints) layered on top of the generic "AI chatbot" course brief. The graded
 deliverable is a working chatbot prototype plus a team pitch, not a production product.
 
-The repo is **pre-implementation**: no `package.json`, no build/lint/test yet. `mvp-demo/` and
-`data/` are placeholders. Do not fabricate build commands; when the build starts it is React +
-JavaScript (AI-assisted coding, not a drag-and-drop no-code builder), deployed to Firebase's free
-hosting tier.
+The prototype is built in `mvp-demo/` as a Next.js 16 + React 19 + TypeScript app (Tailwind v4,
+`@vis.gl/react-google-maps`), branded **Voie Libre**. Run it with `cd mvp-demo && npm install &&
+npm run dev`; build with `npm run build`, lint with `npm run lint`. The Google Maps key lives in
+`mvp-demo/.env.local` (gitignored); on Vercel it must be set as `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`
+(needed at build time). Deploy target is Vercel. `data/` is still a placeholder until the live
+data layer is wired; the current app uses curated demo data in `mvp-demo/lib/data.ts`.
 
 ## Repository layout and the tracked/untracked boundary
 
@@ -21,7 +23,7 @@ hosting tier.
 | `README.md` | Public team + project overview, Day-1 setup facts | tracked |
 | `docs/*.md` | Internal research, topic-selection decisions, course notes | **untracked (gitignored)** |
 | `data/` | Pulled open datasets (empty until the data layer is built) | tracked dir |
-| `mvp-demo/` | The actual chatbot/API build | tracked, README only so far |
+| `mvp-demo/` | The actual build (Voie Libre Next.js app) | tracked, app built |
 
 **Critical:** the `docs/` files are gitignored on purpose. Team repos fork from a shared upstream,
 so GitHub's fork network puts every team's repo one click from every other team's. The `docs/`

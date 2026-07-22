@@ -122,6 +122,9 @@ export default function App() {
           <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-ink/70 sm:text-[16px]">
             {t("hero_sub")}
           </p>
+          <p className="mt-4 max-w-xl border-l-2 border-signal/45 pl-3 text-[13px] leading-relaxed text-ink/60">
+            {t("hero_reality")}
+          </p>
         </section>
 
         {/* Controls */}

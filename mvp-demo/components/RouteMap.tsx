@@ -24,14 +24,20 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
     });
 
     const markers = route.nodes.map(
-      (n) =>
+      (n, i) =>
         new google.maps.Marker({
           position: n.coord,
           map,
           title: n.name,
+          label: {
+            text: String.fromCharCode(65 + i),
+            color: "#ffffff",
+            fontSize: "11px",
+            fontWeight: "700",
+          },
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            scale: 7,
+            scale: 12,
             fillColor: statusHex(n.at),
             fillOpacity: 1,
             strokeColor: "#ffffff",

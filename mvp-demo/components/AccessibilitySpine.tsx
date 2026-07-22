@@ -91,8 +91,14 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
                 </p>
               )}
 
-              {/* station / place name */}
-              <h3 className="font-display text-[17px] font-semibold leading-tight text-ink">
+              {/* station / place name, lettered to match the map marker */}
+              <h3 className="flex items-center gap-2 font-display text-[17px] font-semibold leading-tight text-ink">
+                <span
+                  className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-navy text-[11px] font-bold text-white"
+                  aria-hidden
+                >
+                  {String.fromCharCode(65 + i)}
+                </span>
                 {node.name}
               </h3>
 
