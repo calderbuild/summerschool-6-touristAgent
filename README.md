@@ -1,30 +1,80 @@
-# EPSI Paris Summer School 2026 — Team 6
+# Voie Libre — step-free routes across Paris
 
-AI chatbot project for the EPSI/BISTU Paris summer school (2026-07-21 to 2026-07-29).
+EPSI / BISTU Paris AI Summer School 2026, Team 6.
 
-## Team (学习小组)
+Voie Libre is a Paris trip assistant built around one thing generic travel chatbots
+ignore: whether you can physically make the journey. It plans routes that account for
+stairs, lift (elevator) status, walking distance, and fatigue, and it is honest about
+what the open data does and does not know.
+
+**Live demo:** deploying to Vercel (URL added once live).
+
+## The problem
+
+Most trip planners in Paris optimise for time. For a wheelchair user, a parent with a
+stroller, an older traveller, or anyone low on energy, the fastest route is often
+unusable: a "3 minute" connection can hide 47 steps and a broken lift. Only Métro
+Line 14 is fully step-free, and roughly 30 of 300+ stations have working lifts. That
+gap is the product.
+
+## What it does
+
+- **Profiles.** Pick who is travelling (wheelchair, stroller, older traveller, low
+  energy). The route and the thresholds for stairs and walking distance change with it.
+- **Accessibility spine.** Every leg of the journey is shown as a vertical route map:
+  step counts, lift status, walking segments, accessible restrooms, and the barriers to
+  avoid, each marked step-free, working lift, out of service, stairs, or unknown.
+- **Barriers with alternatives.** When a lift is out of service, the route names the
+  step-free workaround (for example, stay one stop further and take a level-boarding bus)
+  instead of just failing.
+- **On the map.** The route is drawn on Google Maps with each stop colour-coded by its
+  accessibility status.
+- **Honesty over guessing.** Only about 38% of OpenStreetMap steps carry a count, and
+  real-time lift status is not published for the full network. Where we do not know, we
+  say "unknown" rather than inventing a number. An admitted gap is more useful than a
+  wrong figure.
+- **Trilingual.** English, French, and Chinese, defaulting to English.
+
+## Tech stack
+
+- Next.js 16 (App Router) + React 19 + TypeScript
+- Tailwind CSS v4
+- Google Maps JavaScript API via `@vis.gl/react-google-maps`
+- Deployed on Vercel
+
+## Data sources
+
+Real Paris open data, cached locally for the demo rather than called live during a pitch:
+
+- IDFM "État des ascenseurs" — lift status
+- RATP — accessible station reference
+- OpenStreetMap / Overpass — steps, elevators, wheelchair tags
+- Google Maps — base map and geometry
+
+## Run it locally
+
+The app lives in `mvp-demo/`. See [`mvp-demo/README.md`](mvp-demo/README.md) for setup,
+including the Google Maps API key. In short:
+
+```bash
+cd mvp-demo
+npm install
+echo "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_key_here" > .env.local
+npm run dev
+```
+
+Then open http://localhost:3000.
+
+## Team
 
 - 罗林 (Lin Luo) — team lead
 - 侯臻瑞
 - 陆苏睿
 - 白澎宇
 
-## Project
+## Course context
 
-Working direction: a Paris itinerary assistant that accounts for physical accessibility (stairs, elevators, mobility constraints) on top of the standard AI chatbot brief, built on real open data (IDFM, OpenStreetMap, Paris/Île-de-France open data).
-
-See `docs/` for research notes and `data/` for pulled datasets.
-
-## Setup
-
-Confirmed on Day 1 (2026-07-21, from the opening session + Innovation Lab workshop recordings):
-
-- **Stack**: React + JavaScript, built with AI-assisted coding tools (natural-language iteration, not a drag-and-drop no-code builder). The instructor live-demoed generating a full app scaffold (nav bar, home page, map page) in ~10 minutes this way.
-- **Starting point**: the instructor is publishing a base full-stack project to a public GitHub repo — fork it instead of building from scratch. ⚠️ Repo name/URL not confirmed (transcript ASR heard "adiotech/summerschool", which doesn't resolve — get the real link from the instructor).
-- **Collaboration**: one member creates a repo, invites all teammates + the instructor's GitHub account, branch-per-feature + merge to main.
-- **Naming convention**: `Summer School - [Team Number] - [Project Name]`.
-- **Evaluation**: no fixed rubric — "projects that meet the functional requirements the team itself designs are considered qualified." Free rein on differentiation (multilingual, transit recommendations, accessibility, custom UI, etc.).
-- **Deployment**: Google Firebase (free hosting tier), no server cost.
-- ⚠️ **Visibility**: course instructions say **private repo** with instructor invited as collaborator. This repo is currently **public** — flip it once we're closer to needing the instructor account, or keep public and just make sure the instructor is added (ask Day 1 which they actually check for).
-
-Prep: GitHub account + SSH key + VS Code — already done for the team lead.
+- Submission naming: `Summer School - 6 - Voie Libre`.
+- The graded deliverable is a working prototype plus a team pitch.
+- Evaluation is by the functional requirements the team sets for itself, so the
+  accessibility angle is our chosen differentiator.

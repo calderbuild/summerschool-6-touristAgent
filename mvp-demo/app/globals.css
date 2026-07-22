@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f4f5f3;
+  --color-ink: #1a1c22;
+  --color-navy: #12202e;
+  --color-signal: #1b57a6;
+  --color-ok: #1e8e5a;
+  --color-barrier: #c63a2f;
+  --color-caution: #c77a16;
+  --color-unknown: #6b7280;
+
+  --font-display: var(--ff-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--ff-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Diagonal hatch marks UNKNOWN so it never relies on colour alone */
+.hatch-unknown {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-unknown) 0,
+    var(--color-unknown) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+/* Focus ring visible for keyboard users on any interactive element */
+:where(a, button, select, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

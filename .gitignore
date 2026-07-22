@@ -6,6 +6,17 @@ __pycache__/
 
 # Internal research/reference docs — kept locally, never pushed.
 # Team repos fork from a shared upstream, so GitHub's fork network makes
-# every team's repo one click away from every other. Blanket rule (not a
-# per-file list) so any new file dropped into docs/ is protected by default.
-docs/*.md
+# every team's repo one click away from every other. Ignore the whole
+# directory so any file or subfolder dropped into docs/ is protected by default.
+docs/
+
+# Internal product notes (kept local, off-strategy drafts).
+grok.md
+
+# Browser-automation screenshots (local QA only).
+.playwright-mcp/
+
+# Env files anywhere in the tree (Maps key lives in mvp-demo/.env.local).
+.env
+.env.*
+

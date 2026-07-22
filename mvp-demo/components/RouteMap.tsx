@@ -1,0 +1,83 @@
+"use client";
+
+import { useEffect } from "react";
+import { APIProvider, Map, useMap } from "@vis.gl/react-google-maps";
+import type { DemoRoute } from "@/lib/data";
+import { statusHex } from "@/lib/status";
+import { useI18n } from "@/lib/i18n";
+
+const KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+function RouteOverlay({ route }: { route: DemoRoute }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+    const path = route.nodes.map((n) => n.coord);
+
+    const line = new google.maps.Polyline({
+      path,
+      strokeColor: "#12202e",
+      strokeOpacity: 0.85,
+      strokeWeight: 4,
+      map,
+    });
+
+    const markers = route.nodes.map(
+      (n) =>
+        new google.maps.Marker({
+          position: n.coord,
+          map,
+          title: n.name,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 7,
+            fillColor: statusHex(n.at),
+            fillOpacity: 1,
+            strokeColor: "#ffffff",
+            strokeWeight: 2.5,
+          },
+        })
+    );
+
+    const bounds = new google.maps.LatLngBounds();
+    path.forEach((p) => bounds.extend(p));
+    map.fitBounds(bounds, 56);
+
+    return () => {
+      line.setMap(null);
+      markers.forEach((m) => m.setMap(null));
+    };
+  }, [map, route]);
+
+  return null;
+}
+
+export default function RouteMap({ route }: { route: DemoRoute }) {
+  const { t } = useI18n();
+
+  if (!KEY) {
+    return (
+      <div className="grid h-full min-h-[280px] place-items-center rounded-xl border border-dashed border-ink/25 bg-ink/[0.03] p-6 text-center text-[13px] leading-snug text-ink/55">
+        {t("map_missing")}
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-full min-h-[280px] overflow-hidden rounded-xl border border-ink/10">
+      <APIProvider apiKey={KEY}>
+        <Map
+          defaultCenter={{ lat: 48.858, lng: 2.34 }}
+          defaultZoom={12}
+          gestureHandling="cooperative"
+          disableDefaultUI
+          zoomControl
+          className="h-full w-full"
+        >
+          <RouteOverlay route={route} />
+        </Map>
+      </APIProvider>
+    </div>
+  );
+}
