@@ -3,3 +3,10 @@ node_modules/
 .env
 *.log
 __pycache__/
+
+# Internal strategy/research docs — kept locally for reference, never pushed.
+# Team repos fork from a shared upstream, so GitHub's fork network makes
+# every team's repo one click away from every other — these must not be public.
+docs/项目选题调研与决策.md
+docs/课程与MVP实战方案.md
+docs/项目准备.md
