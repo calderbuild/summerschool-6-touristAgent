@@ -21,6 +21,7 @@ import {
   Mic,
   Volume2,
   VolumeX,
+  ArrowRight,
   type LucideIcon,
 } from "lucide-react";
 
@@ -422,10 +423,11 @@ export default function ChatShell() {
             )}
             <Link
               href="/routes"
-              className="grid min-h-11 min-w-11 place-items-center rounded-lg bg-white/10 text-white/80 transition-colors hover:text-white"
+              className="flex min-h-11 items-center gap-1 rounded-lg bg-white/10 px-2.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white"
               aria-label={t("routes_link")}
             >
-              <MapIcon size={17} strokeWidth={2.2} aria-hidden />
+              <MapIcon size={16} strokeWidth={2.2} aria-hidden />
+              <span className="hidden sm:inline">{t("routes_link")}</span>
             </Link>
             <LangSwitch />
           </div>
@@ -625,6 +627,15 @@ function EmptyState({
           </button>
         ))}
       </div>
+
+      {/* a plainly-labeled path to the route browser, so it is never a hidden feature */}
+      <Link
+        href="/routes"
+        className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-navy"
+      >
+        {t("browse_routes")}
+        <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
+      </Link>
     </div>
   );
 }

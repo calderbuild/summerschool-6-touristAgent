@@ -17,6 +17,7 @@ import {
   Check,
   MoveVertical,
   CircleHelp,
+  ArrowLeft,
   type LucideIcon,
 } from "lucide-react";
 
@@ -98,17 +99,19 @@ export default function App() {
 
   return (
     <>
-      {/* Header */}
+      {/* Header — back to the assistant is the obvious primary action */}
       <header className="sticky top-0 z-20 bg-navy pt-[env(safe-area-inset-top)] text-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="Voie Libre">
-            <span className="text-white">
-              <Logo />
-            </span>
-            <span className="leading-none">
-              <span className="block font-display text-[19px] font-bold tracking-tight">Voie Libre</span>
-              <span className="block text-[11px] text-white/65">{t("brand_tag")}</span>
-            </span>
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5">
+          <Link
+            href="/"
+            className="flex min-h-11 items-center gap-1.5 rounded-lg bg-white/10 pl-2 pr-3 font-semibold text-white/90 transition-colors hover:bg-white/15 hover:text-white"
+          >
+            <ArrowLeft size={18} strokeWidth={2.4} aria-hidden />
+            <span className="text-[14px]">{t("back_to_assistant")}</span>
+          </Link>
+          <Link href="/" className="hidden items-center gap-2 sm:flex" aria-label="Voie Libre">
+            <Logo />
+            <span className="font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
           </Link>
           <LangSwitch />
         </div>

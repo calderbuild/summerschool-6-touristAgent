@@ -152,7 +152,13 @@ const DICT: Record<string, Entry> = {
     zh: "一条预设路线 —— 真实台阶数，诚实标注未知：",
   },
   conversation_label: { en: "Conversation", fr: "Conversation", zh: "对话" },
-  routes_link: { en: "Route browser", fr: "Parcourir", zh: "浏览路线" },
+  routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },
+  browse_routes: {
+    en: "Browse all prepared routes",
+    fr: "Voir tous les itinéraires préparés",
+    zh: "浏览全部预设路线",
+  },
+  back_to_assistant: { en: "Assistant", fr: "Assistant", zh: "返回对话" },
   lang_group: { en: "Language", fr: "Langue", zh: "语言" },
 
   map_legend_lines: {
