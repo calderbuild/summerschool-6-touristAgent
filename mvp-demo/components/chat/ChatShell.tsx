@@ -28,6 +28,9 @@ type Msg = { role: "user" | "assistant"; content: string; reasoning: string };
 
 const ROUTE_ID_SET = new Set(ROUTES.map((r) => r.id));
 
+// Survives a trip to /routes and back, for this tab session only.
+const CHAT_STORAGE_KEY = "voie-libre-chat";
+
 const PROFILE_META: { id: ProfileId; labelKey: string; icon: LucideIcon }[] = [
   { id: "wheelchair", labelKey: "profile_wheelchair", icon: Accessibility },
   { id: "stroller", labelKey: "profile_stroller", icon: Baby },
@@ -299,6 +302,41 @@ export default function ChatShell() {
   const abortRef = useRef<AbortController | null>(null);
   const longTimerRef = useRef<number | null>(null);
   const lastReqRef = useRef<{ history: Msg[]; assistantIndex: number } | null>(null);
+
+  // Keep the conversation when the traveller opens /routes and comes back.
+  // Restored after mount rather than in useState's initialiser, which would
+  // desync SSR hydration.
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(CHAT_STORAGE_KEY);
+      if (!saved) return;
+      const parsed = JSON.parse(saved) as { messages?: Msg[]; profile?: ProfileId | null };
+      if (Array.isArray(parsed.messages) && parsed.messages.length) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMessages(parsed.messages);
+      }
+      if (parsed.profile) {
+         
+        setProfile(parsed.profile);
+      }
+    } catch {
+      // Corrupt or blocked storage is never worth breaking the chat over.
+    }
+  }, []);
+
+  // Save once a turn settles, not on every streamed token.
+  useEffect(() => {
+    if (streaming) return;
+    try {
+      if (messages.length) {
+        sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ messages, profile }));
+      } else {
+        sessionStorage.removeItem(CHAT_STORAGE_KEY);
+      }
+    } catch {
+      // Storage full or blocked: persistence is a convenience, never a blocker.
+    }
+  }, [messages, profile, streaming]);
 
   // Keyboard-aware height: drive --app-h from the visual viewport so the composer
   // stays above the iOS keyboard (Android is handled by interactiveWidget).
