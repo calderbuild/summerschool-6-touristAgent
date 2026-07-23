@@ -71,6 +71,9 @@ const DICT: Record<string, Entry> = {
 
   result_title: { en: "Your step-free route", fr: "Votre itinéraire sans marches", zh: "你的无楼梯路线" },
   map_title: { en: "On the map", fr: "Sur la carte", zh: "地图" },
+  map_view_group: { en: "Map view", fr: "Type de carte", zh: "地图视图" },
+  map_view_map: { en: "Map", fr: "Plan", zh: "地图" },
+  map_view_3d: { en: "3D", fr: "3D", zh: "3D" },
   map_missing: {
     en: "Live map appears once a Google Maps key is set. The route below is fully usable without it.",
     fr: "La carte s'affiche dès qu'une clé Google Maps est configurée. L'itinéraire ci-dessous fonctionne sans elle.",

@@ -8,6 +8,7 @@ import { statusColorVar } from "@/lib/status";
 import type { Status } from "@/lib/data";
 import AccessibilitySpine from "./AccessibilitySpine";
 import MetroMap from "./MetroMap";
+import RouteMap from "./RouteMap";
 import {
   Accessibility,
   Baby,
@@ -94,6 +95,7 @@ function Legend() {
 export default function App() {
   const { t, lang } = useI18n();
   const [profile, setProfile] = useState<ProfileId>("wheelchair");
+  const [mapView, setMapView] = useState<"map" | "3d">("map");
   const active = PROFILE_META.find((p) => p.id === profile)!;
   const route = ROUTES.find((r) => r.id === active.routeId)!;
 
@@ -186,9 +188,35 @@ export default function App() {
 
           <div className="flex flex-col gap-3 lg:sticky lg:top-20 lg:self-start">
             <div className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
-              <h2 className="mb-3 font-display text-[16px] font-bold text-ink">{t("map_title")}</h2>
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <h2 className="font-display text-[16px] font-bold text-ink">{t("map_title")}</h2>
+                <div
+                  className="flex items-center gap-0.5 rounded-lg bg-ink/[0.06] p-0.5"
+                  role="group"
+                  aria-label={t("map_view_group")}
+                >
+                  {(["map", "3d"] as const).map((v) => (
+                    <button
+                      key={v}
+                      onClick={() => setMapView(v)}
+                      aria-pressed={mapView === v}
+                      className={`grid min-h-9 min-w-11 place-items-center rounded-md px-3 text-[12px] font-bold transition-colors ${
+                        mapView === v
+                          ? "bg-surface text-ink ring-1 ring-ink/10"
+                          : "text-ink-soft hover:text-ink"
+                      }`}
+                    >
+                      {v === "map" ? t("map_view_map") : t("map_view_3d")}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div className="h-[300px] lg:h-[360px]">
-                <MetroMap nodes={route.nodes} className="h-full w-full rounded-lg" />
+                {mapView === "map" ? (
+                  <RouteMap route={route} />
+                ) : (
+                  <MetroMap nodes={route.nodes} className="h-full w-full rounded-lg" />
+                )}
               </div>
             </div>
             <div className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
