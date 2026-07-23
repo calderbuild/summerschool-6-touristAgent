@@ -7,7 +7,7 @@ import { ROUTES, type ProfileId } from "@/lib/data";
 import { statusColorVar } from "@/lib/status";
 import type { Status } from "@/lib/data";
 import AccessibilitySpine from "./AccessibilitySpine";
-import RouteMap from "./RouteMap";
+import MetroMap from "./MetroMap";
 import {
   Accessibility,
   Baby,
@@ -100,7 +100,7 @@ export default function App() {
   return (
     <>
       {/* Header — back to the assistant is the obvious primary action */}
-      <header className="sticky top-0 z-20 bg-navy pt-[env(safe-area-inset-top)] text-white">
+      <header className="sticky top-0 z-20 border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5">
           <Link
             href="/"
@@ -132,7 +132,7 @@ export default function App() {
         </section>
 
         {/* Controls */}
-        <section aria-labelledby="who" className="rounded-2xl border border-ink/10 bg-white p-4 sm:p-5">
+        <section aria-labelledby="who" className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
           <h2 id="who" className="font-display text-[15px] font-bold text-ink">
             {t("profile_q")}
           </h2>
@@ -147,8 +147,8 @@ export default function App() {
                   aria-pressed={on}
                   className={`flex min-h-[52px] items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-[14px] font-semibold transition-colors ${
                     on
-                      ? "border-navy bg-navy text-white"
-                      : "border-ink/15 bg-paper text-ink hover:border-navy/40"
+                      ? "border-signal bg-signal/15 text-ink"
+                      : "border-ink/15 bg-surface text-ink hover:border-signal/50"
                   }`}
                 >
                   <Icon size={20} strokeWidth={2} aria-hidden className="shrink-0" />
@@ -173,7 +173,7 @@ export default function App() {
 
         {/* Result: spine + map */}
         <section className="mt-4 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-2xl border border-ink/10 bg-white p-4 sm:p-5">
+          <div className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
             <div className="flex items-baseline justify-between gap-3">
               <h2 className="font-display text-[16px] font-bold text-ink">{t("result_title")}</h2>
             </div>
@@ -185,13 +185,13 @@ export default function App() {
           </div>
 
           <div className="flex flex-col gap-3 lg:sticky lg:top-20 lg:self-start">
-            <div className="rounded-2xl border border-ink/10 bg-white p-4 sm:p-5">
+            <div className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
               <h2 className="mb-3 font-display text-[16px] font-bold text-ink">{t("map_title")}</h2>
               <div className="h-[300px] lg:h-[360px]">
-                <RouteMap route={route} />
+                <MetroMap nodes={route.nodes} className="h-full w-full rounded-lg" />
               </div>
             </div>
-            <div className="rounded-2xl border border-ink/10 bg-white p-4 sm:p-5">
+            <div className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
               <h3 className="text-[11px] font-bold uppercase tracking-wide text-ink-soft">
                 {t("sources_label")}
               </h3>
@@ -205,11 +205,11 @@ export default function App() {
         </section>
 
         {/* Honesty */}
-        <section className="mt-6 mb-2 rounded-2xl bg-navy p-5 text-white sm:p-7">
+        <section className="mt-6 mb-2 rounded-2xl border border-ink/10 bg-surface p-5 text-ink sm:p-7">
           <h2 className="max-w-xl font-display text-[20px] font-bold leading-tight sm:text-[24px]">
             {t("honesty_title")}
           </h2>
-          <p className="mt-2.5 max-w-2xl text-[14px] leading-relaxed text-white/75">
+          <p className="mt-2.5 max-w-2xl text-[14px] leading-relaxed text-ink-soft">
             {t("honesty_body")}
           </p>
         </section>

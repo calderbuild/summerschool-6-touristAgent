@@ -68,7 +68,7 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
             <div className="flex w-7 shrink-0 flex-col items-center self-stretch">
               <Connector status={i === 0 ? undefined : topInto} />
               <span
-                className="my-1 grid h-7 w-7 place-items-center rounded-full border-[3px] bg-white"
+                className="my-1 grid h-7 w-7 place-items-center rounded-full border-[3px] bg-canvas"
                 style={{ borderColor: color, color }}
               >
                 <NodeGlyph status={node.at} />
@@ -93,7 +93,7 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
               {/* station / place name, lettered to match the map marker */}
               <h3 className="flex items-center gap-2 font-display text-[17px] font-semibold leading-tight text-ink">
                 <span
-                  className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-navy text-[11px] font-bold text-white"
+                  className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-surface-2 text-[11px] font-bold text-ink"
                   aria-hidden
                 >
                   {String.fromCharCode(65 + i)}

@@ -65,17 +65,17 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
 
   return (
     <div className="my-3">
-      <p className="mb-1.5 rounded-lg border border-navy/15 bg-white px-3 py-2 text-[13px] font-bold leading-snug text-navy shadow-sm">
+      <p className="mb-1.5 rounded-lg border border-ink/10 bg-surface-2 px-3 py-2 text-[13px] font-bold leading-snug text-ink">
         {verdictSummary(t, route.from, route.to, barriers, unknowns)}
       </p>
-      <div className="overflow-hidden rounded-xl border border-ink/12 bg-paper">
+      <div className="overflow-hidden rounded-xl border border-ink/10 bg-surface">
       {/* header: route + who it's for + today's disruption */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-ink/10 px-3.5 py-2.5">
         <p className="font-display text-[14px] font-bold text-ink">
           {route.from} <span className="text-ink/45" aria-hidden>→</span> {route.to}
         </p>
         {ProfileIcon && profileLabel && (
-          <span className="inline-flex items-center gap-1 rounded bg-navy/8 px-1.5 py-0.5 text-[11px] font-semibold text-navy">
+          <span className="inline-flex items-center gap-1 rounded bg-ink/6 px-1.5 py-0.5 text-[11px] font-semibold text-ink-soft">
             <ProfileIcon size={12} strokeWidth={2.2} aria-hidden />
             {t("for_word")} {t(profileLabel)}
           </span>
@@ -131,7 +131,7 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
 
       {/* schematic diagram (self-drawn, not a map) */}
       <div className="px-3.5 pt-3">
-        <div className="h-[76px] rounded-lg bg-white ring-1 ring-ink/8">
+        <div className="h-[76px] rounded-lg bg-canvas ring-1 ring-ink/10">
           <AccessRibbon route={route} label={t("route_map_label")} />
         </div>
         <p className="mt-1.5 px-0.5 text-[10.5px] text-ink-soft">{t("map_legend_lines")}</p>

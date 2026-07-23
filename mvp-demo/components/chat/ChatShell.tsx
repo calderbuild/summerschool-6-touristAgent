@@ -237,7 +237,7 @@ const MessageItem = memo(function MessageItem({
   if (message.role === "user") {
     return (
       <li className="flex justify-end">
-        <div className="max-w-[85%] break-words rounded-2xl rounded-br-md bg-navy px-4 py-2.5 text-[14px] leading-relaxed text-white">
+        <div className="max-w-[85%] break-words rounded-2xl rounded-br-md bg-surface-2 px-4 py-2.5 text-[14px] leading-relaxed text-ink ring-1 ring-ink/8">
           {message.content}
         </div>
       </li>
@@ -443,7 +443,7 @@ export default function ChatShell() {
   return (
     <div className="flex h-app flex-col overflow-hidden bg-paper">
       {/* header */}
-      <header className="z-20 shrink-0 bg-navy pt-[env(safe-area-inset-top)] text-white">
+      <header className="z-20 shrink-0 border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-2 px-4 py-2.5">
           <div className="flex items-center gap-2.5">
             <Logo />
@@ -538,7 +538,7 @@ export default function ChatShell() {
               e.preventDefault();
               send(input);
             }}
-            className="flex items-end gap-2 rounded-2xl border border-ink/15 bg-white p-1.5 pl-3.5 focus-within:border-navy/50"
+            className="flex items-end gap-2 rounded-2xl border border-ink/15 bg-surface-2 p-1.5 pl-3.5 focus-within:border-signal/60"
           >
             <textarea
               value={input}
@@ -581,7 +581,7 @@ export default function ChatShell() {
                 type="submit"
                 disabled={!input.trim()}
                 aria-label={t("chat_send")}
-                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-navy text-white transition-colors hover:bg-navy/90 disabled:opacity-30"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-signal text-canvas transition-colors hover:bg-signal/90 disabled:opacity-30"
               >
                 <ArrowUp size={18} strokeWidth={2.4} aria-hidden />
               </button>
@@ -600,21 +600,21 @@ export default function ChatShell() {
 function StepFreeLine() {
   const { t } = useI18n();
   return (
-    <svg viewBox="0 0 340 44" className="h-auto w-full max-w-[340px]" role="img" aria-label={t("hero_line_label")}>
+    <svg viewBox="0 0 340 44" className="h-auto w-full max-w-[420px]" role="img" aria-label={t("hero_line_label")}>
       <defs>
         <pattern id="vl-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
           <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-unknown)" strokeWidth="2.4" />
         </pattern>
       </defs>
-      <line x1="20" y1="22" x2="112" y2="22" stroke="var(--color-ink)" strokeOpacity="0.22" strokeWidth="3" strokeLinecap="round" />
-      <rect x="118" y="18.5" width="84" height="7" rx="3.5" fill="url(#vl-hatch)" />
-      <rect x="118" y="18.5" width="84" height="7" rx="3.5" fill="none" stroke="var(--color-unknown)" strokeOpacity="0.45" />
-      <line x1="208" y1="22" x2="320" y2="22" stroke="var(--color-ink)" strokeOpacity="0.22" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="20" cy="22" r="6.5" fill="var(--color-ok)" />
-      <circle cx="112" cy="22" r="6.5" fill="var(--color-signal)" />
-      <circle cx="208" cy="22" r="6.5" fill="var(--color-unknown)" />
-      <circle cx="320" cy="22" r="8" fill="var(--color-navy)" />
-      <circle cx="320" cy="22" r="2.75" fill="#ffffff" />
+      <line x1="20" y1="22" x2="112" y2="22" stroke="var(--color-ok)" strokeWidth="4" strokeLinecap="round" />
+      <rect x="118" y="18" width="84" height="8" rx="4" fill="url(#vl-hatch)" />
+      <rect x="118" y="18" width="84" height="8" rx="4" fill="none" stroke="var(--color-unknown)" strokeOpacity="0.6" />
+      <line x1="208" y1="22" x2="320" y2="22" stroke="var(--color-signal)" strokeWidth="4" strokeLinecap="round" />
+      <circle cx="20" cy="22" r="7" fill="var(--color-ok)" />
+      <circle cx="112" cy="22" r="7" fill="var(--color-signal)" />
+      <circle cx="208" cy="22" r="7" fill="var(--color-unknown)" />
+      <circle cx="320" cy="22" r="9" fill="var(--color-ink)" />
+      <circle cx="320" cy="22" r="3" fill="var(--color-canvas)" />
     </svg>
   );
 }
@@ -637,17 +637,17 @@ function EmptyState({
       {/* Hero: the product's own transit language as the opening thesis, on bare
           paper (not another white card), with a whisper of the unknown-hatch behind. */}
       <section className="relative">
-        <div
-          className="hatch-whisper pointer-events-none absolute -right-3 -top-5 h-24 w-40 rounded-2xl sm:h-28 sm:w-56"
-          aria-hidden
-        />
+        <div className="hatch-whisper pointer-events-none absolute -right-4 -top-6 h-32 w-56 rounded-3xl" aria-hidden />
         <div className="relative">
-          <StepFreeLine />
-          <h2 className="mt-5 max-w-lg text-balance font-display text-[27px] font-extrabold leading-[1.08] tracking-tight text-ink sm:text-[33px]">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-ok">Paris · step-free</p>
+          <h2 className="mt-3 max-w-2xl text-balance font-display text-[36px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[54px]">
             {t("chat_intro_title")}
           </h2>
-          <p className="mt-2.5 max-w-md text-[14.5px] leading-relaxed text-ink-soft">{t("chat_intro_body")}</p>
-          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[12px] font-medium text-ink-soft">
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-soft">{t("chat_intro_body")}</p>
+          <div className="mt-7">
+            <StepFreeLine />
+          </div>
+          <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
             <li className="inline-flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-ok)" }} aria-hidden />
               {t("legend_ok")}
@@ -657,7 +657,7 @@ function EmptyState({
               {t("legend_lift")}
             </li>
             <li className="inline-flex items-center gap-1.5">
-              <span className="hatch-unknown inline-block h-2.5 w-2.5 rounded-[2px] ring-1 ring-unknown/40" aria-hidden />
+              <span className="hatch-unknown inline-block h-2.5 w-2.5 rounded-[2px] ring-1 ring-unknown/50" aria-hidden />
               {t("legend_unknown")}
             </li>
           </ul>
@@ -665,8 +665,8 @@ function EmptyState({
       </section>
 
       {/* Who is travelling — the personalization a generic map can't do. */}
-      <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.09em] text-ink-soft">{t("profile_q")}</p>
-      <div className="mt-2.5 grid grid-cols-2 gap-2 sm:max-w-2xl sm:grid-cols-4">
+      <p className="mt-10 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint">{t("profile_q")}</p>
+      <div className="mt-3 grid grid-cols-2 gap-2.5 sm:max-w-2xl sm:grid-cols-4">
         {PROFILE_META.map((p) => {
           const Icon = p.icon;
           const on = profile === p.id;
@@ -675,11 +675,11 @@ function EmptyState({
               key={p.id}
               onClick={() => setProfile(on ? null : p.id)}
               aria-pressed={on}
-              className={`flex min-h-11 touch-manipulation items-center gap-2 rounded-xl border px-3 py-2 text-[13px] font-semibold transition-colors ${
-                on ? "border-navy bg-navy text-white" : "border-ink/15 bg-white text-ink hover:border-navy/40"
+              className={`flex min-h-12 touch-manipulation items-center gap-2 rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-colors ${
+                on ? "border-signal bg-signal/15 text-ink" : "border-ink/15 bg-surface text-ink hover:border-signal/50"
               }`}
             >
-              <Icon size={17} strokeWidth={2} aria-hidden className="shrink-0" />
+              <Icon size={18} strokeWidth={2} aria-hidden className={`shrink-0 ${on ? "text-signal" : "text-ink-soft"}`} />
               <span className="leading-tight">{t(p.labelKey)}</span>
             </button>
           );
@@ -687,20 +687,20 @@ function EmptyState({
       </div>
 
       {/* Try — one tidy list with a hover cue, not three identical tiles. */}
-      <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.09em] text-ink-soft">{t("chat_try")}</p>
-      <ul className="mt-2.5 divide-y divide-ink/8 overflow-hidden rounded-xl border border-ink/12 bg-white sm:max-w-2xl">
+      <p className="mt-10 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint">{t("chat_try")}</p>
+      <ul className="mt-3 divide-y divide-ink/8 overflow-hidden rounded-2xl border border-ink/10 bg-surface sm:max-w-2xl">
         {["chat_suggest_1", "chat_suggest_2", "chat_suggest_3"].map((k) => (
           <li key={k}>
             <button
               onClick={() => onSend(t(k))}
-              className="group flex w-full touch-manipulation items-center gap-3 px-4 py-3 text-left text-[14px] text-ink/85 transition-colors hover:bg-paper hover:text-ink"
+              className="group flex w-full touch-manipulation items-center gap-3 px-4 py-3.5 text-left text-[14px] text-ink/90 transition-colors hover:bg-surface-2"
             >
               <span className="min-w-0 flex-1 leading-snug">{t(k)}</span>
               <ArrowRight
                 size={15}
                 strokeWidth={2.4}
                 aria-hidden
-                className="shrink-0 text-ink-soft/60 transition-transform group-hover:translate-x-0.5 group-hover:text-signal"
+                className="shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5 group-hover:text-signal"
               />
             </button>
           </li>
@@ -710,7 +710,7 @@ function EmptyState({
       {/* The route browser stays a plainly-labeled path, never a hidden feature. */}
       <Link
         href={routesHref(lang)}
-        className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-navy"
+        className="mt-8 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"
       >
         {t("browse_routes")}
         <ArrowRight size={15} strokeWidth={2.4} aria-hidden />

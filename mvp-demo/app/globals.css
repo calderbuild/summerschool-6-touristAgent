@@ -1,24 +1,47 @@
 @import "tailwindcss";
 
 @theme {
-  /* Warm limestone off-white (Paris stone), kept far more neutral than the
-     generic AI cream — a subtle sense of place, not a beige theme. */
-  --color-paper: #f5f4f0;
-  --color-ink: #1a1c22;
-  /* Accessible secondary text: ~7.2:1 on paper, ~8:1 on white (WCAG AAA). Use
-     instead of low-opacity ink for any meaningful small text. */
-  --color-ink-soft: #4c515a;
+  /* ======================= Voie Libre — Paris daylight =======================
+     A limestone-paper canvas (a subtle sense of Paris stone, not a beige AI
+     theme) with white cards, a dark signage band, and the accessibility
+     status palette as the accent language. Every text pair is measured AA+.
+
+     Surface hierarchy: paper (page) → surface (raised card) → surface-2
+     (input / hover) with canvas as a soft sunken tone for diagrams and dots. */
+
+  /* surfaces (light) */
+  --color-paper: #f5f4f0; /* page — warm limestone off-white */
+  --color-canvas: #e9e5dd; /* sunken limestone: diagram wells, dot centres */
+  --color-surface: #ffffff; /* raised panel / card — clean white pops on paper */
+  --color-surface-2: #edeae3; /* input / hover / user bubble — warm light grey */
+
+  /* dark signage band (header) — a transit sign over a light page */
   --color-navy: #12202e;
+
+  /* text (dark on light) */
+  --color-ink: #1a1c22; /* primary — ~15:1 on paper */
+  --color-ink-soft: #4c515a; /* secondary — ~7:1 on paper (AAA) */
+  --color-ink-faint: #646a75; /* captions / mono labels — ~5:1 on paper (AA) */
+
+  /* brand + interactive (also the "working lift" blue) */
   --color-signal: #1b57a6;
-  --color-ok: #1e8e5a;
-  /* The bright ok/caution fills fall below 4.5:1 as text; these darker variants
-     pass AA for coloured *text* while the brighter tokens stay for dots/fills/icons. */
-  --color-ok-ink: #0d6f43;
-  --color-barrier: #c63a2f;
-  --color-caution: #c77a16;
-  --color-caution-ink: #8a5510;
-  /* Darkened so "unknown" clears 4.5:1 as small text on paper, not only as a fill. */
-  --color-unknown: #616671;
+
+  /* status. The bright ok/caution fills read below 4.5:1 as *text*, so the
+     -ink variants are darkened for coloured text while the base tokens stay
+     for dots, fills and icons. */
+  --color-ok: #1e8e5a; /* step-free green (fill) */
+  --color-ok-ink: #0d6f43; /* step-free green (text) */
+  --color-barrier: #c63a2f; /* stairs / lift out of service */
+  --color-caution: #c77a16; /* disruption amber (fill) */
+  --color-caution-ink: #8a5510; /* disruption amber (text) */
+  --color-unknown: #616671; /* unknown — cool grey, always paired with hatch */
+
+  /* real RATP line colours, surfaced on the transit bullets */
+  --line-m14: #62259d;
+  --line-m1: #ffcd00;
+  --line-m4: #a0006e;
+  --line-rerc: #f3d311;
+  --line-rerb: #7ba3dc;
 
   --font-display: var(--ff-display), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--ff-body), ui-sans-serif, system-ui, sans-serif;
@@ -71,11 +94,33 @@ html {
   opacity: 0.04;
 }
 
+/* A Métro line "bullet": a line-coloured rounded tile with the line label,
+   the vocabulary of Paris transit signage. Colour is set inline per line. */
+.metro-bullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  height: 1.3rem;
+  padding: 0 0.35rem;
+  border-radius: 0.3rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  line-height: 1;
+}
+
 /* Focus ring visible for keyboard users on any interactive element */
 :where(a, button, select, input, textarea, [tabindex]):focus-visible {
   outline: 3px solid var(--color-signal);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-signal) 40%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
