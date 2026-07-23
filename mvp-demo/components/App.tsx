@@ -76,7 +76,7 @@ const LEGEND: { status: Status; key: string; glyph: LucideIcon }[] = [
 function Legend() {
   const { t } = useI18n();
   return (
-    <ul className="flex flex-wrap gap-x-3.5 gap-y-1.5">
+    <ul className="flex flex-wrap gap-x-2.5 gap-y-1.5 sm:gap-x-3.5">
       {LEGEND.map((item) => {
         const G = item.glyph;
         return (
@@ -101,7 +101,7 @@ export default function App() {
 
   return (
     <>
-      {/* Header — back to the assistant is the obvious primary action */}
+      {/* Header, back to the assistant is the obvious primary action */}
       <header className="sticky top-0 z-20 border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5">
           <Link
@@ -223,9 +223,13 @@ export default function App() {
               <h3 className="text-[11px] font-bold uppercase tracking-wide text-ink-soft">
                 {t("sources_label")}
               </h3>
-              <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11.5px] text-ink-soft">
+              {/* Chips, not a wrapped list: four sources separated only by a gap
+                  read as one run-on sentence. */}
+              <ul className="mt-2 flex flex-wrap gap-1.5 font-mono text-[11.5px] text-ink-soft">
                 {route.sources.map((s) => (
-                  <li key={s}>{s}</li>
+                  <li key={s} className="rounded-md border border-ink/10 bg-canvas px-2 py-1 leading-snug">
+                    {s}
+                  </li>
                 ))}
               </ul>
             </div>

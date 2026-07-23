@@ -19,8 +19,8 @@ import {
 
 /**
  * Inline route summary for a chat answer (from a [[route:id]] marker). It leads
- * with the accessibility verdict + the barrier and its step-free workaround —
- * the part Google Maps cannot produce — then a compact diagram, then a demoted
+ * with the accessibility verdict + the barrier and its step-free workaround,
+ * the part Google Maps cannot produce, then a compact diagram, then a demoted
  * per-stop list, then the data sources. The full spine lives at /routes.
  */
 
@@ -177,9 +177,15 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
       {/* provenance + honest freshness */}
       <div className="mt-2 border-t border-ink/10 px-3.5 py-2.5">
         <p className="text-[10px] font-bold uppercase tracking-wide text-ink-soft">{t("sources_label")}</p>
-        <p className="mt-1 font-mono text-[10.5px] leading-relaxed text-ink-soft">
-          {route.sources.join(" · ")}
-        </p>
+        {/* Chips, not a joined string: the source names contain "·" themselves
+            ("IDFM · État des ascenseurs"), so any separator blurs the boundary. */}
+        <ul className="mt-1.5 flex flex-wrap gap-1 font-mono text-[10.5px] text-ink-soft">
+          {route.sources.map((s) => (
+            <li key={s} className="rounded border border-ink/10 bg-canvas px-1.5 py-0.5 leading-snug">
+              {s}
+            </li>
+          ))}
+        </ul>
         <p className="mt-1 text-[10.5px] text-ink-soft">{t("freshness_note")}</p>
       </div>
       </div>

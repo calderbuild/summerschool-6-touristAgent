@@ -121,9 +121,9 @@ const DICT: Record<string, Entry> = {
     zh: "告诉我起点、终点和你的出行方式。我会规划无楼梯路线，数据未知时如实说明。",
   },
   chat_placeholder: {
-    en: "e.g. I use a wheelchair, Gare de Lyon to the Eiffel Tower",
-    fr: "ex. je suis en fauteuil, de Gare de Lyon à la Tour Eiffel",
-    zh: "例如：我坐轮椅，从里昂车站到埃菲尔铁塔",
+    en: "Start and destination",
+    fr: "Départ et destination",
+    zh: "起点和终点",
   },
   chat_input_label: {
     en: "Ask for a step-free route",
@@ -133,7 +133,7 @@ const DICT: Record<string, Entry> = {
   chat_send: { en: "Send", fr: "Envoyer", zh: "发送" },
   chat_stop: { en: "Stop", fr: "Arrêter", zh: "停止" },
   voice_input: { en: "Speak your request", fr: "Dictez votre demande", zh: "语音输入" },
-  voice_listening: { en: "Listening — tap to stop", fr: "Écoute — touchez pour arrêter", zh: "聆听中 —— 点击停止" },
+  voice_listening: { en: "Listening. Tap to stop", fr: "Écoute. Touchez pour arrêter", zh: "聆听中，点击停止" },
   read_aloud: { en: "Read answer aloud", fr: "Lire la réponse à voix haute", zh: "朗读回答" },
   stop_reading: { en: "Stop reading", fr: "Arrêter la lecture", zh: "停止朗读" },
   chat_retry: { en: "Retry", fr: "Réessayer", zh: "重试" },
@@ -166,9 +166,9 @@ const DICT: Record<string, Entry> = {
     zh: "从北站到巴黎圣母院，避开楼梯",
   },
   chat_example_intro: {
-    en: "One prepared route — real step counts, honest unknowns:",
-    fr: "Un itinéraire préparé — vraies marches, inconnus assumés :",
-    zh: "一条预设路线 —— 真实台阶数，诚实标注未知：",
+    en: "One prepared route: real step counts, honest unknowns.",
+    fr: "Un itinéraire préparé : vraies marches, inconnus assumés.",
+    zh: "一条预设路线：真实台阶数，诚实标注未知。",
   },
   chat_try: {
     en: "Or start with",

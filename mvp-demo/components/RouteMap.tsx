@@ -20,6 +20,11 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
     // stop (M14 purple, RER C yellow, ...); dashed grey for a walking leg and
     // dashed in the line colour when that leg's accessibility status is unknown,
     // so the map speaks the same honesty language as the spine.
+    //
+    // Every leg gets a dark casing underneath first. Line colours are chosen by
+    // the operator, not by us, and the pale ones (RER C and M1 yellow) vanish on
+    // Google's light basemap without it.
+    const CASING = "#1a1c22";
     for (let i = 0; i < nodes.length - 1; i++) {
       const leg = [nodes[i].coord, nodes[i + 1].coord];
       const ridden = nodes[i + 1].line;
@@ -29,27 +34,37 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
           new google.maps.Polyline({
             path: leg,
             map,
+            strokeColor: CASING,
+            strokeOpacity: 0.5,
+            strokeWeight: 9,
+            zIndex: 1,
+          }),
+          new google.maps.Polyline({
+            path: leg,
+            map,
             strokeColor: ridden.color,
-            strokeOpacity: 0.95,
+            strokeOpacity: 1,
             strokeWeight: 5,
+            zIndex: 2,
           })
         );
       } else {
         const color = ridden ? ridden.color : "#6b7280";
-        overlays.push(
+        const dash = (stroke: string, scale: number, opacity: number, zIndex: number) =>
           new google.maps.Polyline({
             path: leg,
             map,
             strokeOpacity: 0,
+            zIndex,
             icons: [
               {
-                icon: { path: "M 0,-1 0,1", strokeColor: color, strokeOpacity: 1, scale: 3 },
+                icon: { path: "M 0,-1 0,1", strokeColor: stroke, strokeOpacity: opacity, scale },
                 offset: "0",
                 repeat: "12px",
               },
             ],
-          })
-        );
+          });
+        overlays.push(dash(CASING, 4.6, 0.45, 1), dash(color, 3, 1, 2));
       }
     }
 
@@ -59,28 +74,41 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
           position: n.coord,
           map,
           title: n.name,
+          // Google's own POI pins crowd the default basemap, so the stops have
+          // to outweigh them: the route is what the traveller came here to read.
+          zIndex: 10 + i,
           label: {
             text: String.fromCharCode(65 + i),
             color: "#ffffff",
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: "700",
           },
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
-            scale: 11,
+            scale: 13,
             fillColor: statusHex(n.at),
             fillOpacity: 1,
             strokeColor: "#ffffff",
-            strokeWeight: 2.5,
+            strokeWeight: 3,
           },
         })
     );
 
     const bounds = new google.maps.LatLngBounds();
     nodes.forEach((n) => bounds.extend(n.coord));
-    map.fitBounds(bounds, 56);
+    const frame = () => map.fitBounds(bounds, 44);
+    frame();
+
+    // The card is sticky on desktop and swaps with the 3D view, so the map can
+    // be measured before it has its final size. Without this the tile layer
+    // keeps a stale offset and the route sits off-centre in a band of empty
+    // canvas. Re-framing on resize also keeps the route in view on rotation.
+    const host = map.getDiv();
+    const ro = new ResizeObserver(frame);
+    ro.observe(host);
 
     return () => {
+      ro.disconnect();
       overlays.forEach((o) => o.setMap(null));
       markers.forEach((m) => m.setMap(null));
     };

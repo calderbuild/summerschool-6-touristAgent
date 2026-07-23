@@ -4,12 +4,12 @@ import type { DemoRoute } from "@/lib/data";
 import { statusHex, lineTextColor } from "@/lib/status";
 
 /**
- * A compact, self-drawn schematic of the route — lettered station dots coloured
+ * A compact, self-drawn schematic of the route, lettered station dots coloured
  * by accessibility status, connected by segments coloured by the line ridden
  * (dashed for a walk or an unknown-status leg). It replaces the inline Google
  * map: no WebGL, no API instance per card, and it reads as a purpose-built
  * accessibility diagram rather than a plain map. Geographic accuracy is not the
- * point here — legibility of the step-free path is.
+ * point here, legibility of the step-free path is.
  */
 export default function AccessRibbon({ route, label }: { route: DemoRoute; label: string }) {
   const nodes = route.nodes;
@@ -36,7 +36,7 @@ export default function AccessRibbon({ route, label }: { route: DemoRoute; label
         const status = n.into?.status;
         const unknown = status === "unknown";
         // A leg with a known barrier or an unknown status must never look identical
-        // to a genuinely step-free leg — dash anything that isn't solidly "ok".
+        // to a genuinely step-free leg, dash anything that isn't solidly "ok".
         const notClear = unknown || status === "stairs" || status === "lift_down";
         const dashed = walking || notClear;
         const color = walking ? "#9aa0a8" : n.line!.color;

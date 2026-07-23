@@ -101,7 +101,7 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
                 {node.name}
               </h3>
 
-              {/* status note at this node — glyph carries the hue, text stays readable */}
+              {/* status note at this node, glyph carries the hue, text stays readable */}
               <p className="mt-1 flex items-start gap-1.5 text-[13.5px] leading-snug text-ink-soft">
                 <span className="mt-0.5 shrink-0" style={{ color }}>
                   <NodeGlyph status={node.at} />

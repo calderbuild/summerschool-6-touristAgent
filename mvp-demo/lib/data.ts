@@ -71,16 +71,16 @@ export const ROUTES: DemoRoute[] = [
         into: {
           status: "ok",
           text: {
-            en: "Ride Line 14 towards Saint-Lazare — 3 stops, fully step-free.",
-            fr: "Ligne 14 vers Saint-Lazare — 3 stations, entièrement sans marches.",
+            en: "Ride Line 14 towards Saint-Lazare, 3 stops, fully step-free.",
+            fr: "Ligne 14 vers Saint-Lazare, 3 stations, entièrement sans marches.",
             zh: "乘 14 号线往 Saint-Lazare 方向，3 站，全程无楼梯。",
           },
         },
         at: "unknown",
         steps: null,
         atText: {
-          en: "Change here for RER C. The lift at this interchange is not reported — treat it as unknown.",
-          fr: "Correspondance vers le RER C. L'ascenseur de cette correspondance n'est pas renseigné — à considérer comme inconnu.",
+          en: "Change here for RER C. The lift at this interchange is not reported, so treat it as unknown.",
+          fr: "Correspondance vers le RER C. L'ascenseur de cette correspondance n'est pas renseigné, à considérer comme inconnu.",
           zh: "在此换乘 RER C。此换乘处的电梯无数据，按“未知”处理。",
         },
       },
@@ -91,8 +91,8 @@ export const ROUTES: DemoRoute[] = [
         into: {
           status: "unknown",
           text: {
-            en: "Take RER C — 4 stops. Some RER C stations are step-free; confirm platform access on the day.",
-            fr: "RER C — 4 stations. Certaines gares du RER C sont sans marches ; vérifiez l'accès au quai le jour même.",
+            en: "Take RER C, 4 stops. Some RER C stations are step-free; confirm platform access on the day.",
+            fr: "RER C, 4 stations. Certaines gares du RER C sont sans marches ; vérifiez l'accès au quai le jour même.",
             zh: "乘 RER C，4 站。RER C 部分车站无楼梯，请当天确认站台通行。",
           },
         },
@@ -176,17 +176,17 @@ export const ROUTES: DemoRoute[] = [
         into: {
           status: "unknown",
           text: {
-            en: "Ride Line 1 — 5 stops. Trains are level with the platform, but exit lifts vary by station.",
-            fr: "Ligne 1 — 5 stations. Les rames sont de plain-pied, mais les ascenseurs de sortie varient selon les stations.",
+            en: "Ride Line 1, 5 stops. Trains are level with the platform, but exit lifts vary by station.",
+            fr: "Ligne 1, 5 stations. Les rames sont de plain-pied, mais les ascenseurs de sortie varient selon les stations.",
             zh: "乘 1 号线，5 站。车厢与站台齐平，但各站出口电梯情况不一。",
           },
         },
         at: "unknown",
         steps: null,
         atText: {
-          en: "Lift to street at this exit is not reported — unknown.",
-          fr: "L'ascenseur vers la rue à cette sortie n'est pas renseigné — inconnu.",
-          zh: "此出口通往地面的电梯无数据——未知。",
+          en: "Lift to street at this exit is not reported, so it counts as unknown.",
+          fr: "L'ascenseur vers la rue à cette sortie n'est pas renseigné, donc inconnu.",
+          zh: "此出口通往地面的电梯无数据，按未知处理。",
         },
       },
       {
@@ -229,9 +229,9 @@ export const ROUTES: DemoRoute[] = [
         at: "unknown",
         steps: null,
         atText: {
-          en: "Gare du Nord is large; lift availability to the RER platform varies — treat as unknown.",
-          fr: "Gare du Nord est vaste ; la disponibilité des ascenseurs vers le quai RER varie — à considérer comme inconnu.",
-          zh: "北站规模大，通往 RER 站台的电梯情况不一——按“未知”处理。",
+          en: "Gare du Nord is large; lift availability to the RER platform varies, so treat it as unknown.",
+          fr: "Gare du Nord est vaste ; la disponibilité des ascenseurs vers le quai RER varie, à considérer comme inconnu.",
+          zh: "北站规模大，通往 RER 站台的电梯情况不一，按“未知”处理。",
         },
       },
       {
@@ -241,8 +241,8 @@ export const ROUTES: DemoRoute[] = [
         into: {
           status: "unknown",
           text: {
-            en: "RER B towards Saint-Michel — 3 stops.",
-            fr: "RER B vers Saint-Michel — 3 stations.",
+            en: "RER B towards Saint-Michel, 3 stops.",
+            fr: "RER B vers Saint-Michel, 3 stations.",
             zh: "乘 RER B 往 Saint-Michel 方向，3 站。",
           },
         },

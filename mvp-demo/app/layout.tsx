@@ -23,7 +23,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Voie Libre — step-free routes across Paris",
+  title: "Voie Libre: step-free routes across Paris",
   description:
     "Plan a step-free route across Paris. Voie Libre shows working lifts, stairs, and long walks along the way, and tells you honestly when a status is unknown.",
 };

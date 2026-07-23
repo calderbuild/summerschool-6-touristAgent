@@ -675,17 +675,16 @@ function EmptyState({
       {/* Hero: the product's own transit language as the opening thesis, on bare
           paper (not another white card), with a whisper of the unknown-hatch behind. */}
       <section className="relative">
-        <div className="hatch-whisper pointer-events-none absolute -right-4 -top-6 h-32 w-56 rounded-3xl" aria-hidden />
+        <div className="hatch-whisper pointer-events-none absolute -right-4 -top-4 h-32 w-56 rounded-3xl" aria-hidden />
         <div className="relative">
-          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-ok">Paris · step-free</p>
-          <h2 className="mt-3 max-w-2xl text-balance font-display text-[36px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[54px]">
+          <h2 className="max-w-2xl text-balance font-display text-[34px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[54px]">
             {t("chat_intro_title")}
           </h2>
-          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-soft">{t("chat_intro_body")}</p>
-          <div className="mt-7">
+          <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-soft">{t("chat_intro_body")}</p>
+          <div className="mt-6 sm:mt-7">
             <StepFreeLine />
           </div>
-          <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
+          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
             <li className="inline-flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-ok)" }} aria-hidden />
               {t("legend_ok")}
@@ -702,9 +701,9 @@ function EmptyState({
         </div>
       </section>
 
-      {/* Who is travelling — the personalization a generic map can't do. */}
-      <p className="mt-10 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint">{t("profile_q")}</p>
-      <div className="mt-3 grid grid-cols-2 gap-2.5 sm:max-w-2xl sm:grid-cols-4">
+      {/* Who is travelling, the personalization a generic map can't do. */}
+      <p className="mt-8 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("profile_q")}</p>
+      <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {PROFILE_META.map((p) => {
           const Icon = p.icon;
           const on = profile === p.id;
@@ -724,9 +723,9 @@ function EmptyState({
         })}
       </div>
 
-      {/* Try — one tidy list with a hover cue, not three identical tiles. */}
-      <p className="mt-10 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint">{t("chat_try")}</p>
-      <ul className="mt-3 divide-y divide-ink/8 overflow-hidden rounded-2xl border border-ink/10 bg-surface sm:max-w-2xl">
+      {/* Try, one tidy list with a hover cue, not three identical tiles. */}
+      <p className="mt-8 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("chat_try")}</p>
+      <ul className="mt-3 divide-y divide-ink/8 overflow-hidden rounded-2xl border border-ink/10 bg-surface">
         {["chat_suggest_1", "chat_suggest_2", "chat_suggest_3"].map((k) => (
           <li key={k}>
             <button
@@ -748,7 +747,7 @@ function EmptyState({
       {/* The route browser stays a plainly-labeled path, never a hidden feature. */}
       <Link
         href={routesHref(lang)}
-        className="mt-8 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"
+        className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink sm:mt-8"
       >
         {t("browse_routes")}
         <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
