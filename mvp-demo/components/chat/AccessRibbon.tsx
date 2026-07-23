@@ -1,7 +1,7 @@
 "use client";
 
 import type { DemoRoute } from "@/lib/data";
-import { statusHex } from "@/lib/status";
+import { statusHex, lineTextColor } from "@/lib/status";
 
 /**
  * A compact, self-drawn schematic of the route — lettered station dots coloured
@@ -71,7 +71,7 @@ export default function AccessRibbon({ route, label }: { route: DemoRoute; label
               textAnchor="middle"
               fontSize={9}
               fontWeight={700}
-              fill="#ffffff"
+              fill={lineTextColor(n.line.color)}
               fontFamily="var(--ff-mono)"
             >
               {n.line.label}

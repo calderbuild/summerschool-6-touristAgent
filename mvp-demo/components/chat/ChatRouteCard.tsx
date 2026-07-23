@@ -123,7 +123,9 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
           {barrierNode.alt && (
             <p className="mt-1.5 flex items-start gap-1.5 border-t border-ok/20 pt-1.5 text-ok-ink">
               <CornerDownRight size={13} strokeWidth={2.2} className="mt-0.5 shrink-0" aria-hidden />
-              <span>{barrierNode.alt[lang]}</span>
+              <span>
+                <span className="font-semibold">{t("alt_label")}:</span> {barrierNode.alt[lang]}
+              </span>
             </p>
           )}
         </div>

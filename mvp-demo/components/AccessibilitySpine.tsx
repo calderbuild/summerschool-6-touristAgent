@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/lib/i18n";
 import type { DemoRoute, RouteNode, Status } from "@/lib/data";
-import { statusColorVar, isUnknown } from "@/lib/status";
+import { statusColorVar, isUnknown, lineTextColor } from "@/lib/status";
 import {
   Check,
   MoveVertical,
@@ -24,8 +24,8 @@ function NodeGlyph({ status }: { status: Status }) {
 function LineBadge({ line }: { line: NonNullable<RouteNode["line"]> }) {
   return (
     <span
-      className="inline-flex items-center rounded px-1.5 py-0.5 font-mono text-[11px] font-bold leading-none text-white"
-      style={{ backgroundColor: line.color }}
+      className="inline-flex shrink-0 items-center whitespace-nowrap rounded px-1.5 py-0.5 font-mono text-[11px] font-bold leading-none"
+      style={{ backgroundColor: line.color, color: lineTextColor(line.color) }}
     >
       {line.label}
     </span>

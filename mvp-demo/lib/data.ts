@@ -109,9 +109,9 @@ export const ROUTES: DemoRoute[] = [
           zh: "电梯故障意味着出站要走 28 级台阶。",
         },
         alt: {
-          en: "Step-free alternative: stay on one more stop and take the level-boarding bus 82 back to the Tower.",
-          fr: "Alternative sans marches : descendez une station plus loin et prenez le bus 82, à plancher bas, jusqu'à la Tour.",
-          zh: "无楼梯替代方案：多坐一站，换乘低地板的 82 路公交返回铁塔。",
+          en: "Stay on one more stop and take the level-boarding bus 82 back to the Tower.",
+          fr: "Descendez une station plus loin et prenez le bus 82, à plancher bas, jusqu'à la Tour.",
+          zh: "多坐一站，换乘低地板的 82 路公交返回铁塔。",
         },
       },
       {
@@ -164,9 +164,9 @@ export const ROUTES: DemoRoute[] = [
           zh: "下到站台要走 34 级台阶，无电梯。",
         },
         alt: {
-          en: "Step-free alternative: board a Line 14 station instead, or take the level-boarding bus 87.",
-          fr: "Alternative sans marches : partez plutôt d'une station de la ligne 14, ou prenez le bus 87 à plancher bas.",
-          zh: "无楼梯替代方案：改从 14 号线车站上车，或乘坐低地板的 87 路公交。",
+          en: "Board a Line 14 station instead, or take the level-boarding bus 87.",
+          fr: "Partez plutôt d'une station de la ligne 14, ou prenez le bus 87 à plancher bas.",
+          zh: "改从 14 号线车站上车，或乘坐低地板的 87 路公交。",
         },
       },
       {
@@ -259,9 +259,9 @@ export const ROUTES: DemoRoute[] = [
           zh: "出站到街面要走 40 级台阶，无电梯。",
         },
         alt: {
-          en: "Step-free alternative: the level-boarding bus 47 stops near the cathedral forecourt.",
-          fr: "Alternative sans marches : le bus 47, à plancher bas, s'arrête près du parvis de la cathédrale.",
-          zh: "无楼梯替代方案：低地板的 47 路公交在圣母院广场附近停靠。",
+          en: "The level-boarding bus 47 stops near the cathedral forecourt.",
+          fr: "Le bus 47, à plancher bas, s'arrête près du parvis de la cathédrale.",
+          zh: "低地板的 47 路公交在圣母院广场附近停靠。",
         },
       },
       {
