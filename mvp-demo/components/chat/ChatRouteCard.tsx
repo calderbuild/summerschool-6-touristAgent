@@ -43,6 +43,13 @@ function statusLabel(t: (k: string) => string, n: RouteNode): string {
   return base;
 }
 
+function verdictSummary(t: (k: string) => string, from: string, to: string, barriers: number, unknowns: number) {
+  const verdict: string[] = [];
+  if (barriers > 0) verdict.push(`${barriers} ${t("verdict_barrier")}`);
+  if (unknowns > 0) verdict.push(`${unknowns} ${t("verdict_unknown")}`);
+  return `${from} → ${to}: ${verdict.length ? verdict.join(" · ") : t("verdict_clear")}`;
+}
+
 function ChatRouteCard({ id, profile }: { id: string; profile?: string | null }) {
   const { t, lang } = useI18n();
   const route = ROUTES.find((r) => r.id === id);
@@ -57,7 +64,11 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
   const profileLabel = profile ? PROFILE_LABEL[profile] : null;
 
   return (
-    <div className="my-3 overflow-hidden rounded-xl border border-ink/12 bg-paper">
+    <div className="my-3">
+      <p className="mb-1.5 rounded-lg border border-navy/15 bg-white px-3 py-2 text-[13px] font-bold leading-snug text-navy shadow-sm">
+        {verdictSummary(t, route.from, route.to, barriers, unknowns)}
+      </p>
+      <div className="overflow-hidden rounded-xl border border-ink/12 bg-paper">
       {/* header: route + who it's for + today's disruption */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 border-b border-ink/10 px-3.5 py-2.5">
         <p className="font-display text-[14px] font-bold text-ink">
@@ -168,6 +179,7 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
           {route.sources.join(" · ")}
         </p>
         <p className="mt-1 text-[10.5px] text-ink-soft">{t("freshness_note")}</p>
+      </div>
       </div>
     </div>
   );

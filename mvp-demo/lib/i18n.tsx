@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Lang = "en" | "fr" | "zh";
 
@@ -9,6 +9,22 @@ export const LANGS: { id: Lang; label: string; a11y: string }[] = [
   { id: "fr", label: "FR", a11y: "Français" },
   { id: "zh", label: "中", a11y: "中文" },
 ];
+
+const LANG_STORAGE_KEY = "voie-libre-lang";
+
+function isLang(value: string | null): value is Lang {
+  return value === "en" || value === "fr" || value === "zh";
+}
+
+function readInitialLang(): Lang {
+  if (typeof window === "undefined") return "en";
+  const params = new URLSearchParams(window.location.search);
+  const queryLang = params.get("lang");
+  if (isLang(queryLang)) return queryLang;
+  const storedLang = window.localStorage.getItem(LANG_STORAGE_KEY);
+  if (isLang(storedLang)) return storedLang;
+  return "en";
+}
 
 type Entry = Record<Lang, string>;
 
@@ -182,10 +198,24 @@ const I18nCtx = createContext<{
 }>({ lang: "en", setLang: () => {}, t: (k) => k });
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLangState] = useState<Lang>("en");
+
+  const setLang = useCallback((next: Lang) => {
+    setLangState(next);
+    window.localStorage.setItem(LANG_STORAGE_KEY, next);
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", next);
+    window.history.replaceState(window.history.state, "", url);
+  }, []);
+
+  useEffect(() => {
+    setLangState(readInitialLang());
+  }, []);
+
   // Keep the document language in sync so screen readers pronounce FR/中 correctly.
   useEffect(() => {
     document.documentElement.lang = lang;
+    window.localStorage.setItem(LANG_STORAGE_KEY, lang);
   }, [lang]);
   const t = (k: string) => DICT[k]?.[lang] ?? k;
   return <I18nCtx.Provider value={{ lang, setLang, t }}>{children}</I18nCtx.Provider>;

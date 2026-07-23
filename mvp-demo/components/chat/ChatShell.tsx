@@ -36,6 +36,45 @@ const PROFILE_META: { id: ProfileId; labelKey: string; icon: LucideIcon }[] = [
   { id: "lowenergy", labelKey: "profile_lowenergy", icon: BatteryLow },
 ];
 
+const CONCLUSION_PATTERNS = [
+  /^(bottom line|verdict|conclusion|key point|recommendation)\s*[:：-]/i,
+  /^(en bref|conclusion|verdict|recommandation)\s*[:：-]/i,
+  /^(结论|結論|重点|重點|建议|建議|最终建议|最終建議)\s*[:：-]/,
+];
+
+function looksLikeConclusion(line: string) {
+  const trimmed = line.trim();
+  if (!trimmed) return false;
+  return CONCLUSION_PATTERNS.some((pattern) => pattern.test(trimmed));
+}
+
+function HighlightedText({ text, streaming }: { text: string; streaming: boolean }) {
+  const lines = text.split(/(\n+)/);
+  const textIndexes = lines
+    .map((line, index) => ({ line, index }))
+    .filter(({ line }) => line.trim() && !/^\n+$/.test(line));
+  const explicit = new Set(textIndexes.filter(({ line }) => looksLikeConclusion(line)).map(({ index }) => index));
+  const fallbackIndex = !streaming && explicit.size === 0 && textIndexes.length > 1 ? textIndexes.at(-1)?.index : undefined;
+
+  return lines.map((line, index) => {
+    if (/^\n+$/.test(line)) return line;
+    const highlight = explicit.has(index) || index === fallbackIndex;
+    if (!highlight) return <span key={index}>{line}</span>;
+    return (
+      <strong
+        key={index}
+        className="my-1 block rounded-lg border border-signal/30 bg-signal/10 px-3 py-2 font-semibold text-ink shadow-[inset_3px_0_0_var(--color-signal)]"
+      >
+        {line}
+      </strong>
+    );
+  });
+}
+
+function routesHref(lang: Lang) {
+  return `/routes?lang=${lang}`;
+}
+
 function Logo({ w = 20 }: { w?: number }) {
   const h = Math.round((w * 26) / 22);
   return (
@@ -86,7 +125,7 @@ function renderAnswer(content: string, streaming: boolean, profile: ProfileId | 
     if (!p) return null;
     return (
       <span key={i} className="whitespace-pre-wrap break-words">
-        {p}
+        <HighlightedText text={p} streaming={streaming} />
       </span>
     );
   });
@@ -422,7 +461,7 @@ export default function ChatShell() {
               </button>
             )}
             <Link
-              href="/routes"
+              href={routesHref(lang)}
               className="flex min-h-11 items-center gap-1 rounded-lg bg-white/10 px-2.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white"
               aria-label={t("routes_link")}
             >
@@ -555,7 +594,7 @@ function EmptyState({
   setProfile: (p: ProfileId | null) => void;
   onSend: (text: string) => void;
 }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const demo = ROUTES[0];
   const barriers = demo.nodes.filter((n) => n.barrier).length;
   const unknowns = demo.nodes.filter((n) => n.at === "unknown").length;
@@ -630,7 +669,7 @@ function EmptyState({
 
       {/* a plainly-labeled path to the route browser, so it is never a hidden feature */}
       <Link
-        href="/routes"
+        href={routesHref(lang)}
         className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-navy"
       >
         {t("browse_routes")}
