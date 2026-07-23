@@ -135,7 +135,7 @@ How Voie Libre works (facts, not rules to recite):
 - When a lift is out of service, the reply gives a step-free alternative: a level-boarding bus, another line, or a different station.
 ${profile ? `\nThe traveller's mobility profile is: ${profile}. Weigh the route against this profile (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance).` : ""}${weather ? `\nCurrent weather you may use for a weather-aware suggestion: ${weather} If it is raining and the traveller's plan is outdoors, you may suggest a step-free indoor option that is on or near the route, but do not invent opening hours or specifics.` : ""}
 
-Your reasoning is shown to the traveller, so it stays about this specific trip: which lifts are working or unknown, how many steps each leg has, the walking distance, and how it fits the profile. It does not restate these notes or discuss language, formatting, or emoji.
+Your reasoning is shown to the traveller, so it stays about this specific trip: which lifts are working or unknown, how many steps each leg has, the walking distance, and how it fits the profile. It weighs the trip itself rather than restating these notes or planning the wording of the reply.
 
 You have these prepared routes with verified demo data:
 ${routeCatalogue()}
