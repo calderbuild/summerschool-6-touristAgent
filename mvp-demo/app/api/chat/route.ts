@@ -1,4 +1,5 @@
 import { ROUTES, PROFILES } from "@/lib/data";
+import { PLACES } from "@/lib/places";
 
 // DeepSeek key is server-side only; the browser never sees it.
 export const runtime = "nodejs";
@@ -108,8 +109,24 @@ function routeCatalogue(): string {
   }).join("\n");
 }
 
+// Referenced knowledge base of Paris attractions (see lib/places.ts). Kept compact
+// so the model is grounded on real budgets, hours and accessibility, never invents them.
+function placeCatalogue(): string {
+  return PLACES.map((p) => {
+    const bits = [
+      `budget:${p.budget}`,
+      `visit:${p.visitDuration}`,
+      `hours:${p.openingHours}`,
+      `wheelchair:${p.wheelchair}`,
+      `nearest:${p.nearestTransit}`,
+    ];
+    const flag = p.status === "closed" ? "CLOSED, do not recommend; " : "";
+    return `  "${p.id}" [${p.category}, ${p.arrondissement}] ${p.nameEn} (${p.nameFr}): ${flag}${bits.join("; ")}. ${p.notes}`;
+  }).join("\n");
+}
+
 function systemPrompt(profile: string | null, weather: string | null): string {
-  return `You are Voie Libre, a Paris step-free travel assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris.
+  return `You are Voie Libre, a Paris step-free travel and sightseeing assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris and plan accessible visits to its main sights.
 
 Facts you must respect:
 - Only Metro Line 14 is fully step-free. About 30 of 300+ stations have a working lift.
@@ -128,6 +145,11 @@ When the traveller's need matches one of these routes, put the marker on its own
   )}. If you know the traveller's profile, append it: e.g. [[route:gdl-eiffel:wheelchair]]. The app renders that marker as a visual card with the step-by-step accessibility spine, so you do not need to repeat every leg in prose. Then briefly explain why you chose it and call out the main barrier and the step-free alternative. Keep the prose short.
 
 If the request does not match a prepared route, answer helpfully in the same spirit (step-free thinking, honest about unknowns) without inventing specific station data.
+
+You also have this referenced knowledge base of Paris attractions (verified 2026-07-23; budgets are the adult entry cost in euros; some values are estimates and are marked as such; unknowns are honest):
+${placeCatalogue()}
+
+Use it to answer questions about attractions: entry cost and budget, how long a visit takes, opening hours, whether the site is wheelchair accessible, and to build a short step-free itinerary. Never invent a price, an opening time, or an accessibility fact that is not in this data; if it is missing, say it is unknown or point to the official site. Never recommend a place marked CLOSED; if asked about it, say it is closed for works and offer an open alternative. When you name an attraction, keep the accessibility lens and mention its step-free or wheelchair situation.
 
 Reply in the same language the traveller writes in (English, French, or Chinese). Be concise, warm, and practical. Do not use emojis.`;
 }

@@ -43,7 +43,7 @@ const DICT: Record<string, Entry> = {
   profile_wheelchair: { en: "Wheelchair", fr: "Fauteuil roulant", zh: "轮椅" },
   profile_stroller: { en: "With a stroller", fr: "Avec poussette", zh: "推婴儿车" },
   profile_senior: { en: "Older traveller", fr: "Voyageur âgé", zh: "年长者" },
-  profile_lowenergy: { en: "Low energy", fr: "Fatigue / énergie limitée", zh: "体力有限" },
+  profile_lowenergy: { en: "Low energy", fr: "Peu d'énergie", zh: "体力有限" },
   profile_note: {
     en: "This sets how many stairs and how far a walk the route will accept.",
     fr: "Cela règle le nombre de marches et la distance de marche acceptés.",
@@ -150,6 +150,16 @@ const DICT: Record<string, Entry> = {
     en: "One prepared route — real step counts, honest unknowns:",
     fr: "Un itinéraire préparé — vraies marches, inconnus assumés :",
     zh: "一条预设路线 —— 真实台阶数，诚实标注未知：",
+  },
+  chat_try: {
+    en: "Or start with",
+    fr: "Ou commencez par",
+    zh: "或从这些开始",
+  },
+  hero_line_label: {
+    en: "A step-free line that honestly marks the stretch we do not know.",
+    fr: "Une ligne sans marches qui signale honnêtement le tronçon que nous ne connaissons pas.",
+    zh: "一条无楼梯路线，如实标出我们不确定的路段。",
   },
   conversation_label: { en: "Conversation", fr: "Conversation", zh: "对话" },
   routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },
