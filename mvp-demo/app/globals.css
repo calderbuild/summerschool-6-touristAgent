@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f4f5f3;
+  --color-ink: #1a1c22;
+  /* Accessible secondary text: ~5.5:1 on paper, ~6:1 on white. Use instead of
+     low-opacity ink for any meaningful small text (WCAG AA). */
+  --color-ink-soft: #565a63;
+  --color-navy: #12202e;
+  --color-signal: #1b57a6;
+  --color-ok: #1e8e5a;
+  /* ok/caution as text fail 4.5:1; these darker variants pass and are used for
+     coloured *text* while the brighter tokens stay for dots/fills/icons. */
+  --color-ok-ink: #0f7a48;
+  --color-barrier: #c63a2f;
+  --color-caution: #c77a16;
+  --color-caution-ink: #8a5510;
+  --color-unknown: #6b7280;
+
+  --font-display: var(--ff-display), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--ff-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Keyboard-aware shell, pinned to the visual viewport. The visualViewport effect
+   feeds --app-h (height) and --app-top (offsetTop); pinning with position:fixed +
+   translateY(offsetTop) keeps the composer above the iOS keyboard even when Safari
+   scroll-into-view shifts the visual viewport. Falls back to 100dvh before JS runs. */
+.h-app {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100dvh;
+  height: var(--app-h, 100dvh);
+  transform: translateY(var(--app-top, 0px));
+}
+
+/* Diagonal hatch marks UNKNOWN so it never relies on colour alone. It is the
+   product's signature motif: "we visibly mark what we don't know." */
+.hatch-unknown {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-unknown) 0,
+    var(--color-unknown) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+/* A whisper of the same hatch, for hero/background texture behind the brand. */
+.hatch-whisper {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-navy) 0,
+    var(--color-navy) 1px,
+    transparent 1px,
+    transparent 9px
+  );
+  opacity: 0.04;
+}
+
+/* Focus ring visible for keyboard users on any interactive element */
+:where(a, button, select, input, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
