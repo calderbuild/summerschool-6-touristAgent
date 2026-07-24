@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { ROUTES, type ProfileId } from "@/lib/data";
@@ -50,25 +50,124 @@ function looksLikeConclusion(line: string) {
   return CONCLUSION_PATTERNS.some((pattern) => pattern.test(trimmed));
 }
 
-function HighlightedText({ text, streaming }: { text: string; streaming: boolean }) {
-  const lines = text.split(/(\n+)/);
-  const textIndexes = lines
-    .map((line, index) => ({ line, index }))
-    .filter(({ line }) => line.trim() && !/^\n+$/.test(line));
-  const explicit = new Set(textIndexes.filter(({ line }) => looksLikeConclusion(line)).map(({ index }) => index));
-  const fallbackIndex = !streaming && explicit.size === 0 && textIndexes.length > 1 ? textIndexes.at(-1)?.index : undefined;
+// ---- Minimal markdown rendering for streamed answers -----------------------
+// Hand-rolled (no dependency) so a half-streamed marker just falls through as
+// literal text and self-corrects once its closing marker arrives, the same
+// tolerant approach [[route:...]] markers already use below. Headings are
+// rendered as styled text rather than real <h*> tags so LLM-authored markdown
+// can never intrude on the page's own heading outline for screen readers.
+const INLINE_PATTERN = /(`[^`\n]+`|\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\n]+\*|_[^_\n]+_|\[[^\]\n]+\]\(https?:\/\/[^\s)]+\))/g;
 
-  return lines.map((line, index) => {
-    if (/^\n+$/.test(line)) return line;
-    const highlight = explicit.has(index) || index === fallbackIndex;
-    if (!highlight) return <span key={index}>{line}</span>;
+function renderInline(text: string, keyPrefix: string): ReactNode[] {
+  return text.split(INLINE_PATTERN).map((part, i) => {
+    if (!part) return null;
+    const key = `${keyPrefix}-${i}`;
+    if (part.startsWith("`") && part.endsWith("`") && part.length > 1) {
+      return (
+        <code key={key} className="rounded bg-ink/8 px-1 py-0.5 font-mono text-[13px]">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    if ((part.startsWith("**") && part.endsWith("**")) || (part.startsWith("__") && part.endsWith("__"))) {
+      return (
+        <strong key={key} className="font-semibold text-ink">
+          {renderInline(part.slice(2, -2), key)}
+        </strong>
+      );
+    }
+    if ((part.startsWith("*") && part.endsWith("*")) || (part.startsWith("_") && part.endsWith("_"))) {
+      return (
+        <em key={key} className="italic">
+          {renderInline(part.slice(1, -1), key)}
+        </em>
+      );
+    }
+    const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
+    if (link) {
+      return (
+        <a
+          key={key}
+          href={link[2]}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="underline decoration-signal/50 underline-offset-2 hover:text-signal"
+        >
+          {link[1]}
+        </a>
+      );
+    }
+    // Plain text run: a single \n inside a paragraph is a soft break, not a new block.
+    const chunks = part.split("\n");
+    return chunks.map((chunk, j) => (
+      <span key={`${key}-${j}`}>
+        {chunk}
+        {j < chunks.length - 1 && <br />}
+      </span>
+    ));
+  });
+}
+
+function renderMarkdownBlock(block: string, keyPrefix: string): ReactNode {
+  const lines = block.split("\n");
+
+  if (lines[0].trim().startsWith("```")) {
+    const closingIndex = lines.slice(1).findIndex((l) => l.trim().startsWith("```"));
+    const body = closingIndex === -1 ? lines.slice(1) : lines.slice(1, 1 + closingIndex);
     return (
-      <strong
-        key={index}
-        className="my-1 block rounded-lg border border-signal/30 bg-signal/10 px-3 py-2 font-semibold text-ink shadow-[inset_3px_0_0_var(--color-signal)]"
+      <pre key={keyPrefix} className="my-1.5 overflow-x-auto rounded-lg bg-ink/[0.06] px-3 py-2 font-mono text-[12.5px] leading-relaxed text-ink">
+        <code>{body.join("\n")}</code>
+      </pre>
+    );
+  }
+
+  const heading = lines.length === 1 ? lines[0].match(/^(#{1,6})\s+(.*)$/) : null;
+  if (heading) {
+    const size = heading[1].length <= 2 ? "text-[16px] font-bold" : "text-[15px] font-semibold";
+    return (
+      <p key={keyPrefix} className={`mb-1 mt-2 first:mt-0 ${size} text-ink`}>
+        {renderInline(heading[2], keyPrefix)}
+      </p>
+    );
+  }
+
+  const nonEmpty = lines.filter((l) => l.trim());
+  const isBulleted = nonEmpty.length > 0 && nonEmpty.every((l) => /^\s*[-*]\s+/.test(l));
+  const isOrdered = !isBulleted && nonEmpty.length > 0 && nonEmpty.every((l) => /^\s*\d+[.)]\s+/.test(l));
+  if (isBulleted || isOrdered) {
+    const items = nonEmpty.map((l) => l.replace(/^\s*(?:[-*]|\d+[.)])\s+/, ""));
+    const ListTag: "ul" | "ol" = isBulleted ? "ul" : "ol";
+    return (
+      <ListTag key={keyPrefix} className={`my-1 space-y-0.5 pl-5 ${isBulleted ? "list-disc" : "list-decimal"}`}>
+        {items.map((item, i) => (
+          <li key={i}>{renderInline(item, `${keyPrefix}-li-${i}`)}</li>
+        ))}
+      </ListTag>
+    );
+  }
+
+  return (
+    <p key={keyPrefix} className="mb-2 last:mb-0">
+      {renderInline(block, keyPrefix)}
+    </p>
+  );
+}
+
+function Markdown({ text, streaming }: { text: string; streaming: boolean }) {
+  const blocks = text.split(/\n{2,}/).filter((b) => b.trim());
+  const explicit = new Set(blocks.map((b, i) => ({ b, i })).filter(({ b }) => looksLikeConclusion(b)).map(({ i }) => i));
+  const fallbackIndex = !streaming && explicit.size === 0 && blocks.length > 1 ? blocks.length - 1 : undefined;
+
+  return blocks.map((block, i) => {
+    const rendered = renderMarkdownBlock(block, `md-${i}`);
+    if (!(explicit.has(i) || i === fallbackIndex)) return rendered;
+    return (
+      <div
+        key={`hl-${i}`}
+        className="my-1 rounded-lg border border-signal/30 bg-signal/10 px-3 py-2 font-semibold text-ink shadow-[inset_3px_0_0_var(--color-signal)] [&>*]:my-0"
       >
-        {line}
-      </strong>
+        {rendered}
+      </div>
     );
   });
 }
@@ -126,9 +225,9 @@ function renderAnswer(content: string, streaming: boolean, profile: ProfileId | 
     }
     if (!p) return null;
     return (
-      <span key={i} className="whitespace-pre-wrap break-words">
-        <HighlightedText text={p} streaming={streaming} />
-      </span>
+      <div key={i} className="break-words">
+        <Markdown text={p} streaming={streaming} />
+      </div>
     );
   });
 }
