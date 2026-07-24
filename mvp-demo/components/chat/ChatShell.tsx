@@ -6,6 +6,7 @@ import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { ROUTES, type ProfileId } from "@/lib/data";
 import { useSpeechInput, useSpeechOutput } from "@/lib/useSpeech";
 import ChatRouteCard from "./ChatRouteCard";
+import WeatherChip from "../WeatherChip";
 import {
   ArrowUp,
   Square,
@@ -590,6 +591,9 @@ export default function ChatShell() {
             </span>
           </div>
           <div className="flex items-center gap-1.5">
+            {/* Once the conversation starts the empty-state weather chip is gone,
+                so keep live weather visible here (desktop, where there is room). */}
+            {!empty && <WeatherChip variant="dark" className="hidden lg:inline-flex" />}
             {!empty && (
               <button
                 onClick={() => {
@@ -797,6 +801,10 @@ function EmptyState({
               {t("legend_unknown")}
             </li>
           </ul>
+          {/* Live Paris weather, the one runtime data source, made visible. */}
+          <div className="mt-5">
+            <WeatherChip />
+          </div>
         </div>
       </section>
 

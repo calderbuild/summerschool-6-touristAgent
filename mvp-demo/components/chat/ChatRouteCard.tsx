@@ -1,9 +1,10 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import { ROUTES, type RouteNode } from "@/lib/data";
 import { useI18n } from "@/lib/i18n";
 import AccessRibbon from "./AccessRibbon";
+import RouteMap from "../RouteMap";
 import { statusColorVar, legendKey } from "@/lib/status";
 import {
   TriangleAlert,
@@ -14,6 +15,8 @@ import {
   Baby,
   PersonStanding,
   BatteryLow,
+  Map as MapIcon,
+  ChevronDown,
   type LucideIcon,
 } from "lucide-react";
 
@@ -52,6 +55,7 @@ function verdictSummary(t: (k: string) => string, from: string, to: string, barr
 
 function ChatRouteCard({ id, profile }: { id: string; profile?: string | null }) {
   const { t, lang } = useI18n();
+  const [showMap, setShowMap] = useState(false);
   const route = ROUTES.find((r) => r.id === id);
   if (!route) return null;
 
@@ -137,6 +141,32 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
           <AccessRibbon route={route} label={t("route_map_label")} />
         </div>
         <p className="mt-1.5 px-0.5 text-[10.5px] text-ink-soft">{t("map_legend_lines")}</p>
+      </div>
+
+      {/* Real map, opened on demand. The schematic above carries the accessibility
+          story; the map answers "where in Paris". It mounts only when opened, so a
+          transcript of many cards never spins up many WebGL maps at once. */}
+      <div className="px-3.5 pt-2.5">
+        <button
+          type="button"
+          onClick={() => setShowMap((v) => !v)}
+          aria-expanded={showMap}
+          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-ink/15 bg-surface-2 px-2.5 py-1.5 text-[12.5px] font-semibold text-ink transition-colors hover:border-signal/50"
+        >
+          <MapIcon size={14} strokeWidth={2.2} aria-hidden />
+          {showMap ? t("hide_map") : t("view_on_map")}
+          <ChevronDown
+            size={14}
+            strokeWidth={2.4}
+            aria-hidden
+            className={`transition-transform ${showMap ? "rotate-180" : ""}`}
+          />
+        </button>
+        {showMap && (
+          <div className="mt-2 h-[240px]">
+            <RouteMap route={route} />
+          </div>
+        )}
       </div>
 
       {/* demoted per-stop detail */}

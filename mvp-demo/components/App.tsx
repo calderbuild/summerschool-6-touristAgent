@@ -9,6 +9,7 @@ import type { Status } from "@/lib/data";
 import AccessibilitySpine from "./AccessibilitySpine";
 import MetroMap from "./MetroMap";
 import RouteMap from "./RouteMap";
+import WeatherChip from "./WeatherChip";
 import {
   Accessibility,
   Baby,
@@ -131,6 +132,9 @@ export default function App() {
           <p className="mt-4 max-w-xl border-l-2 border-signal/45 pl-3 text-[13px] leading-relaxed text-ink-soft">
             {t("hero_reality")}
           </p>
+          <div className="mt-5">
+            <WeatherChip />
+          </div>
         </section>
 
         {/* Controls */}
