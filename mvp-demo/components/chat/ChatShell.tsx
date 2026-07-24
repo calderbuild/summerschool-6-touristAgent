@@ -2,6 +2,8 @@
 
 import { memo, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import ReactMarkdown, { type Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { ROUTES, type ProfileId } from "@/lib/data";
 import { useSpeechInput, useSpeechOutput } from "@/lib/useSpeech";
@@ -50,126 +52,101 @@ function looksLikeConclusion(line: string) {
   return CONCLUSION_PATTERNS.some((pattern) => pattern.test(trimmed));
 }
 
-// ---- Minimal markdown rendering for streamed answers -----------------------
-// Hand-rolled (no dependency) so a half-streamed marker just falls through as
-// literal text and self-corrects once its closing marker arrives, the same
-// tolerant approach [[route:...]] markers already use below. Headings are
-// rendered as styled text rather than real <h*> tags so LLM-authored markdown
-// can never intrude on the page's own heading outline for screen readers.
-const INLINE_PATTERN = /(`[^`\n]+`|\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\n]+\*|_[^_\n]+_|\[[^\]\n]+\]\(https?:\/\/[^\s)]+\))/g;
-
-function renderInline(text: string, keyPrefix: string): ReactNode[] {
-  return text.split(INLINE_PATTERN).map((part, i) => {
-    if (!part) return null;
-    const key = `${keyPrefix}-${i}`;
-    if (part.startsWith("`") && part.endsWith("`") && part.length > 1) {
+// ---- Markdown rendering for streamed answers --------------------------------
+// react-markdown + remark-gfm (tables, strikethrough, autolinks, task lists).
+// Half-streamed syntax (an unclosed ** or a dangling ``` fence) just renders as
+// the literal characters until the next chunk completes it, same as the
+// [[route:...]] markers below. Headings render as styled text, not real <h*>
+// tags, so LLM-authored markdown never intrudes on the page's own heading
+// outline for screen readers.
+function markdownComponents(explicit: Set<number>, fallbackIndex: number | undefined): Components {
+  let pIndex = -1;
+  const heading = (size: string) => {
+    return ({ children }: { children?: ReactNode }) => (
+      <p className={`mb-1 mt-2 font-bold text-ink first:mt-0 ${size}`}>{children}</p>
+    );
+  };
+  return {
+    p({ children }) {
+      pIndex += 1;
+      const highlight = explicit.has(pIndex) || pIndex === fallbackIndex;
       return (
-        <code key={key} className="rounded bg-ink/8 px-1 py-0.5 font-mono text-[13px]">
-          {part.slice(1, -1)}
-        </code>
+        <p
+          className={
+            highlight
+              ? "my-1 rounded-lg border border-signal/30 bg-signal/10 px-3 py-2 font-semibold text-ink shadow-[inset_3px_0_0_var(--color-signal)]"
+              : "mb-2 last:mb-0"
+          }
+        >
+          {children}
+        </p>
       );
-    }
-    if ((part.startsWith("**") && part.endsWith("**")) || (part.startsWith("__") && part.endsWith("__"))) {
-      return (
-        <strong key={key} className="font-semibold text-ink">
-          {renderInline(part.slice(2, -2), key)}
-        </strong>
-      );
-    }
-    if ((part.startsWith("*") && part.endsWith("*")) || (part.startsWith("_") && part.endsWith("_"))) {
-      return (
-        <em key={key} className="italic">
-          {renderInline(part.slice(1, -1), key)}
-        </em>
-      );
-    }
-    const link = part.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
-    if (link) {
+    },
+    a({ href, children }) {
+      if (!href || !/^https?:\/\//i.test(href)) return <>{children}</>;
       return (
         <a
-          key={key}
-          href={link[2]}
+          href={href}
           target="_blank"
           rel="noreferrer noopener"
           className="underline decoration-signal/50 underline-offset-2 hover:text-signal"
         >
-          {link[1]}
+          {children}
         </a>
       );
-    }
-    // Plain text run: a single \n inside a paragraph is a soft break, not a new block.
-    const chunks = part.split("\n");
-    return chunks.map((chunk, j) => (
-      <span key={`${key}-${j}`}>
-        {chunk}
-        {j < chunks.length - 1 && <br />}
-      </span>
-    ));
-  });
-}
-
-function renderMarkdownBlock(block: string, keyPrefix: string): ReactNode {
-  const lines = block.split("\n");
-
-  if (lines[0].trim().startsWith("```")) {
-    const closingIndex = lines.slice(1).findIndex((l) => l.trim().startsWith("```"));
-    const body = closingIndex === -1 ? lines.slice(1) : lines.slice(1, 1 + closingIndex);
-    return (
-      <pre key={keyPrefix} className="my-1.5 overflow-x-auto rounded-lg bg-ink/[0.06] px-3 py-2 font-mono text-[12.5px] leading-relaxed text-ink">
-        <code>{body.join("\n")}</code>
-      </pre>
-    );
-  }
-
-  const heading = lines.length === 1 ? lines[0].match(/^(#{1,6})\s+(.*)$/) : null;
-  if (heading) {
-    const size = heading[1].length <= 2 ? "text-[16px] font-bold" : "text-[15px] font-semibold";
-    return (
-      <p key={keyPrefix} className={`mb-1 mt-2 first:mt-0 ${size} text-ink`}>
-        {renderInline(heading[2], keyPrefix)}
-      </p>
-    );
-  }
-
-  const nonEmpty = lines.filter((l) => l.trim());
-  const isBulleted = nonEmpty.length > 0 && nonEmpty.every((l) => /^\s*[-*]\s+/.test(l));
-  const isOrdered = !isBulleted && nonEmpty.length > 0 && nonEmpty.every((l) => /^\s*\d+[.)]\s+/.test(l));
-  if (isBulleted || isOrdered) {
-    const items = nonEmpty.map((l) => l.replace(/^\s*(?:[-*]|\d+[.)])\s+/, ""));
-    const ListTag: "ul" | "ol" = isBulleted ? "ul" : "ol";
-    return (
-      <ListTag key={keyPrefix} className={`my-1 space-y-0.5 pl-5 ${isBulleted ? "list-disc" : "list-decimal"}`}>
-        {items.map((item, i) => (
-          <li key={i}>{renderInline(item, `${keyPrefix}-li-${i}`)}</li>
-        ))}
-      </ListTag>
-    );
-  }
-
-  return (
-    <p key={keyPrefix} className="mb-2 last:mb-0">
-      {renderInline(block, keyPrefix)}
-    </p>
-  );
+    },
+    // react-markdown v9 no longer flags inline vs. block code on the `code`
+    // node itself (a fence with no language has no distinguishing className),
+    // so the "chip" look is the default and `pre` strips it back down for the
+    // fenced case instead of trying to detect it here.
+    code({ children, className }) {
+      return (
+        <code className={className ?? "rounded bg-ink/8 px-1 py-0.5 font-mono text-[13px]"}>{children}</code>
+      );
+    },
+    pre({ children }) {
+      return (
+        <pre className="my-1.5 overflow-x-auto rounded-lg bg-ink/[0.06] px-3 py-2 font-mono text-[12.5px] leading-relaxed text-ink [&>code]:rounded-none [&>code]:bg-transparent [&>code]:p-0">
+          {children}
+        </pre>
+      );
+    },
+    ul({ children }) {
+      return <ul className="my-1 list-disc space-y-0.5 pl-5">{children}</ul>;
+    },
+    ol({ children }) {
+      return <ol className="my-1 list-decimal space-y-0.5 pl-5">{children}</ol>;
+    },
+    strong({ children }) {
+      return <strong className="font-semibold text-ink">{children}</strong>;
+    },
+    blockquote({ children }) {
+      return <blockquote className="my-1 border-l-2 border-ink/20 pl-3 text-ink-soft">{children}</blockquote>;
+    },
+    h1: heading("text-[16px]"),
+    h2: heading("text-[16px]"),
+    h3: heading("text-[15px]"),
+    h4: heading("text-[15px]"),
+    h5: heading("text-[15px]"),
+    h6: heading("text-[15px]"),
+  };
 }
 
 function Markdown({ text, streaming }: { text: string; streaming: boolean }) {
-  const blocks = text.split(/\n{2,}/).filter((b) => b.trim());
-  const explicit = new Set(blocks.map((b, i) => ({ b, i })).filter(({ b }) => looksLikeConclusion(b)).map(({ i }) => i));
-  const fallbackIndex = !streaming && explicit.size === 0 && blocks.length > 1 ? blocks.length - 1 : undefined;
+  const paragraphs = text
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const explicit = new Set(
+    paragraphs.map((p, i) => ({ p, i })).filter(({ p }) => looksLikeConclusion(p)).map(({ i }) => i)
+  );
+  const fallbackIndex = !streaming && explicit.size === 0 && paragraphs.length > 1 ? paragraphs.length - 1 : undefined;
 
-  return blocks.map((block, i) => {
-    const rendered = renderMarkdownBlock(block, `md-${i}`);
-    if (!(explicit.has(i) || i === fallbackIndex)) return rendered;
-    return (
-      <div
-        key={`hl-${i}`}
-        className="my-1 rounded-lg border border-signal/30 bg-signal/10 px-3 py-2 font-semibold text-ink shadow-[inset_3px_0_0_var(--color-signal)] [&>*]:my-0"
-      >
-        {rendered}
-      </div>
-    );
-  });
+  return (
+    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents(explicit, fallbackIndex)}>
+      {text}
+    </ReactMarkdown>
+  );
 }
 
 function routesHref(lang: Lang) {
