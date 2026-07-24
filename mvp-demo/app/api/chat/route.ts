@@ -7,6 +7,13 @@ export const maxDuration = 60;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
+// Tried in order. Both return `reasoning_content`, which the visible reasoning
+// panel needs; pro reasons more thoroughly, flash is the faster stand-in.
+// Verified against GET https://api.deepseek.com/models on 2026-07-24: these are
+// the only two ids the API accepts. Re-check that endpoint before changing them,
+// because a retired id fails as a 400 that only shows up at chat time.
+const MODELS = ["deepseek-v4-pro", "deepseek-v4-flash"];
+
 const ROUTE_IDS = ROUTES.map((r) => r.id);
 const PROFILE_IDS = PROFILES.map((p) => p.id) as string[];
 
@@ -119,6 +126,10 @@ function placeCatalogue(): string {
       `hours:${p.openingHours}`,
       `wheelchair:${p.wheelchair}`,
       `nearest:${p.nearestTransit}`,
+      // Carried so the reply can cite where a fact came from and when it was
+      // checked, instead of asking the traveller to take our word for it.
+      `official:${p.officialUrl}`,
+      `checked:${p.lastVerified}`,
     ];
     const flag = p.status === "closed" ? "CLOSED, do not recommend; " : "";
     return `  "${p.id}" [${p.category}, ${p.arrondissement}] ${p.nameEn} (${p.nameFr}): ${flag}${bits.join("; ")}. ${p.notes}`;
@@ -150,6 +161,8 @@ You also have this referenced knowledge base of Paris attractions (verified 2026
 ${placeCatalogue()}
 
 It answers questions about attractions: entry cost and budget, how long a visit takes, opening hours, wheelchair access, and the official site for tickets. Prices, opening times and accessibility facts come only from this data; anything missing is "unknown" or a pointer to the official site. A place marked CLOSED is never recommended; if asked, it is closed for works and an open alternative is offered. Named attractions keep the accessibility lens (their step-free or wheelchair situation).
+
+Every price or opening time you state is traceable: name the date it was checked (the "checked" field) and link the official site (the "official" field) as a markdown link, so the traveller can confirm it before they travel. When a value is an estimate, unverified or unknown, say so in the same breath and send them to the official site rather than presenting it as fact. Booking and prices change; the official site is always the authority.
 
 For an itinerary request (a day plan, "what should I see", or several sights at once), build an ordered step-free plan: pick 2 to 4 attractions from the knowledge base that suit the profile, favouring step-free or working-lift sites for a wheelchair user. Give each stop its entry budget, how long to spend, opening hours and its step-free situation, then connect the stops with step-free transit or a level walk. Close with an approximate total budget and total time. If a prepared route links two of the stops, use its [[route:id]] marker.
 
@@ -211,18 +224,27 @@ export async function POST(req: Request) {
 
   const weather = await currentWeather();
 
-  const upstream = await fetch("https://api.deepseek.com/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${key}`,
-    },
-    body: JSON.stringify({
-      model: "deepseek-reasoner",
-      stream: true,
-      messages: [{ role: "system", content: systemPrompt(profile, weather) }, ...messages],
-    }),
-  });
+  const payload = [{ role: "system", content: systemPrompt(profile, weather) }, ...messages];
+
+  async function callModel(model: string) {
+    return fetch("https://api.deepseek.com/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({ model, stream: true, messages: payload }),
+    });
+  }
+
+  // The reasoning model is what makes the visible chain-of-thought possible, so
+  // it is the first choice. A retired model id answers 400, not 5xx, which is
+  // silent until someone tries to chat: fall through to the next id on any
+  // failure rather than only on overload.
+  let upstream = await callModel(MODELS[0]);
+  for (let i = 1; i < MODELS.length && (!upstream.ok || !upstream.body); i++) {
+    upstream = await callModel(MODELS[i]);
+  }
 
   if (!upstream.ok || !upstream.body) {
     return new Response(JSON.stringify({ error: `upstream ${upstream.status}` }), {

@@ -196,6 +196,7 @@ const DICT: Record<string, Entry> = {
     zh: "路段按线路配色 · 虚线为步行或未知",
   },
 
+  assistant_name: { en: "Voie Libre assistant", fr: "Assistant Voie Libre", zh: "Voie Libre 助手" },
   view_on_map: { en: "View on the map", fr: "Voir sur la carte", zh: "在地图上查看" },
   hide_map: { en: "Hide the map", fr: "Masquer la carte", zh: "收起地图" },
 

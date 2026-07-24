@@ -188,6 +188,23 @@ function Logo({ w = 20 }: { w?: number }) {
   );
 }
 
+/** The assistant's face in the transcript. It is the product's own step-free
+ *  glyph rather than a stock robot: the mark already means "a way through
+ *  without stairs", which is exactly what the assistant is answering. */
+function AssistantAvatar() {
+  const { t } = useI18n();
+  return (
+    <span
+      className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-navy text-paper ring-1 ring-ink/10"
+      title={t("assistant_name")}
+      aria-label={t("assistant_name")}
+      role="img"
+    >
+      <Logo w={13} />
+    </span>
+  );
+}
+
 function LangSwitch() {
   const { lang, setLang, t } = useI18n();
   return (
@@ -350,7 +367,9 @@ const MessageItem = memo(function MessageItem({
   // The settled answer is announced once via the shell's single live region, so
   // the streaming text itself is NOT a live region (avoids token-by-token noise).
   return (
-    <li className="max-w-[92%]">
+    <li className="flex max-w-[92%] gap-2.5">
+      <AssistantAvatar />
+      <div className="min-w-0 flex-1">
       {message.reasoning && (
         <Reasoning text={message.reasoning} streaming={streaming} hasContent={!!message.content} isLast={isLast} />
       )}
@@ -377,6 +396,7 @@ const MessageItem = memo(function MessageItem({
       ) : (
         streaming && !message.reasoning && <ThinkingDots />
       )}
+      </div>
     </li>
   );
 });
