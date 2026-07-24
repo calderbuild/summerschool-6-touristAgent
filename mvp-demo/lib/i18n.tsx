@@ -80,6 +80,11 @@ const DICT: Record<string, Entry> = {
     zh: "配置 Google Maps 密钥后即显示实时地图。下方路线无需地图即可使用。",
   },
   route_map_label: { en: "Route diagram", fr: "Schéma d'itinéraire", zh: "路线示意图" },
+  map_3d_failed: {
+    en: "The 3D map could not load. The route details are unaffected.",
+    fr: "La carte 3D n'a pas pu se charger. Les détails de l'itinéraire restent disponibles.",
+    zh: "3D 地图加载失败。路线信息不受影响。",
+  },
 
   legend_ok: { en: "Step-free", fr: "Sans marches", zh: "无楼梯" },
   legend_lift: { en: "Working lift", fr: "Ascenseur en service", zh: "电梯可用" },
@@ -149,6 +154,11 @@ const DICT: Record<string, Entry> = {
     en: "Something went wrong reaching the assistant.",
     fr: "Impossible de joindre l'assistant.",
     zh: "连接助手时出错。",
+  },
+  chat_error_busy: {
+    en: "Too many requests just now. Wait a moment, then try again.",
+    fr: "Trop de demandes en ce moment. Patientez un instant, puis réessayez.",
+    zh: "当前请求过多。请稍候片刻再试。",
   },
   chat_suggest_1: {
     en: "I use a wheelchair, Gare de Lyon to the Eiffel Tower today",

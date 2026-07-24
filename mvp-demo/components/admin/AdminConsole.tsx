@@ -73,6 +73,9 @@ export default function AdminConsole() {
     try {
       await fetch("/api/admin/login", { method: "DELETE" });
       router.refresh();
+    } catch {
+      // A dropped connection should not reject out of the click handler. The
+      // session cookie still expires on its own and the button comes back.
     } finally {
       setSigningOut(false);
     }

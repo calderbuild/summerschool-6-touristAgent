@@ -243,6 +243,9 @@ export async function POST(req: Request) {
   // failure rather than only on overload.
   let upstream = await callModel(MODELS[0]);
   for (let i = 1; i < MODELS.length && (!upstream.ok || !upstream.body); i++) {
+    // Let go of the failed attempt's body, otherwise its socket stays open for
+    // the rest of the function's life while nobody ever reads it.
+    upstream.body?.cancel().catch(() => {});
     upstream = await callModel(MODELS[i]);
   }
 
@@ -257,10 +260,25 @@ export async function POST(req: Request) {
   const decoder = new TextDecoder();
   const send = (obj: unknown) => encoder.encode(JSON.stringify(obj) + "\n");
 
+  let upstreamReader: ReadableStreamDefaultReader<Uint8Array> | null = null;
+
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const reader = upstream.body!.getReader();
+      upstreamReader = reader;
       let buffer = "";
+      // The moment the traveller presses Stop this stream is torn down, and every
+      // enqueue after that throws. Swallowing it here keeps the failure from
+      // escaping start() as an unhandled rejection that takes the request with it.
+      let gone = false;
+      const push = (obj: unknown) => {
+        if (gone) return;
+        try {
+          controller.enqueue(send(obj));
+        } catch {
+          gone = true;
+        }
+      };
       try {
         for (;;) {
           const { done, value } = await reader.read();
@@ -278,15 +296,15 @@ export async function POST(req: Request) {
               // An in-band error object (quota/balance/policy) arrives as HTTP 200
               // then a JSON error line; surface it instead of swallowing it.
               if (json.error) {
-                controller.enqueue(send({ type: "error", text: "stream interrupted" }));
+                push({ type: "error", text: "stream interrupted" });
                 continue;
               }
               const delta = json.choices?.[0]?.delta ?? {};
               if (delta.reasoning_content) {
-                controller.enqueue(send({ type: "reasoning", text: delta.reasoning_content }));
+                push({ type: "reasoning", text: delta.reasoning_content });
               }
               if (delta.content) {
-                controller.enqueue(send({ type: "content", text: delta.content }));
+                push({ type: "content", text: delta.content });
               }
             } catch {
               // ignore malformed keep-alive lines
@@ -294,10 +312,20 @@ export async function POST(req: Request) {
           }
         }
       } catch {
-        controller.enqueue(send({ type: "error", text: "stream interrupted" }));
+        push({ type: "error", text: "stream interrupted" });
       } finally {
-        controller.close();
+        try {
+          controller.close();
+        } catch {
+          // already closed by a traveller who walked away mid-answer
+        }
+        reader.cancel().catch(() => {});
       }
+    },
+    cancel() {
+      // Stop pressed, or the tab closed: hang up on DeepSeek rather than keep
+      // paying for an answer nobody is going to read.
+      upstreamReader?.cancel().catch(() => {});
     },
   });
 

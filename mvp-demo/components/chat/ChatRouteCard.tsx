@@ -187,6 +187,9 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
                   size={12}
                   strokeWidth={2.2}
                   className="ml-1 inline text-ok-ink align-[-1px]"
+                  // role is what makes the label reliably announced; without it an
+                  // <svg> is exposed inconsistently across screen readers.
+                  role="img"
                   aria-label={t("restroom_ok")}
                 />
               )}

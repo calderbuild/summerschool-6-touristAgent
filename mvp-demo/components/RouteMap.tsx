@@ -131,7 +131,10 @@ export default function RouteMap({ route }: { route: DemoRoute }) {
   return (
     <div
       className="h-full w-full overflow-hidden rounded-xl border border-ink/10"
-      role="img"
+      // Not role="img": the zoom control and the map canvas itself are focusable,
+      // and an image role would hide them from a screen reader while leaving them
+      // in the tab order.
+      role="group"
       aria-label={`${t("route_map_label")}: ${route.from} → ${route.to}`}
     >
       <APIProvider apiKey={KEY}>

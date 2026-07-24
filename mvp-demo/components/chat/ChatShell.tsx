@@ -406,7 +406,9 @@ export default function ChatShell() {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
-  const [error, setError] = useState(false);
+  // "rate" is the abuse guard answering 429, which needs its own copy: the
+  // generic failure line plus a Retry that fails again reads as a dead app.
+  const [error, setError] = useState<null | "generic" | "rate">(null);
   const [tookLong, setTookLong] = useState(false);
   const [profile, setProfile] = useState<ProfileId | null>(null);
   const [announce, setAnnounce] = useState("");
@@ -491,7 +493,7 @@ export default function ChatShell() {
   }
 
   async function stream(history: Msg[], assistantIndex: number) {
-    setError(false);
+    setError(null);
     setStreaming(true);
     setTookLong(false);
     busyRef.current = true;
@@ -522,12 +524,16 @@ export default function ChatShell() {
         body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, content: m.content })), profile }),
         signal: ctrl.signal,
       });
-      if (!res.ok || !res.body) throw new Error("bad response");
+      if (!res.ok || !res.body) {
+        setError(res.status === 429 ? "rate" : "generic");
+        return;
+      }
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buf = "";
       let acc = "";
+      let received = false;
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -544,20 +550,26 @@ export default function ChatShell() {
           }
           if (obj.type === "content") {
             firstToken();
+            received = true;
             acc += obj.text;
             patch("content", obj.text);
           } else if (obj.type === "reasoning") {
             firstToken();
+            received = true;
             patch("reasoning", obj.text);
           } else if (obj.type === "error") {
-            setError(true);
+            setError("generic");
           }
         }
       }
+      // An upstream that dies before its first token (a killed function, a dropped
+      // connection) still ends the stream cleanly, which would otherwise settle as
+      // a blank answer with no error and no Retry to get out of it.
+      if (!received) setError("generic");
       // Announce the settled answer once (markers stripped) via the shell's live region.
       setAnnounce(acc.replace(/\[\[[^\]]*\]\]/g, "").trim());
     } catch (e) {
-      if (!(e instanceof DOMException && e.name === "AbortError")) setError(true);
+      if (!(e instanceof DOMException && e.name === "AbortError")) setError("generic");
     } finally {
       if (longTimerRef.current) {
         clearTimeout(longTimerRef.current);
@@ -603,14 +615,17 @@ export default function ChatShell() {
       {/* header */}
       <header className="z-20 shrink-0 border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-2 px-4 py-2.5">
-          <div className="flex items-center gap-2.5">
+          {/* The shell is overflow-hidden, so anything that cannot shrink gets
+              silently clipped on a narrow phone. Let the wordmark absorb the
+              squeeze and keep the controls whole. */}
+          <div className="flex min-w-0 items-center gap-2.5">
             <Logo />
-            <span className="leading-none">
-              <span className="block font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
+            <span className="min-w-0 leading-none">
+              <span className="block truncate font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
               <span className="hidden text-[11px] text-white/65 sm:block">{t("brand_tag")}</span>
             </span>
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex shrink-0 items-center gap-1.5">
             {/* Once the conversation starts the empty-state weather chip is gone,
                 so keep live weather visible here (desktop, where there is room). */}
             {!empty && <WeatherChip variant="dark" className="hidden lg:inline-flex" />}
@@ -669,7 +684,7 @@ export default function ChatShell() {
                 {showTakingLong && <li className="text-[13px] text-ink-soft">{t("chat_taking_longer")}</li>}
                 {error && (
                   <li role="alert" className="flex flex-wrap items-center gap-2 text-[13px] text-barrier">
-                    {t("chat_error")}
+                    {t(error === "rate" ? "chat_error_busy" : "chat_error")}
                     <button
                       onClick={retry}
                       className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-barrier/40 px-2.5 font-semibold text-barrier hover:bg-barrier/5"
@@ -679,8 +694,10 @@ export default function ChatShell() {
                     </button>
                   </li>
                 )}
-                <div ref={bottomRef} />
               </ul>
+              {/* Scroll sentinel. It sits outside the list because a bare div
+                  among the <li> children breaks the log's list semantics. */}
+              <div ref={bottomRef} />
             </>
           )}
         </div>

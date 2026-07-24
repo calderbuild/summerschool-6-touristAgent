@@ -87,6 +87,9 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
     if (!ref.current || nodes.length === 0) return;
     let map: import("maplibre-gl").Map | null = null;
     let cancelled = false;
+    // Flipped once the style and first frame are up, so a later tile error can
+    // be told apart from a map that never came alive at all.
+    let drawn = false;
     const markers: import("maplibre-gl").Marker[] = [];
 
     (async () => {
@@ -115,6 +118,7 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
 
         map.on("load", () => {
           if (!map) return;
+          drawn = true;
           // Route drawn as per-line coloured segments, plus a soft glow underneath.
           const features = nodes.slice(1).map((node, i) => ({
             type: "Feature" as const,
@@ -156,7 +160,10 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
         });
 
         map.on("error", () => {
-          if (!cancelled) setFailed(true);
+          // One tile that fails to arrive is not a broken map. Only an error
+          // before the first render is fatal; otherwise a single hiccup would
+          // cover a perfectly good 3D view for the rest of the session.
+          if (!cancelled && !drawn) setFailed(true);
         });
       } catch {
         if (!cancelled) setFailed(true);
@@ -172,10 +179,12 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
 
   return (
     <div className={`relative overflow-hidden ${className ?? ""}`}>
-      <div ref={ref} className="h-full w-full" aria-label={t("route_map_label")} role="img" />
+      {/* Not role="img": the pan/zoom controls live inside, and an image role
+          would hide them from a screen reader while leaving them tabbable. */}
+      <div ref={ref} className="h-full w-full" aria-label={t("route_map_label")} role="group" />
       {failed && (
         <div className="absolute inset-0 grid place-items-center bg-surface px-6 text-center text-[13px] leading-relaxed text-ink-soft">
-          {t("map_missing")}
+          {t("map_3d_failed")}
         </div>
       )}
     </div>
