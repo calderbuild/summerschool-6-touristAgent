@@ -2,7 +2,19 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Lock } from "lucide-react";
+import Link from "next/link";
+import { Lock, ArrowLeft } from "lucide-react";
+
+function Logo({ w = 20 }: { w?: number }) {
+  const h = Math.round((w * 26) / 22);
+  return (
+    <svg width={w} height={h} viewBox="0 0 22 26" fill="none" aria-hidden>
+      <path d="M6 3v20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <circle cx="6" cy="8" r="3" fill="currentColor" />
+      <path d="M12 15h7m0 0-3-3m3 3-3 3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 /**
  * Password gate for the knowledge base console. The password is checked on the
@@ -44,58 +56,78 @@ export default function AdminLogin({ configured }: { configured: boolean }) {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-16">
-      <div className="rounded-2xl border border-ink/10 bg-surface p-6 sm:p-7">
-        <span className="grid h-10 w-10 place-items-center rounded-xl bg-navy text-paper" aria-hidden>
-          <Lock size={18} strokeWidth={2.2} />
-        </span>
-        <h1 className="mt-4 font-display text-[22px] font-bold leading-tight text-ink">
-          Knowledge base console
-        </h1>
-        <p className="mt-1.5 text-[14px] leading-relaxed text-ink-soft">
-          Staff access to the places and routes that Voie Libre answers from.
-        </p>
+    <div className="flex min-h-[100dvh] flex-col bg-paper">
+      {/* The same navy signage band as the rest of Voie Libre, so the staff door
+          reads as part of the product and always offers a way back. */}
+      <header className="border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5">
+          <span className="flex items-center gap-2">
+            <Logo />
+            <span className="font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
+            <span className="ml-1 rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white/70">
+              Staff
+            </span>
+          </span>
+          <Link
+            href="/"
+            className="flex min-h-9 items-center gap-1.5 rounded-lg bg-white/10 px-2.5 text-[13px] font-semibold text-white/85 transition-colors hover:text-white"
+          >
+            <ArrowLeft size={16} strokeWidth={2.4} aria-hidden />
+            <span className="hidden sm:inline">Back to the assistant</span>
+          </Link>
+        </div>
+      </header>
 
-        {!configured && (
-          <p className="mt-4 rounded-lg border border-caution/30 bg-caution/10 px-3 py-2 text-[13px] leading-snug text-ink">
-            No admin password is configured on this deployment yet. Set{" "}
-            <code className="font-mono text-[12px]">ADMIN_PASSWORD</code> to enable sign-in.
+      <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-12">
+        <div className="rounded-2xl border border-ink/10 bg-surface p-6 sm:p-7">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-navy text-paper" aria-hidden>
+            <Lock size={18} strokeWidth={2.2} />
+          </span>
+          <h1 className="mt-4 font-display text-[22px] font-bold leading-tight text-ink">Knowledge base console</h1>
+          <p className="mt-1.5 text-[14px] leading-relaxed text-ink-soft">
+            Review the places and routes Voie Libre answers from. Read-only: it audits the data and flags
+            gaps, it does not change it.
           </p>
-        )}
 
-        <form onSubmit={submit} className="mt-5">
-          <label htmlFor="admin-password" className="block text-[13px] font-semibold text-ink">
-            Password
-          </label>
-          <input
-            id="admin-password"
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1.5 w-full rounded-xl border border-ink/15 bg-surface-2 px-3.5 py-2.5 text-[16px] text-ink outline-none focus:border-signal"
-            placeholder="Enter the staff password"
-          />
-
-          {error && (
-            <p role="alert" className="mt-2.5 text-[13px] leading-snug text-barrier">
-              {error}
+          {!configured && (
+            <p className="mt-4 rounded-lg border border-caution/30 bg-caution/10 px-3 py-2 text-[13px] leading-snug text-ink">
+              No admin password is configured on this deployment yet. Set{" "}
+              <code className="font-mono text-[12px]">ADMIN_PASSWORD</code> to enable sign-in.
             </p>
           )}
 
-          <button
-            type="submit"
-            disabled={busy || !password}
-            className="mt-4 grid min-h-11 w-full place-items-center rounded-xl bg-signal px-4 text-[14px] font-bold text-paper transition-colors hover:bg-signal/90 disabled:opacity-40"
-          >
-            {busy ? "Checking..." : "Sign in"}
-          </button>
-        </form>
-      </div>
+          <form onSubmit={submit} className="mt-5">
+            <label htmlFor="admin-password" className="block text-[13px] font-semibold text-ink">
+              Password
+            </label>
+            <input
+              id="admin-password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1.5 w-full rounded-xl border border-ink/15 bg-surface-2 px-3.5 py-2.5 text-[16px] text-ink outline-none focus:border-signal"
+              placeholder="Enter the staff password"
+            />
 
-      <p className="mt-4 text-center text-[12px] text-ink-faint">
-        Voie Libre · staff area
-      </p>
-    </main>
+            {error && (
+              <p role="alert" className="mt-2.5 text-[13px] leading-snug text-barrier">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={busy || !password}
+              className="mt-4 grid min-h-11 w-full place-items-center rounded-xl bg-signal px-4 text-[14px] font-bold text-paper transition-colors hover:bg-signal/90 disabled:opacity-40"
+            >
+              {busy ? "Checking..." : "Sign in"}
+            </button>
+          </form>
+        </div>
+
+        <p className="mt-4 text-center text-[12px] text-ink-faint">Voie Libre · staff area</p>
+      </main>
+    </div>
   );
 }
