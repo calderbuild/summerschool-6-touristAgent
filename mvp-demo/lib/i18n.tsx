@@ -196,6 +196,26 @@ const DICT: Record<string, Entry> = {
     zh: "路段按线路配色 · 虚线为步行或未知",
   },
 
+  view_on_map: { en: "View on the map", fr: "Voir sur la carte", zh: "在地图上查看" },
+  hide_map: { en: "Hide the map", fr: "Masquer la carte", zh: "收起地图" },
+
+  weather_label: { en: "Paris weather right now", fr: "Météo à Paris en ce moment", zh: "巴黎此刻天气" },
+  weather_live: { en: "live", fr: "en direct", zh: "实时" },
+  weather_rain_hint: {
+    en: "Rain can change a step-free plan",
+    fr: "La pluie peut modifier un itinéraire sans marches",
+    zh: "下雨可能改变无楼梯路线",
+  },
+  weather_clear: { en: "clear", fr: "ciel dégagé", zh: "晴" },
+  weather_mostly_clear: { en: "mostly clear", fr: "plutôt dégagé", zh: "大致晴朗" },
+  weather_overcast: { en: "overcast", fr: "couvert", zh: "阴" },
+  weather_foggy: { en: "foggy", fr: "brumeux", zh: "有雾" },
+  weather_rainy: { en: "rainy", fr: "pluvieux", zh: "有雨" },
+  weather_snowy: { en: "snowy", fr: "neigeux", zh: "有雪" },
+  weather_showers: { en: "rain showers", fr: "averses", zh: "阵雨" },
+  weather_storm: { en: "thunderstorm", fr: "orage", zh: "雷雨" },
+  weather_unsettled: { en: "unsettled", fr: "variable", zh: "天气不稳" },
+
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
   disclaimer: {
     en: "Prototype with curated demo data. Live lift status and routing connect to IDFM, RATP, OpenStreetMap and Google Maps.",
