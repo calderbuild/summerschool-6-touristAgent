@@ -41,9 +41,12 @@ export const ROUTES: DemoRoute[] = [
     from: "Gare de Lyon",
     to: "Tour Eiffel",
     title: {
-      en: "Wheelchair · Gare de Lyon → Eiffel Tower, on a strike day",
-      fr: "Fauteuil roulant · Gare de Lyon → Tour Eiffel, un jour de grève",
-      zh: "轮椅 · 里昂车站 → 埃菲尔铁塔，罢工日",
+      // No profile in the title: the picker directly above already says who is
+      // travelling, and two profiles share this route, so naming one of them
+      // here made the other traveller read a label that was not about them.
+      en: "Gare de Lyon → Eiffel Tower, on a strike day",
+      fr: "Gare de Lyon → Tour Eiffel, un jour de grève",
+      zh: "里昂车站 → 埃菲尔铁塔，罢工日",
     },
     disruption: {
       en: "Metro strike. Only the automated lines 1, 4 and 14 run near-normal; other lines are heavily reduced.",
@@ -141,9 +144,9 @@ export const ROUTES: DemoRoute[] = [
     from: "Bastille",
     to: "Musée du Louvre",
     title: {
-      en: "With a stroller · Bastille → the Louvre",
-      fr: "Avec poussette · Bastille → le Louvre",
-      zh: "推婴儿车 · 巴士底 → 卢浮宫",
+      en: "Bastille → the Louvre",
+      fr: "Bastille → le Louvre",
+      zh: "巴士底 → 卢浮宫",
     },
     sources: ["IDFM · État des ascenseurs", "RATP · accessible stations", "OpenStreetMap", "Louvre access info"],
     nodes: [
@@ -216,9 +219,9 @@ export const ROUTES: DemoRoute[] = [
     from: "Gare du Nord",
     to: "Île de la Cité",
     title: {
-      en: "Older traveller · Gare du Nord → Notre-Dame",
-      fr: "Voyageur âgé · Gare du Nord → Notre-Dame",
-      zh: "年长者 · 北站 → 巴黎圣母院",
+      en: "Gare du Nord → Notre-Dame",
+      fr: "Gare du Nord → Notre-Dame",
+      zh: "北站 → 巴黎圣母院",
     },
     sources: ["IDFM · État des ascenseurs", "SNCF · gare accessibility", "OpenStreetMap"],
     nodes: [

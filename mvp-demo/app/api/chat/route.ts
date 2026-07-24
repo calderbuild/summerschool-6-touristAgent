@@ -19,7 +19,12 @@ const PROFILE_IDS = PROFILES.map((p) => p.id) as string[];
 
 // ---- Abuse guard: best-effort per-IP fixed window (per warm instance) --------
 const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 15;
+// Sized for a room, not for one person. Everyone in a lecture hall leaves
+// through a single NAT address, so a per-IP bucket is really a per-audience
+// bucket: at 15 the jury and the team would have throttled each other during
+// the demo. This still caps what a single address can spend on the model,
+// which is all this guard was ever for.
+const MAX_PER_WINDOW = 90;
 const HITS = new Map<string, { n: number; t: number }>();
 
 // Prefer the Vercel-set client IP over the client-controllable X-Forwarded-For
