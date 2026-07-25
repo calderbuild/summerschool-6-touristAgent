@@ -627,8 +627,17 @@ export default function ChatShell() {
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
             {/* Once the conversation starts the empty-state weather chip is gone,
-                so keep live weather visible here (desktop, where there is room). */}
-            {!empty && <WeatherChip variant="dark" className="hidden lg:inline-flex" />}
+                so keep live weather visible here (desktop, where there is room).
+                The visibility lives on this wrapper, not on the chip: the chip sets
+                its own `inline-flex`, and a `hidden` passed down through className
+                loses to it, because which display utility wins is decided by the
+                order Tailwind emits them, not the order they appear in the class
+                attribute. Hiding the wrapper cannot collide with anything. */}
+            {!empty && (
+              <span className="hidden lg:contents">
+                <WeatherChip variant="dark" />
+              </span>
+            )}
             {!empty && (
               <button
                 onClick={() => {
