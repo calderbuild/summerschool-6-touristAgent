@@ -1,0 +1,58 @@
+{
+ "idf-tourist-sites": {
+  "bytes": 51136,
+  "fetched_utc": "2026-07-26T20:20:06Z",
+  "records": 100,
+  "sha256": "b8c7b66f083d34d22ecc4489192abb87b1821da03bcefbd91967f2e9432f175b",
+  "url": "https://data.iledefrance.fr/api/explore/v2.1/catalog/datasets/principaux-sites-touristiques-en-ile-de-france0/records?limit=100"
+ },
+ "openfreemap-tilejson": {
+  "bytes": 25176,
+  "fetched_utc": "2026-07-26T20:20:14Z",
+  "records": 16,
+  "sha256": "c385d7c855fb47b36d2e792c16a24975c3821acbda0f29bd062aa067d951e69a",
+  "url": "https://tiles.openfreemap.org/planet"
+ },
+ "osm-elevators": {
+  "bytes": 26062,
+  "fetched_utc": "2026-07-26T20:18:32Z",
+  "records": 118,
+  "sha256": "c7d9d19cd408ca486dc48b15f1049f1726276627a2318968036cdd8468d9383c",
+  "url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A90%5D%3B%28node%5B%22highway%22%3D%22elevator%22%5D%2848.845%2C2.29%2C48.885%2C2.40%29%3Bnode%5B%22elevator%22%5D%5B%22elevator%22%21%3D%22no%22%5D%2848.845%2C2.29%2C48.885%2C2.40%29%3B%29%3Bout+tags+center%3B"
+ },
+ "osm-steps": {
+  "bytes": 919518,
+  "fetched_utc": "2026-07-26T20:18:40Z",
+  "records": 3246,
+  "sha256": "d3bb052140ef387515471975efc87cb144d3776b2b6eab5d21b7b70c600c0193",
+  "url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A90%5D%3Bway%5B%22highway%22%3D%22steps%22%5D%2848.845%2C2.29%2C48.885%2C2.40%29%3Bout+tags+center%3B"
+ },
+ "osm-subway-entrances": {
+  "bytes": 151089,
+  "fetched_utc": "2026-07-26T20:18:21Z",
+  "records": 553,
+  "sha256": "1501e152062637ec17f5f68a165d7e0cf763f91beca5e1c9e0ebd1570624ea65",
+  "url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A90%5D%3Bnode%5B%22railway%22%3D%22subway_entrance%22%5D%2848.845%2C2.29%2C48.885%2C2.40%29%3Bout+tags+center%3B"
+ },
+ "osm-wheelchair-places": {
+  "bytes": 575191,
+  "fetched_utc": "2026-07-26T20:19:57Z",
+  "records": 1121,
+  "sha256": "265c10ab006315b42d45e18f38c991e4e53b90606f61ce966792866606f0c4dd",
+  "url": "https://overpass.kumi.systems/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A90%5D%3B%28node%5B%22wheelchair%22%3D%22yes%22%5D%5B%22amenity%22~%22%5E%28restaurant%7Ccafe%7Cpharmacy%7Ctoilets%29%24%22%5D%2848.845%2C2.29%2C48.885%2C2.40%29%3Bway%5B%22wheelchair%22%3D%22yes%22%5D%5B%22amenity%22~%22%5E%28restaurant%7Ccafe%7Cpharmacy%7Ctoilets%29%24%22%5D%2848.845%2C2.29%2C48.885%2C2.40%29%3B%29%3Bout+tags+center%3B"
+ },
+ "paris-events": {
+  "bytes": 978124,
+  "fetched_utc": "2026-07-26T20:20:02Z",
+  "records": 100,
+  "sha256": "8f948002cf8cee2efb06902a33688388e84dcb59a55928d6065f9cb67fc52ea3",
+  "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/que-faire-a-paris-/records?limit=100&order_by=date_start"
+ },
+ "weather-sample": {
+  "bytes": 490,
+  "fetched_utc": "2026-07-26T20:20:10Z",
+  "records": 1,
+  "sha256": "aa820b9401202ac0f7c4251f0e6aacb282f1418a3e3e395a2ff08c6f16ce2523",
+  "url": "https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&current=temperature_2m,weather_code,precipitation&timezone=Europe/Paris"
+ }
+}

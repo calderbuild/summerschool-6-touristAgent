@@ -1,0 +1,7374 @@
+{
+ "elements": [
+  {
+   "id": 256443206,
+   "lat": 48.8522271,
+   "lon": 2.3892699,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148325",
+    "name": "Rue des Boulets",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 256443210,
+   "lat": 48.8523369,
+   "lon": 2.3894805,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148324",
+    "name": "Cité Voltaire",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 256443444,
+   "lat": 48.8545824,
+   "lon": 2.3853215,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210136",
+    "name": "Rue de Charonne",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 257081527,
+   "lat": 48.8477961,
+   "lon": 2.395172,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148053",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/d/db/Guimard_Nation_Dorian.jpg",
+    "name": "Avenue Dorian",
+    "note:fr": "Nation Métro",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no",
+    "wikidata": "Q22922090"
+   },
+   "type": "node"
+  },
+  {
+   "id": 257082357,
+   "lat": 48.8468022,
+   "lon": 2.3269178,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Rue Notre-Dame des Champs",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 257510350,
+   "lat": 48.8515167,
+   "lon": 2.3265916,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148444",
+    "name": "Boulevard Raspail",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 257512478,
+   "lat": 48.8513956,
+   "lon": 2.3435268,
+   "tags": {
+    "name": "Boulevard Saint-Michel",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 257628954,
+   "lat": 48.8532876,
+   "lon": 2.3436351,
+   "tags": {
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "level": "-1",
+    "mhs:inscription_date": "1978",
+    "name": "Fontaine Saint-Michel",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "ref:mhs": "PA00088648",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q22924604",
+    "wikipedia": "fr:Saint-Michel (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 257712544,
+   "lat": 48.8487305,
+   "lon": 2.3949173,
+   "tags": {
+    "check_date:wheelchair": "2023-08-05",
+    "exit": "yes",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148569",
+    "name": "Boulevard Voltaire",
+    "note": "Sortie uniquement.",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 258885375,
+   "lat": 48.8844592,
+   "lon": 2.3386517,
+   "tags": {
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 259637347,
+   "lat": 48.8568341,
+   "lon": 2.3534359,
+   "tags": {
+    "name": "Rue de Lobau (Bazar de l'Hôtel de Ville)",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 259637358,
+   "lat": 48.8571724,
+   "lon": 2.3522143,
+   "tags": {
+    "name": "Hôtel de Ville",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 261582407,
+   "lat": 48.8510487,
+   "lon": 2.3624966,
+   "tags": {
+    "check_date:wheelchair": "2024-06-08",
+    "name": "Boulevard Morland (Préfecture de Paris, Mairie de Paris)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 261582469,
+   "lat": 48.8513469,
+   "lon": 2.3625022,
+   "tags": {
+    "check_date:wheelchair": "2026-02-03",
+    "name": "Boulevard Henri IV",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 264246761,
+   "lat": 48.8516549,
+   "lon": 2.3313089,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147801",
+    "name": "Rue du Four",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 264258026,
+   "lat": 48.8461009,
+   "lon": 2.3664919,
+   "tags": {
+    "destination": "24;57;63;65",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147744",
+    "name": "Place Mazas",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 291530689,
+   "lat": 48.853826,
+   "lon": 2.3338993,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Église Saint-Germain-des-Prés",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 291530692,
+   "lat": 48.8535934,
+   "lon": 2.33376,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Rue de Rennes",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 299013756,
+   "lat": 48.8747054,
+   "lon": 2.2954193,
+   "tags": {
+    "name": "Avenue de Wagram",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 299668084,
+   "lat": 48.8571645,
+   "lon": 2.3493934,
+   "tags": {
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.5",
+    "name": "Rue Saint-Martin",
+    "railway": "subway_entrance",
+    "ref": "19",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 301366739,
+   "lat": 48.8830956,
+   "lon": 2.3090879,
+   "tags": {
+    "check_date:wheelchair": "2024-04-29",
+    "name": "Place du Général-Catroux",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 320800100,
+   "lat": 48.857502,
+   "lon": 2.351738,
+   "tags": {
+    "name": "Rue de Rivoli (Fondation Galeries Lafayette)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 320952633,
+   "lat": 48.8465305,
+   "lon": 2.340532,
+   "tags": {
+    "name": "R. Gay-Lussac",
+    "railway": "subway_entrance",
+    "ref": "2"
+   },
+   "type": "node"
+  },
+  {
+   "id": 325105739,
+   "lat": 48.8640178,
+   "lon": 2.3806778,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148825",
+    "name": "Rue Saint-Hubert",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 329991820,
+   "lat": 48.8797363,
+   "lon": 2.3548795,
+   "tags": {
+    "level": "-1",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 330049077,
+   "lat": 48.8456487,
+   "lon": 2.372997,
+   "tags": {
+    "check_date:wheelchair": "2024-09-18",
+    "destination": "bus",
+    "name": "Boulevard Diderot",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 330054803,
+   "lat": 48.8453398,
+   "lon": 2.3741391,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147983",
+    "level": "-1",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 330261792,
+   "lat": 48.8524458,
+   "lon": 2.3697394,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148191",
+    "name": "Opéra Bastille",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 340394541,
+   "lat": 48.8460183,
+   "lon": 2.373784,
+   "tags": {
+    "name": "Rue Michel Chasles",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 344346236,
+   "lat": 48.8755422,
+   "lon": 2.398859,
+   "tags": {
+    "name": "Rue de Belleville",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "station": "Télégraphe",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 344346704,
+   "lat": 48.8754127,
+   "lon": 2.3992221,
+   "tags": {
+    "name": "Cimetière de Belleville",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 344347112,
+   "lat": 48.8767705,
+   "lon": 2.3926986,
+   "tags": {
+    "name": "Rue de Crimée",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 344347196,
+   "lat": 48.8769303,
+   "lon": 2.3936936,
+   "tags": {
+    "check_date:wheelchair": "2025-12-17",
+    "name": "Place des Fêtes",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 428042517,
+   "lat": 48.8511846,
+   "lon": 2.3762863,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210109",
+    "name": "Rue du Faubourg Saint-Antoine",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 428042536,
+   "lat": 48.8514252,
+   "lon": 2.3763195,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148196",
+    "name": "Avenue Ledru-Rollin",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 428042803,
+   "lat": 48.8503937,
+   "lon": 2.3825904,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148198",
+    "name": "Rue du Faubourg Saint-Antoine",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 440749834,
+   "lat": 48.8643964,
+   "lon": 2.3786389,
+   "tags": {
+    "check_date:wheelchair": "2025-10-03",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147889",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Rue Saint-Maur",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086552",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q1315757",
+    "wikipedia": "fr:Rue Saint-Maur (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 440749838,
+   "lat": 48.8654474,
+   "lon": 2.374578,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147922",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Avenue Parmentier",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086548",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 440750969,
+   "lat": 48.8676362,
+   "lon": 2.364695,
+   "tags": {
+    "check_date:wheelchair": "2024-02-21",
+    "name": "Avenue de la République",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 489458449,
+   "lat": 48.8531462,
+   "lon": 2.3427038,
+   "tags": {
+    "check_date:wheelchair": "2024-04-05",
+    "level": "-1",
+    "name": "Place Saint-André-des-Arts",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no",
+    "wikidata": "Q22924604"
+   },
+   "type": "node"
+  },
+  {
+   "id": 492871757,
+   "lat": 48.8838596,
+   "lon": 2.351145,
+   "tags": {
+    "layer": "1",
+    "name": "Rue Guy Patin",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 492871764,
+   "lat": 48.8837615,
+   "lon": 2.3498005,
+   "tags": {
+    "layer": "1",
+    "name": "Boulevard Barbès",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 507051806,
+   "lat": 48.8472183,
+   "lon": 2.32695,
+   "tags": {
+    "check_date:wheelchair": "2022-09-15",
+    "name": "Rue de Rennes",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 510502429,
+   "lat": 48.8678775,
+   "lon": 2.3644978,
+   "tags": {
+    "check_date:wheelchair": "2024-03-29",
+    "name": "Rue du Faubourg du Temple",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 510502438,
+   "lat": 48.8673234,
+   "lon": 2.3641234,
+   "tags": {
+    "name": "Place de la République",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 510509968,
+   "lat": 48.8669874,
+   "lon": 2.3636138,
+   "tags": {
+    "name": "Rue du Temple",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 516212583,
+   "lat": 48.8797862,
+   "lon": 2.3544773,
+   "tags": {
+    "level": "-1",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 518330210,
+   "lat": 48.8837232,
+   "lon": 2.327021,
+   "tags": {
+    "check_date:wheelchair": "2024-09-05",
+    "name": "Rue Biot",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 518330273,
+   "lat": 48.8835918,
+   "lon": 2.3278748,
+   "tags": {
+    "artist:wikipedia": "fr:Édicule Guimard",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "name": "Place de Clichy",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086753",
+    "survey:date": "2017-07-04",
+    "wheelchair": "no",
+    "wikidata": "Q610012"
+   },
+   "type": "node"
+  },
+  {
+   "id": 528073182,
+   "lat": 48.846042,
+   "lon": 2.3547535,
+   "tags": {
+    "check_date:wheelchair": "2026-07-20",
+    "name": "Place Jussieu",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre ; mise à jour : 2009",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 543538283,
+   "lat": 48.8511631,
+   "lon": 2.3628603,
+   "tags": {
+    "name": "Rue de Sully",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 573452382,
+   "lat": 48.8574145,
+   "lon": 2.3682581,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148188",
+    "name": "Boulevard Beaumarchais, Rue du Chemin Vert",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "toilets:wheelchair": "no",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 577328472,
+   "lat": 48.879442,
+   "lon": 2.3569869,
+   "tags": {
+    "check_date:wheelchair": "2022-03-19",
+    "name": "Rue du Faubourg Saint-Denis",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 589485666,
+   "lat": 48.8477707,
+   "lon": 2.3969044,
+   "tags": {
+    "check_date:wheelchair": "2026-04-10",
+    "name": "Avenue du Trône",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 589485669,
+   "lat": 48.848882,
+   "lon": 2.3970075,
+   "tags": {
+    "check_date:wheelchair": "2025-07-18",
+    "name": "Avenue de Taillebourg",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 602612813,
+   "lat": 48.8595677,
+   "lon": 2.3470553,
+   "tags": {
+    "check_date:wheelchair": "2022-09-09",
+    "name": "Place Sainte-Opportune",
+    "panoramax": "086c5d27-4dae-4c59-a92e-f84b7298e710",
+    "railway": "subway_entrance",
+    "ref": "10",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 619119414,
+   "lat": 48.8602762,
+   "lon": 2.3721742,
+   "tags": {
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 663713699,
+   "lat": 48.8629498,
+   "lon": 2.3456147,
+   "tags": {
+    "check_date:wheelchair": "2026-04-19",
+    "door": "no",
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte Saint-Eustache",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no",
+    "wikidata": "Q3398947"
+   },
+   "type": "node"
+  },
+  {
+   "id": 664043203,
+   "lat": 48.8654619,
+   "lon": 2.3555429,
+   "tags": {
+    "bicycle": "no",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148402",
+    "name": "Rue de Turbigo",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 667338297,
+   "lat": 48.8626116,
+   "lon": 2.3540531,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148398",
+    "name": "Rue du Grenier Saint-Lazare",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 667342369,
+   "lat": 48.8722929,
+   "lon": 2.3769553,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148415",
+    "name": "Rue de Belleville",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 667342370,
+   "lat": 48.8719964,
+   "lon": 2.3772571,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148416",
+    "name": "Boulevard de Belleville",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 667342371,
+   "lat": 48.8718387,
+   "lon": 2.3767199,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148412",
+    "name": "Rue Louis Bonnet",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 672720702,
+   "lat": 48.8788583,
+   "lon": 2.3226962,
+   "tags": {
+    "artist:wikidata": "Q316422",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "2016-02-12",
+    "name": "Rue de Madrid",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00088871",
+    "source:heritage": "Ministère de la Culture - 2022-01",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 676795020,
+   "lat": 48.8578554,
+   "lon": 2.3469254,
+   "tags": {
+    "check_date:wheelchair": "2026-07-04",
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.3",
+    "name": "Théâtre du Châtelet",
+    "railway": "subway_entrance",
+    "ref": "15",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 676795021,
+   "lat": 48.8576595,
+   "lon": 2.347385,
+   "tags": {
+    "check_date:wheelchair": "2026-06-13",
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.3",
+    "name": "Place du Châtelet",
+    "railway": "subway_entrance",
+    "ref": "16",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 676821310,
+   "lat": 48.8586729,
+   "lon": 2.3422794,
+   "tags": {
+    "check_date:wheelchair": "2022-04-15",
+    "name": "Rue de la Monnaie",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 676821344,
+   "lat": 48.8593629,
+   "lon": 2.3451569,
+   "tags": {
+    "check_date:wheelchair": "2026-04-05",
+    "level": "-1",
+    "name": "Rue Bertin Poirée",
+    "railway": "subway_entrance",
+    "ref": "12",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "tourism": "hotel",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 676872599,
+   "lat": 48.8589871,
+   "lon": 2.3462294,
+   "tags": {
+    "check_date:wheelchair": "2023-12-04",
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.5",
+    "name": "Rue des Lavandières",
+    "railway": "subway_entrance",
+    "ref": "13",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 677034819,
+   "lat": 48.8586452,
+   "lon": 2.347219,
+   "tags": {
+    "door": "no",
+    "entrance": "yes",
+    "indoor": "yes",
+    "level": "-1",
+    "name": "Rue Saint-Denis",
+    "name:ja": "サン＝ドニ通り",
+    "railway": "subway_entrance",
+    "ref": "14",
+    "source": "survey ; cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 677104485,
+   "lat": 48.8551928,
+   "lon": 2.3471346,
+   "tags": {
+    "handrail": "yes",
+    "name": "Place Louis Lépine",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "stairs": "yes",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 677731262,
+   "lat": 48.8592028,
+   "lon": 2.3462922,
+   "tags": {
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.5",
+    "name": "Rue de Rivoli",
+    "name:ja": "リヴォリ通り",
+    "railway": "subway_entrance",
+    "ref": "11",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 677731265,
+   "lat": 48.8592387,
+   "lon": 2.3462007,
+   "tags": {
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.5",
+    "name": "Rue de Rivoli",
+    "name:ja": "リヴォリ通り",
+    "railway": "subway_entrance",
+    "ref": "11",
+    "source": "survey;cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 679476624,
+   "lat": 48.8624127,
+   "lon": 2.3365898,
+   "tags": {
+    "artist:wikipedia": "fr:Édicule Guimard",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Musée du Louvre (Musée du Louvre)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00085989",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q1467113"
+   },
+   "type": "node"
+  },
+  {
+   "id": 679476628,
+   "lat": 48.8625963,
+   "lon": 2.3362568,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147988",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "level": "-1",
+    "mhs:inscription_date": "1978",
+    "name": "Place du Palais Royal",
+    "name:ru": "Пале-Руаяль — Мюзе-дю-Лувр",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "ref:mhs": "PA00085989",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 679476632,
+   "lat": 48.862721,
+   "lon": 2.3363266,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147990",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "level": "-1",
+    "mhs:inscription_date": "1978",
+    "name": "Rue Saint-Honoré",
+    "name:ru": "Пале-Руаяль — Мюзе-дю-Лувр",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "ref:mhs": "PA00085989",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 679476635,
+   "lat": 48.86253,
+   "lon": 2.3373038,
+   "tags": {
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Rue de Valois (Le Louvre des Antiquaires)",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "ref:mhs": "PA00085989",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 680655235,
+   "lat": 48.8489364,
+   "lon": 2.298386,
+   "tags": {
+    "name": "Boulevard de Grenelle",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 681294134,
+   "lat": 48.8637067,
+   "lon": 2.3489863,
+   "tags": {
+    "check_date:wheelchair": "2022-05-11",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147814",
+    "name": "Rue de Turbigo",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 681677352,
+   "lat": 48.863124,
+   "lon": 2.3360857,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147992",
+    "level": "-1",
+    "name": "Place Colette (Théatre de la Comédie Française, Théatre du Palais Royal)",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 682294033,
+   "lat": 48.865374,
+   "lon": 2.3344149,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210186",
+    "name": "Rue de l'Échelle",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 682294043,
+   "lat": 48.8660012,
+   "lon": 2.3336091,
+   "tags": {
+    "layer": "-1",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 682294077,
+   "lat": 48.8654432,
+   "lon": 2.3347051,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148700",
+    "name": "Avenue de l'Opéra",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 683398955,
+   "lat": 48.8665045,
+   "lon": 2.3237284,
+   "tags": {
+    "check_date:wheelchair": "2025-04-05",
+    "name": "Rue Saint-Florentin",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 683486949,
+   "lat": 48.8693662,
+   "lon": 2.325431,
+   "tags": {
+    "name": "Rue Duphot",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 683486953,
+   "lat": 48.8696989,
+   "lon": 2.3252642,
+   "tags": {
+    "check_date:wheelchair": "2025-11-10",
+    "name": "Église",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 685907579,
+   "lat": 48.8695643,
+   "lon": 2.3358767,
+   "tags": {
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Rue du Quatre-Septembre",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086085",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q945229",
+    "wikipedia": "fr:Quatre-Septembre (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 687096924,
+   "lat": 48.871496,
+   "lon": 2.3378119,
+   "tags": {
+    "check_date:wheelchair": "2025-11-04",
+    "name": "Rue Marivaux (Opéra comique)",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 687893107,
+   "lat": 48.8717636,
+   "lon": 2.3393828,
+   "tags": {
+    "check_date:wheelchair": "2025-06-02",
+    "name": "Rue de Richelieu",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 687929526,
+   "lat": 48.8714573,
+   "lon": 2.3426671,
+   "tags": {
+    "name": "Rue Montmartre",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 688074786,
+   "lat": 48.8708961,
+   "lon": 2.3322018,
+   "tags": {
+    "architect": "Joseph Cassien-Bernard",
+    "escalator": "no",
+    "handrail": "yes",
+    "level": "-1",
+    "name": "Place de l'Opéra (théâtre national de l'Opéra)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "stairs": "yes",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 688074807,
+   "lat": 48.8704466,
+   "lon": 2.3323932,
+   "tags": {
+    "architect": "Joseph Cassien-Bernard",
+    "name": "Rue de la Paix",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 689143380,
+   "lat": 48.8693665,
+   "lon": 2.3326943,
+   "tags": {
+    "name": "Avenue de l'Opéra",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 689486524,
+   "lat": 48.8709937,
+   "lon": 2.3454844,
+   "tags": {
+    "name": "Rue Saint-Fiacre",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 689486696,
+   "lat": 48.8709453,
+   "lon": 2.3457686,
+   "tags": {
+    "check_date:wheelchair": "2024-05-18",
+    "name": "Rue Saint-Fiacre",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "survey:date": "2017-07-21",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 690934081,
+   "lat": 48.8713392,
+   "lon": 2.3434431,
+   "tags": {
+    "check_date:wheelchair": "2024-05-18",
+    "name": "Boulevard Poissonnière",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 690981959,
+   "lat": 48.8706564,
+   "lon": 2.3474642,
+   "tags": {
+    "check_date:wheelchair": "2025-08-09",
+    "name": "Rue du Sentier",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 690982310,
+   "lat": 48.8706972,
+   "lon": 2.347261,
+   "tags": {
+    "check_date:wheelchair": "2025-08-09",
+    "name": "Rue du Sentier",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 691614222,
+   "lat": 48.866602,
+   "lon": 2.3504826,
+   "tags": {
+    "entrance": "yes",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147820",
+    "name": "Rue Saint-Denis",
+    "name:ja": "サン＝ドニ通り",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 692128855,
+   "lat": 48.8693625,
+   "lon": 2.3536823,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147824",
+    "name": "Boulevard de Sébastopol",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 692129033,
+   "lat": 48.8695477,
+   "lon": 2.3528335,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147826",
+    "name": "Rue Saint-Denis",
+    "name:ja": "サン＝ドニ通り",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 692129124,
+   "lat": 48.8693311,
+   "lon": 2.3538263,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50208192",
+    "name": "Boulevard de Sébastopol",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 694399434,
+   "lat": 48.8700403,
+   "lon": 2.3505321,
+   "tags": {
+    "name": "Rue de la Lune",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 694399703,
+   "lat": 48.8700898,
+   "lon": 2.3502995,
+   "tags": {
+    "name": "Boulevard de Bonne Nouvelle",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 696674567,
+   "lat": 48.8576653,
+   "lon": 2.3514345,
+   "tags": {
+    "name": "Rue du Renard (Centre Georges Pompidou)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 697180639,
+   "lat": 48.8570778,
+   "lon": 2.3521618,
+   "tags": {
+    "name": "Hôtel de Ville",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 697182972,
+   "lat": 48.8572916,
+   "lon": 2.3512272,
+   "tags": {
+    "name": "Avenue Victoria",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 697571365,
+   "lat": 48.8612692,
+   "lon": 2.3536074,
+   "tags": {
+    "check_date:wheelchair": "2022-08-27",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148399",
+    "name": "Rue Rambuteau",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 697571534,
+   "lat": 48.8614079,
+   "lon": 2.3534645,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148397",
+    "name": "Rue Beaubourg (Centre Pompidou)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 698084308,
+   "lat": 48.8573444,
+   "lon": 2.3487874,
+   "tags": {
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.5",
+    "name": "Avenue Victoria",
+    "railway": "subway_entrance",
+    "ref": "18",
+    "source": "survey;cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 699079964,
+   "lat": 48.8536349,
+   "lon": 2.357288,
+   "tags": {
+    "name": "Pont Marie (Île Saint-Louis)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 699080136,
+   "lat": 48.8536839,
+   "lon": 2.3571498,
+   "tags": {
+    "name": "Quai de l'Hôtel de Ville (Cité des Arts)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 699897450,
+   "lat": 48.8575833,
+   "lon": 2.3479168,
+   "tags": {
+    "check_date:wheelchair": "2026-04-05",
+    "door": "no",
+    "entrance": "yes",
+    "level": "-0.3",
+    "name": "Théâtre de la Ville",
+    "railway": "subway_entrance",
+    "ref": "17",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 703504456,
+   "lat": 48.8553115,
+   "lon": 2.3601245,
+   "tags": {
+    "check_date:wheelchair": "2023-01-08",
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 703504511,
+   "lat": 48.8552672,
+   "lon": 2.3602961,
+   "tags": {
+    "check_date:wheelchair": "2024-04-22",
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 703988576,
+   "lat": 48.8539963,
+   "lon": 2.3687104,
+   "tags": {
+    "check_date:wheelchair": "2024-09-14",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148193",
+    "name": "Boulevard Beaumarchais",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 705182171,
+   "lat": 48.8521318,
+   "lon": 2.3612136,
+   "tags": {
+    "check_date:wheelchair": "2024-09-14",
+    "name": "Rue des Célestins",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "survey 2013",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 705182504,
+   "lat": 48.8520803,
+   "lon": 2.3612972,
+   "tags": {
+    "check_date:wheelchair": "2024-09-14",
+    "name": "Rue des Célestins",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "survey 2013",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 705357625,
+   "lat": 48.8526136,
+   "lon": 2.3679051,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147743",
+    "name": "Boulevard Henri IV",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 705458949,
+   "lat": 48.8523597,
+   "lon": 2.3678061,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148190",
+    "name": "Boulevard Bourdon",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "limited"
+   },
+   "type": "node"
+  },
+  {
+   "id": 706245861,
+   "lat": 48.86524,
+   "lon": 2.3554797,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148400",
+    "name": "Rue Beaubourg",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 706315809,
+   "lat": 48.8657271,
+   "lon": 2.3567135,
+   "tags": {
+    "bicycle": "no",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148403",
+    "name": "Rue Conté",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 706645717,
+   "lat": 48.8691696,
+   "lon": 2.3545233,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147822",
+    "name": "Rue Saint-Martin",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 706743993,
+   "lat": 48.8680145,
+   "lon": 2.3613359,
+   "tags": {
+    "name": "Boulevard Saint-Martin",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 707827510,
+   "lat": 48.8665959,
+   "lon": 2.3615114,
+   "tags": {
+    "check_date:wheelchair": "2024-05-08",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Place Élisabeth Dmitrieff",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086229",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q1660212",
+    "wikipedia": "fr:Temple (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 708000002,
+   "lat": 48.865445,
+   "lon": 2.3567614,
+   "tags": {
+    "bicycle": "no",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148401",
+    "name": "Rue Réaumur",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 710888108,
+   "lat": 48.8670455,
+   "lon": 2.3635056,
+   "tags": {
+    "name": "Rue du Temple",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 710907212,
+   "lat": 48.8680821,
+   "lon": 2.3631884,
+   "tags": {
+    "layer": "-1",
+    "name": "Square Henri Christiné",
+    "railway": "subway_entrance",
+    "ref": "10",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 710913147,
+   "lat": 48.8678997,
+   "lon": 2.3645592,
+   "tags": {
+    "check_date:wheelchair": "2024-03-29",
+    "name": "Rue du Faubourg du Temple",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 710942823,
+   "lat": 48.8668445,
+   "lon": 2.3649226,
+   "tags": {
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 710942840,
+   "lat": 48.867459,
+   "lon": 2.3649828,
+   "tags": {
+    "name": "Avenue de la République",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 711007611,
+   "lat": 48.8682643,
+   "lon": 2.3625095,
+   "tags": {
+    "name": "Boulevard de Magenta",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 717961634,
+   "lat": 48.8632843,
+   "lon": 2.3664715,
+   "tags": {
+    "name": "Boulevard des Filles du Calvaire (Musée Picasso)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 717970279,
+   "lat": 48.8634133,
+   "lon": 2.3667214,
+   "tags": {
+    "level": "-1",
+    "name": "Rue Amelot (Cirque d'Hiver)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 718686169,
+   "lat": 48.8612143,
+   "lon": 2.367039,
+   "tags": {
+    "name": "Rue Froissart",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 721551451,
+   "lat": 48.85744,
+   "lon": 2.3679498,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148189",
+    "name": "Boulevard Beaumarchais, Rue Saint-Gilles (Place des Vosges)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "toilets:wheelchair": "no",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 726521066,
+   "lat": 48.8641504,
+   "lon": 2.3808692,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147923",
+    "name": "Rue des Bluets",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 768033705,
+   "lat": 48.8579754,
+   "lon": 2.3233844,
+   "tags": {
+    "name": "Rue Saint-Dominique",
+    "name:ru": "Сольферино",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 773511251,
+   "lat": 48.8491041,
+   "lon": 2.2977746,
+   "tags": {
+    "name": "Rue du commerce",
+    "railway": "subway_entrance",
+    "ref": "1"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775370144,
+   "lat": 48.8843727,
+   "lon": 2.3596125,
+   "tags": {
+    "name": "Rue du Faubourg Saint-Denis",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775370145,
+   "lat": 48.8844569,
+   "lon": 2.3596601,
+   "tags": {
+    "check_date:wheelchair": "2024-06-08",
+    "name": "Rue Marx Dormoy",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775370153,
+   "lat": 48.8828827,
+   "lon": 2.3440615,
+   "tags": {
+    "alt_name": "Anvers",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Boulevard de Rochechouart (Sacré-Cœur)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086749",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 04/2015",
+    "survey:date": "2017-07-25",
+    "wheelchair": "no",
+    "wikidata": "Q612971",
+    "wikipedia": "fr:Édicule Guimard"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775370156,
+   "lat": 48.8837057,
+   "lon": 2.3329771,
+   "tags": {
+    "artist:wikipedia": "fr:Édicule Guimard",
+    "artist_name": "Hector Guimard",
+    "check_date:wheelchair": "2024-07-23",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978-05-29",
+    "name": "Boulevard de Clichy",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086751",
+    "source:heritage": "data.gouv.fr:Ministère de la culture et de la communication - 05/2016",
+    "wheelchair": "no",
+    "wikidata": "Q881406"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775375791,
+   "lat": 48.8816063,
+   "lon": 2.3702595,
+   "tags": {
+    "name": "Quai de Jemmapes",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775375795,
+   "lat": 48.8843382,
+   "lon": 2.3650322,
+   "tags": {
+    "check_date:wheelchair": "2024-08-31",
+    "name": "Boulevard de la Chapelle",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775375800,
+   "lat": 48.8775235,
+   "lon": 2.3706614,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147953",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Boulevard de la Villette",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086509",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q1110656",
+    "wikipedia": "fr:Colonel Fabien (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775375803,
+   "lat": 48.8724933,
+   "lon": 2.3767324,
+   "tags": {
+    "check_date:wheelchair": "2026-03-28",
+    "name": "Boulevard de la Villette",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775375812,
+   "lat": 48.8720957,
+   "lon": 2.376617,
+   "tags": {
+    "check_date:wheelchair": "2024-11-16",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148413",
+    "name": "Rue du Faubourg du Temple",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775377141,
+   "lat": 48.8690663,
+   "lon": 2.3804058,
+   "tags": {
+    "name": "Boulevard de la Chapelle",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775377142,
+   "lat": 48.8666499,
+   "lon": 2.383273,
+   "tags": {
+    "name": "Boulevard de Ménilmontant",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775378866,
+   "lat": 48.8626621,
+   "lon": 2.3874844,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50211183",
+    "name": "Boulevard de Ménilmontant",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 775378878,
+   "lat": 48.8625822,
+   "lon": 2.387524,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50211183",
+    "name": "Boulevard de Ménilmontant",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 780158010,
+   "lat": 48.8522237,
+   "lon": 2.3393282,
+   "tags": {
+    "check_date:wheelchair": "2022-07-15",
+    "name": "Carrefour de l'Odéon",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 780158769,
+   "lat": 48.8523166,
+   "lon": 2.3389386,
+   "tags": {
+    "check_date:wheelchair": "2022-07-15",
+    "name": "Carrefour de l'Odéon",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 780158960,
+   "lat": 48.8521307,
+   "lon": 2.3396585,
+   "tags": {
+    "check_date:wheelchair": "2022-07-15",
+    "name": "Rue de l'École de Médecine",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 783324478,
+   "lat": 48.8467379,
+   "lon": 2.3402788,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148608",
+    "name": "Pl. Edmond Rostand",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 785544346,
+   "lat": 48.8514661,
+   "lon": 2.3311383,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147800",
+    "name": "Rue de Rennes",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 785722194,
+   "lat": 48.8481996,
+   "lon": 2.3277895,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Rue de Rennes",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 785722492,
+   "lat": 48.8484319,
+   "lon": 2.3277233,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Boulevard Raspail",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 786143346,
+   "lat": 48.8509239,
+   "lon": 2.3253978,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148443",
+    "name": "Rue Velpeau",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 790027804,
+   "lat": 48.8756298,
+   "lon": 2.3241317,
+   "tags": {
+    "elevator": "yes",
+    "level": "0",
+    "name": "1. Cour de Rome",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 801199553,
+   "lat": 48.8468592,
+   "lon": 2.3171179,
+   "tags": {
+    "check_date:wheelchair": "2024-04-26",
+    "level": "-1",
+    "name": "Place Léon-Paul Fargue",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 802783924,
+   "lat": 48.8466616,
+   "lon": 2.3166598,
+   "tags": {
+    "level": "-1",
+    "name": "Boulevard du Montparnasse",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 802783931,
+   "lat": 48.8470118,
+   "lon": 2.3163212,
+   "tags": {
+    "check_date:wheelchair": "2024-04-26",
+    "level": "-1",
+    "name": "Boulevard des Invalides",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 802783950,
+   "lat": 48.8470694,
+   "lon": 2.3168777,
+   "tags": {
+    "check_date:wheelchair": "2024-04-26",
+    "level": "-1",
+    "name": "Rue de Sèvres",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 806011952,
+   "lat": 48.8529205,
+   "lon": 2.3357677,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Rue de Montfaucon",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 807213472,
+   "lat": 48.8674709,
+   "lon": 2.3132718,
+   "tags": {
+    "check_date:wheelchair": "2024-05-21",
+    "name": "Place Clemenceau (Petit Palais)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 813771153,
+   "lat": 48.8723642,
+   "lon": 2.3099505,
+   "tags": {
+    "name": "Avenue Franklin D. Roosevelt",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 813771188,
+   "lat": 48.8724824,
+   "lon": 2.3101503,
+   "tags": {
+    "name": "Rue La Boétie",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 813771795,
+   "lat": 48.8722903,
+   "lon": 2.3099505,
+   "tags": {
+    "name": "Avenue Franklin D. Roosevelt",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 813872936,
+   "lat": 48.8735729,
+   "lon": 2.3143204,
+   "tags": {
+    "check_date:wheelchair": "2022-05-19",
+    "layer": "-1",
+    "name": "Avenue Delcassé côté des n° impairs, rue de La Boétie",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 813873422,
+   "lat": 48.8737584,
+   "lon": 2.3143474,
+   "tags": {
+    "check_date:wheelchair": "2022-05-19",
+    "layer": "-1",
+    "name": "Avenue Percier côté des n° impairs, rue de La Boétie",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 814013994,
+   "lat": 48.8738296,
+   "lon": 2.3157732,
+   "tags": {
+    "check_date:wheelchair": "2024-06-28",
+    "name": "Rue de La Boétie côté des n° impairs",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 814014442,
+   "lat": 48.8738124,
+   "lon": 2.3156728,
+   "tags": {
+    "name": "Rue de La Boétie côté des n° impairs",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 815851432,
+   "lat": 48.8709976,
+   "lon": 2.3253048,
+   "tags": {
+    "name": "Rue de Sèze",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 815851445,
+   "lat": 48.8711495,
+   "lon": 2.325143,
+   "tags": {
+    "check_date:wheelchair": "2025-03-30",
+    "name": "Rue Tronchet",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 815851447,
+   "lat": 48.8710719,
+   "lon": 2.3253583,
+   "tags": {
+    "name": "Rue de Sèze",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817222424,
+   "lat": 48.8744584,
+   "lon": 2.3212557,
+   "tags": {
+    "name": "Saint-Augustin",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817222611,
+   "lat": 48.8747426,
+   "lon": 2.3246852,
+   "tags": {
+    "name": "Rue de l'Arcade",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817222629,
+   "lat": 48.8745946,
+   "lon": 2.3215439,
+   "tags": {
+    "name": "Saint-Augustin",
+    "railway": "subway_entrance",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817222645,
+   "lat": 48.8744465,
+   "lon": 2.3213536,
+   "tags": {
+    "name": "Boulevard Malesherbes",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817222861,
+   "lat": 48.8746214,
+   "lon": 2.3213345,
+   "tags": {
+    "name": "Boulevard Haussmann (Église Saint-Augustin)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817223132,
+   "lat": 48.8750491,
+   "lon": 2.3248671,
+   "tags": {
+    "check_date:wheelchair": "2024-06-10",
+    "level": "0",
+    "name": "Place Gabriel Péri",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817244419,
+   "lat": 48.8753702,
+   "lon": 2.3263696,
+   "tags": {
+    "level": "-1",
+    "location": "underground",
+    "name": "Place du Havre",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817244453,
+   "lat": 48.8753556,
+   "lon": 2.3264047,
+   "tags": {
+    "level": "-1",
+    "location": "underground",
+    "name": "Place du Havre",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817304017,
+   "lat": 48.8754467,
+   "lon": 2.3268772,
+   "tags": {
+    "level": "-1",
+    "name": "Passage du Havre",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817304062,
+   "lat": 48.875395,
+   "lon": 2.3268229,
+   "tags": {
+    "level": "-1",
+    "name": "Passage du Havre",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817304110,
+   "lat": 48.8737433,
+   "lon": 2.3278978,
+   "tags": {
+    "name": "Rue du Havre",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817304191,
+   "lat": 48.8735725,
+   "lon": 2.3279082,
+   "tags": {
+    "name": "Rue Auber",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 817304248,
+   "lat": 48.8758961,
+   "lon": 2.3267083,
+   "tags": {
+    "check_date:wheelchair": "2024-04-12",
+    "level": "-1",
+    "name": "Rue d'Amsterdam",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 819175756,
+   "lat": 48.8795914,
+   "lon": 2.3267239,
+   "tags": {
+    "noname": "yes",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 821879327,
+   "lat": 48.8842699,
+   "lon": 2.3290473,
+   "tags": {
+    "check_date:wheelchair": "2024-05-12",
+    "name": "Rue Caulaincourt",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 822185500,
+   "lat": 48.8811562,
+   "lon": 2.316138,
+   "tags": {
+    "name": "Boulevard de Batignolles",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 822185534,
+   "lat": 48.8813777,
+   "lon": 2.3154046,
+   "tags": {
+    "check_date:wheelchair": "2024-05-13",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978-05-29",
+    "name": "Avenue de Villiers",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086727",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 04/2015",
+    "wheelchair": "no",
+    "wikidata": "Q1511335",
+    "wikipedia": "fr:Villiers (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 822259639,
+   "lat": 48.880913,
+   "lon": 2.3141172,
+   "tags": {
+    "check_date:wheelchair": "2024-10-06",
+    "name": "Boulevard de Courcelles (Parc Monceau)",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 826071244,
+   "lat": 48.8728692,
+   "lon": 2.3299931,
+   "tags": {
+    "entrance": "yes",
+    "name": "Rue des Mathurins",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 826071245,
+   "lat": 48.8724037,
+   "lon": 2.3297749,
+   "tags": {
+    "name": "Rue Auber (Opéra Garnier)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 826681869,
+   "lat": 48.8752006,
+   "lon": 2.3104655,
+   "tags": {
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 826750728,
+   "lat": 48.8750894,
+   "lon": 2.307613,
+   "tags": {
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 827450526,
+   "lat": 48.8745672,
+   "lon": 2.2959344,
+   "tags": {
+    "name": "Avenue Hoche",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 828086141,
+   "lat": 48.8793673,
+   "lon": 2.3034558,
+   "tags": {
+    "check_date:wheelchair": "2024-05-18",
+    "name": "Courcelles -2- Rue de Chazelles",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 828086159,
+   "lat": 48.8791399,
+   "lon": 2.3036772,
+   "tags": {
+    "check_date:wheelchair": "2023-08-15",
+    "name": "Courcelles-1- Bd de Courcelles Parc de Monceau",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 828728714,
+   "lat": 48.8700081,
+   "lon": 2.3074814,
+   "tags": {
+    "name": "Champs-Élysées",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 828728720,
+   "lat": 48.8701036,
+   "lon": 2.3071621,
+   "tags": {
+    "name": "Champs-Élysées",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 828728721,
+   "lat": 48.8698049,
+   "lon": 2.3069379,
+   "tags": {
+    "name": "Rue de Marignan",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 828728728,
+   "lat": 48.8697042,
+   "lon": 2.3072551,
+   "tags": {
+    "name": "Rue de Marignan",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829132706,
+   "lat": 48.8718356,
+   "lon": 2.3005452,
+   "tags": {
+    "name": "Avenue George V",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829203229,
+   "lat": 48.8722067,
+   "lon": 2.3006102,
+   "tags": {
+    "layer": "-1",
+    "name": "Champs-Élysées",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829203546,
+   "lat": 48.8722519,
+   "lon": 2.3004662,
+   "tags": {
+    "layer": "-1",
+    "name": "Champs-Élysées",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829543591,
+   "lat": 48.8683756,
+   "lon": 2.3091903,
+   "tags": {
+    "name": "Avenue Montaigne",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829544170,
+   "lat": 48.8684885,
+   "lon": 2.3095333,
+   "tags": {
+    "check_date:wheelchair": "2024-03-25",
+    "name": "Avenue Franklin D. Roosevelt (Palais de la Découverte)",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829544307,
+   "lat": 48.8687115,
+   "lon": 2.3092637,
+   "tags": {
+    "name": "Rond-Point",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 829928567,
+   "lat": 48.8753835,
+   "lon": 2.3268941,
+   "tags": {
+    "level": "-1",
+    "name": "Passage du Havre",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 830365607,
+   "lat": 48.8625631,
+   "lon": 2.3362015,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147988",
+    "level": "-1",
+    "name": "pl. du Palais Royal",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 830365671,
+   "lat": 48.8627684,
+   "lon": 2.3363222,
+   "tags": {
+    "level": "-1",
+    "name": "Rue Saint-Honoré",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 830365733,
+   "lat": 48.862485,
+   "lon": 2.3356368,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147989",
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 830365770,
+   "lat": 48.8624308,
+   "lon": 2.3358045,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147989",
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 830365974,
+   "lat": 48.8642879,
+   "lon": 2.3300996,
+   "tags": {
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 830366055,
+   "lat": 48.8642488,
+   "lon": 2.3302264,
+   "tags": {
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 831854832,
+   "lat": 48.858478,
+   "lon": 2.3421415,
+   "tags": {
+    "name": "Quai du Louvre",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 831854851,
+   "lat": 48.8606931,
+   "lon": 2.3408863,
+   "tags": {
+    "level": "-1",
+    "name": "Rue de l'Amiral-de-Coligny",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 831956624,
+   "lat": 48.8649108,
+   "lon": 2.3017155,
+   "tags": {
+    "name": "avenue Montaigne (Théâtre des Champs-Élysées)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 832027843,
+   "lat": 48.8644212,
+   "lon": 2.3008428,
+   "tags": {
+    "name": "Pont de l'Alma",
+    "panoramax": "51bfa52a-2871-4989-8e47-ebe06065a407",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 832027886,
+   "lat": 48.8650585,
+   "lon": 2.3005341,
+   "tags": {
+    "name": "Avenue du Président Wilson",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 832027890,
+   "lat": 48.8650446,
+   "lon": 2.3005174,
+   "tags": {
+    "name": "Avenue du Président Wilson",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838121864,
+   "lat": 48.8741856,
+   "lon": 2.2964108,
+   "tags": {
+    "name": "Avenue de Friedland",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838122161,
+   "lat": 48.8752487,
+   "lon": 2.2962956,
+   "tags": {
+    "check_date:wheelchair": "2025-11-15",
+    "name": "Rue Beaujon",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838122484,
+   "lat": 48.8752164,
+   "lon": 2.2962721,
+   "tags": {
+    "check_date:wheelchair": "2025-11-15",
+    "name": "Rue Beaujon",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838122776,
+   "lat": 48.874062,
+   "lon": 2.2969661,
+   "tags": {
+    "name": "Avenue de Friedland",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838532985,
+   "lat": 48.8784048,
+   "lon": 2.2989779,
+   "tags": {
+    "name": "Boulevard de Courcelles",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838533067,
+   "lat": 48.8782248,
+   "lon": 2.2976241,
+   "tags": {
+    "name": "Avenue des Ternes",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 838533097,
+   "lat": 48.8780492,
+   "lon": 2.2982834,
+   "tags": {
+    "name": "Place des Ternes (salle Pleyel)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 911471078,
+   "lat": 48.8734556,
+   "lon": 2.2970734,
+   "tags": {
+    "name": "Champs Élysées (Arc de Triomphe)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 913972898,
+   "lat": 48.8487849,
+   "lon": 2.3210492,
+   "tags": {
+    "contact:city": "Paris",
+    "contact:housenumber": "42 bis",
+    "contact:postcode": "75007",
+    "contact:street": "Rue de Sèvres",
+    "name": "Rue de Sèvres",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 921648324,
+   "lat": 48.8681567,
+   "lon": 2.3616487,
+   "tags": {
+    "name": "Rue René Boulanger",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 925849999,
+   "lat": 48.8644015,
+   "lon": 2.29383,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148274",
+    "name": "Avenue d'Iéna (Palais d'Iéna)",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 925850006,
+   "lat": 48.8646056,
+   "lon": 2.2943152,
+   "tags": {
+    "check_date:wheelchair": "2025-05-10",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148275",
+    "name": "Avenue du Président-Wilson (Musée d'art moderne, Palais de Tokyo)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 926887582,
+   "lat": 48.866968,
+   "lon": 2.2902356,
+   "tags": {
+    "artist:wikidata": "Q316422",
+    "artist_name": "Guimard",
+    "name": "Avenue Kléber",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "survey:date": "2017-10-02",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 929440531,
+   "lat": 48.8650668,
+   "lon": 2.2938807,
+   "tags": {
+    "check_date:wheelchair": "2022-06-05",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148276",
+    "name": "Rue Boissière (Musée Guimet)",
+    "panoramax": "017b1ca7-07b7-458c-8bab-0c4d1c0178a2",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 937213692,
+   "lat": 48.8734476,
+   "lon": 2.2924913,
+   "tags": {
+    "name": "Avenue Foch",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 937868667,
+   "lat": 48.8740576,
+   "lon": 2.2931529,
+   "tags": {
+    "name": "Rue de Presbourg",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 971476067,
+   "lat": 48.8760467,
+   "lon": 2.3440653,
+   "tags": {
+    "check_date": "2024-09-23",
+    "check_date:wheelchair": "2024-09-23",
+    "name": "Rue Cadet",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 983538053,
+   "lat": 48.8689508,
+   "lon": 2.3407195,
+   "tags": {
+    "name": "Palais Brongniart",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1003722008,
+   "lat": 48.8751546,
+   "lon": 2.3895969,
+   "tags": {
+    "check_date:wheelchair": "2025-01-18",
+    "name": "Rue de Belleville",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1003722012,
+   "lat": 48.8749108,
+   "lon": 2.389316,
+   "tags": {
+    "name": "Rue du Jourdain",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1003729046,
+   "lat": 48.87517,
+   "lon": 2.3890909,
+   "tags": {
+    "check_date:wheelchair": "2025-02-19",
+    "name": "Rue Lassus",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1014002260,
+   "lat": 48.8662207,
+   "lon": 2.323447,
+   "tags": {
+    "name": "Jeu de Paume (Jardin des Tuileries)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1014002290,
+   "lat": 48.8772134,
+   "lon": 2.3493019,
+   "tags": {
+    "check_date:wheelchair": "2024-02-21",
+    "name": "Faubourg Poissonnière",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1015020993,
+   "lat": 48.8702412,
+   "lon": 2.3709652,
+   "tags": {
+    "check_date:wheelchair": "2025-11-23",
+    "name": "Hôpital Saint-Louis",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1015020998,
+   "lat": 48.8701187,
+   "lon": 2.3708484,
+   "tags": {
+    "name": "Rue du Faubourg du Temple",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1015021001,
+   "lat": 48.8698879,
+   "lon": 2.3712249,
+   "tags": {
+    "name": "Rue des Goncourt",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1015021005,
+   "lat": 48.8698336,
+   "lon": 2.3710577,
+   "tags": {
+    "name": "Avenue Parmentier",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1015891798,
+   "lat": 48.8480362,
+   "lon": 2.3950289,
+   "tags": {
+    "check_date:wheelchair": "2023-11-29",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148054",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/5/53/Guimard_Nation_Diderot.jpg",
+    "name": "Boulevard Diderot",
+    "note:fr": "Nation Métro",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1020265218,
+   "lat": 48.8773475,
+   "lon": 2.3491616,
+   "tags": {
+    "name": "Rue La Fayette",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1020265235,
+   "lat": 48.8772547,
+   "lon": 2.3494591,
+   "tags": {
+    "check_date:wheelchair": "2024-12-08",
+    "name": "Rue de Chabrol",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1022599589,
+   "lat": 48.8722096,
+   "lon": 2.3768357,
+   "tags": {
+    "check_date:wheelchair": "2026-03-28",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148414",
+    "name": "Terre-plein central du Boulevard de la Villette",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1108259330,
+   "lat": 48.8534985,
+   "lon": 2.3444695,
+   "tags": {
+    "door": "yes",
+    "entrance": "yes",
+    "level": "-1",
+    "name": "Quai Saint-Michel (Notre-Dame)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1108259361,
+   "lat": 48.8509872,
+   "lon": 2.3452048,
+   "tags": {
+    "check_date:wheelchair": "2022-07-08",
+    "name": "Rue Saint-Jacques",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1108259366,
+   "lat": 48.8532652,
+   "lon": 2.3442296,
+   "tags": {
+    "level": "-1",
+    "name": "Place Saint-Michel",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1109781775,
+   "lat": 48.8504882,
+   "lon": 2.3487321,
+   "tags": {
+    "level": "-1",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1113454819,
+   "lat": 48.8760485,
+   "lon": 2.3576956,
+   "tags": {
+    "check_date:wheelchair": "2024-10-05",
+    "name": "Boulevard de Magenta",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1113454908,
+   "lat": 48.8759648,
+   "lon": 2.3588647,
+   "tags": {
+    "check_date:wheelchair": "2026-06-07",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147775",
+    "name": "Rue du 8 Mai 1945",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1113455198,
+   "lat": 48.8759467,
+   "lon": 2.3579619,
+   "tags": {
+    "check_date:wheelchair": "2020-12-05",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147803",
+    "level": "0",
+    "name": "Terre-plein",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "survey:date": "2017-09-01",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1113455495,
+   "lat": 48.8759698,
+   "lon": 2.3583459,
+   "tags": {
+    "check_date:wheelchair": "2020-11-07",
+    "name": "Boulevard de Strasbourg",
+    "panoramax": "da65945b-2e13-486c-befd-c7cfd7423b49",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1114193343,
+   "lat": 48.8662489,
+   "lon": 2.3235597,
+   "tags": {
+    "name": "Jeu de Paume (Jardin des Tuileries)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1114193838,
+   "lat": 48.8653454,
+   "lon": 2.3226649,
+   "tags": {
+    "name": "Musée de l'Orangerie Jardin des Tuileries",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1114770285,
+   "lat": 48.884969,
+   "lon": 2.3794334,
+   "tags": {
+    "name": "Rue de Meaux",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1119291841,
+   "lat": 48.8501347,
+   "lon": 2.3479546,
+   "tags": {
+    "check_date:wheelchair": "2024-04-23",
+    "name": "Rue des Carmes - Panthéon",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1119291855,
+   "lat": 48.8500285,
+   "lon": 2.3482923,
+   "tags": {
+    "name": "Place Maubert (Palais de la Mutualité)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1119291865,
+   "lat": 48.8502599,
+   "lon": 2.3481818,
+   "tags": {
+    "name": "Rue Lagrange",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1119291883,
+   "lat": 48.8499173,
+   "lon": 2.3482473,
+   "tags": {
+    "name": "Place Maubert (Palais de la Mutualité)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1127251894,
+   "lat": 48.8687364,
+   "lon": 2.3418224,
+   "tags": {
+    "check_date:wheelchair": "2026-02-11",
+    "name": "Rue Notre-Dame des Victoires",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1133307634,
+   "lat": 48.8587828,
+   "lon": 2.3225219,
+   "tags": {
+    "name": "Place Jacques-Bainville",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1133307676,
+   "lat": 48.8587876,
+   "lon": 2.3230518,
+   "tags": {
+    "name": "Rue de Bellechasse",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1134402804,
+   "lat": 48.846569,
+   "lon": 2.3518352,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148354",
+    "name": "Rue Cardinal Lemoine",
+    "panoramax": "f3afa8d5-7e3e-4018-8fb7-0ba5b66d22e9",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1134402839,
+   "lat": 48.8466026,
+   "lon": 2.3514717,
+   "tags": {
+    "check_date:wheelchair": "2025-11-08",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148355",
+    "name": "Rue Monge",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1181466521,
+   "lat": 48.8547173,
+   "lon": 2.3059956,
+   "tags": {
+    "check_date:wheelchair": "2025-12-07",
+    "name": "Avenue Bosquet",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1181466665,
+   "lat": 48.8546456,
+   "lon": 2.3062823,
+   "tags": {
+    "check_date:wheelchair": "2025-12-07",
+    "name": "Avenue Duquesne",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1191523457,
+   "lat": 48.8577685,
+   "lon": 2.3102143,
+   "tags": {
+    "check_date:wheelchair": "2023-01-13",
+    "name": "Boulevard de la Tour Maubourg",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1191594423,
+   "lat": 48.8609204,
+   "lon": 2.3145079,
+   "tags": {
+    "level": "-1",
+    "name": "Invalides",
+    "railway": "subway_entrance",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1193281828,
+   "lat": 48.8568351,
+   "lon": 2.3152669,
+   "tags": {
+    "check_date:wheelchair": "2025-08-31",
+    "name": "Varenne",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893706,
+   "lat": 48.8695428,
+   "lon": 2.3537015,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147825",
+    "name": "Passage du Prado",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893716,
+   "lat": 48.8702685,
+   "lon": 2.3503998,
+   "tags": {
+    "name": "Rue d'Hauteville",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893717,
+   "lat": 48.8693455,
+   "lon": 2.3546125,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147821",
+    "name": "Porte Saint-Denis",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893719,
+   "lat": 48.8694969,
+   "lon": 2.3539102,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147823",
+    "name": "Boulevard de Strasbourg",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893720,
+   "lat": 48.8709175,
+   "lon": 2.347128,
+   "tags": {
+    "name": "Rue du Faubourg Poissonnière",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893737,
+   "lat": 48.8702193,
+   "lon": 2.3506302,
+   "tags": {
+    "name": "Rue de Mazagran",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1209893746,
+   "lat": 48.8699006,
+   "lon": 2.3521301,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147827",
+    "name": "Boulevard de Bonne Nouvelle",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1215373095,
+   "lat": 48.8580084,
+   "lon": 2.3103969,
+   "tags": {
+    "name": "rue de Grenelle",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287658,
+   "lat": 48.8731437,
+   "lon": 2.3330938,
+   "tags": {
+    "name": "Grands Magasins (Galeries Lafayette)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287660,
+   "lat": 48.873553,
+   "lon": 2.3293254,
+   "tags": {
+    "check_date:wheelchair": "2025-05-16",
+    "name": "Haussmann-Charras (Grands Magasins)",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287666,
+   "lat": 48.8734925,
+   "lon": 2.3285152,
+   "tags": {
+    "name": "Rue de Caumartin",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287672,
+   "lat": 48.8729517,
+   "lon": 2.3338684,
+   "tags": {
+    "name": "Boulevard Haussmann",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287673,
+   "lat": 48.8733048,
+   "lon": 2.3298778,
+   "tags": {
+    "name": "Place Diaghilev",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287677,
+   "lat": 48.8730138,
+   "lon": 2.333453,
+   "tags": {
+    "name": "Boulevard Haussmann",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287687,
+   "lat": 48.8730914,
+   "lon": 2.3327675,
+   "tags": {
+    "name": "Grands Magasins (Galeries Lafayette)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287692,
+   "lat": 48.8728007,
+   "lon": 2.3336531,
+   "tags": {
+    "name": "Rue de la Chaussée d'Antin",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287694,
+   "lat": 48.8735214,
+   "lon": 2.3295667,
+   "tags": {
+    "check_date:wheelchair": "2022-09-18",
+    "name": "Haussmann-Charras (Grands Magasins)",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287697,
+   "lat": 48.8736483,
+   "lon": 2.3285986,
+   "tags": {
+    "check_date:wheelchair": "2022-09-18",
+    "name": "Boulevard Haussmann (Grands Magasins)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287698,
+   "lat": 48.8732023,
+   "lon": 2.3333335,
+   "tags": {
+    "name": "Rue La Fayette",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287700,
+   "lat": 48.8732639,
+   "lon": 2.3301841,
+   "tags": {
+    "check_date:wheelchair": "2024-06-18",
+    "name": "Place Diaghilev",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287728,
+   "lat": 48.872939,
+   "lon": 2.3338577,
+   "tags": {
+    "name": "Boulevard Haussmann",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227287734,
+   "lat": 48.8729277,
+   "lon": 2.3327097,
+   "tags": {
+    "name": "Rue Halévy",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1227307046,
+   "lat": 48.8715734,
+   "lon": 2.3306946,
+   "tags": {
+    "check_date:wheelchair": "2022-08-13",
+    "name": "Rue Scribe",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232684999,
+   "lat": 48.8727772,
+   "lon": 2.3350882,
+   "tags": {
+    "name": "Rue Taitbout",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232685002,
+   "lat": 48.8721205,
+   "lon": 2.3398034,
+   "tags": {
+    "check_date:wheelchair": "2023-07-04",
+    "name": "Boulevard Montmartre",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232685026,
+   "lat": 48.8719836,
+   "lon": 2.3390798,
+   "tags": {
+    "name": "Boulevard Haussmann",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232685080,
+   "lat": 48.8718448,
+   "lon": 2.3385678,
+   "tags": {
+    "name": "Boulevard des Italiens",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232685236,
+   "lat": 48.8722235,
+   "lon": 2.3390647,
+   "tags": {
+    "name": "Rue Chauchat",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232685258,
+   "lat": 48.8716674,
+   "lon": 2.3376198,
+   "tags": {
+    "check_date:wheelchair": "2025-11-04",
+    "name": "Rue Taitbout",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232685307,
+   "lat": 48.8722056,
+   "lon": 2.3379602,
+   "tags": {
+    "check_date:wheelchair": "2025-09-05",
+    "name": "Rue Laffitte",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1232772979,
+   "lat": 48.8749891,
+   "lon": 2.3401721,
+   "tags": {
+    "name": "Rue La Fayette",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1233074235,
+   "lat": 48.8765882,
+   "lon": 2.3324537,
+   "tags": {
+    "check_date:wheelchair": "2020-11-27",
+    "name": "Place d'Estienne d'Orves",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1233074242,
+   "lat": 48.8765199,
+   "lon": 2.3324818,
+   "tags": {
+    "name": "Place d'Estienne d'Orves",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1233136751,
+   "lat": 48.8784811,
+   "lon": 2.3377996,
+   "tags": {
+    "location": "underground",
+    "name": "Place Saint-Georges",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1233136934,
+   "lat": 48.8782988,
+   "lon": 2.3373545,
+   "tags": {
+    "check_date:wheelchair": "2024-09-06",
+    "location": "underground",
+    "name": "Rue Notre-Dame-de-Lorette",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1234212742,
+   "lat": 48.8763361,
+   "lon": 2.3338686,
+   "tags": {
+    "check_date:wheelchair": "2022-09-18",
+    "name": "Rue de Châteaudun",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1236409744,
+   "lat": 48.8836421,
+   "lon": 2.3491386,
+   "tags": {
+    "name": "Boulevard de Magenta",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1236571066,
+   "lat": 48.8837273,
+   "lon": 2.3491147,
+   "tags": {
+    "name": "Boulevard de Rochechouart",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1242438537,
+   "lat": 48.8711755,
+   "lon": 2.3455586,
+   "tags": {
+    "check_date": "2025-02-12",
+    "check_date:wheelchair": "2025-02-12",
+    "name": "Rue de Rougemont",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1242439878,
+   "lat": 48.8711247,
+   "lon": 2.3458764,
+   "tags": {
+    "name": "Rue de Rougemont",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1242504268,
+   "lat": 48.8716354,
+   "lon": 2.3427747,
+   "tags": {
+    "name": "Boulevard Montmartre (Musée Grévin)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1242504391,
+   "lat": 48.8715001,
+   "lon": 2.343591,
+   "tags": {
+    "check_date:wheelchair": "2025-02-12",
+    "name": "Rue du Faubourg Montmartre",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1249809143,
+   "lat": 48.8470723,
+   "lon": 2.3076334,
+   "tags": {
+    "name": "Avenue de Suffren (UNESCO - Fontenoy)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1249809151,
+   "lat": 48.8469924,
+   "lon": 2.3073936,
+   "tags": {
+    "name": "Boulevard Garibaldi (UNESCO - Miollis)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1271509555,
+   "lat": 48.8725143,
+   "lon": 2.3559051,
+   "tags": {
+    "check_date:wheelchair": "2021-04-07",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50208191",
+    "name": "Rue du Château d'Eau",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1271509558,
+   "lat": 48.8724669,
+   "lon": 2.3558796,
+   "tags": {
+    "check_date:wheelchair": "2021-04-07",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147802",
+    "name": "Rue du Château d'Eau",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1272604556,
+   "lat": 48.8626092,
+   "lon": 2.3468825,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2;-3",
+    "name": "Porte Rambuteau",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no",
+    "wikidata": "Q3398938"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1273681847,
+   "lat": 48.878751,
+   "lon": 2.3542781,
+   "tags": {
+    "level": "-1",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1275005041,
+   "lat": 48.8813823,
+   "lon": 2.3652997,
+   "tags": {
+    "check_date:wheelchair": "2020-12-05",
+    "name": "Rue du Faubourg Saint-Martin",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "toilets:wheelchair": "no",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1278464846,
+   "lat": 48.8796418,
+   "lon": 2.3561714,
+   "tags": {
+    "check_date:wheelchair": "2023-10-31",
+    "level": "1",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279471593,
+   "lat": 48.8652089,
+   "lon": 2.3985356,
+   "tags": {
+    "check_date:wheelchair": "2026-05-31",
+    "name": "Place Gambetta",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279471595,
+   "lat": 48.8645961,
+   "lon": 2.3984651,
+   "tags": {
+    "name": "Père Lachaise",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279471596,
+   "lat": 48.8649634,
+   "lon": 2.3989527,
+   "tags": {
+    "name": "Mairie du 20e (Hôpital)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279801131,
+   "lat": 48.8708813,
+   "lon": 2.3611342,
+   "tags": {
+    "name": "Boulevard de Magenta",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279836402,
+   "lat": 48.8739653,
+   "lon": 2.3858518,
+   "tags": {
+    "name": "Rue des Pyrénées",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279836411,
+   "lat": 48.8738548,
+   "lon": 2.38557,
+   "tags": {
+    "check_date:wheelchair": "2025-10-15",
+    "name": "Rue de Belleville",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1279836413,
+   "lat": 48.8739981,
+   "lon": 2.3851386,
+   "tags": {
+    "name": "Rue Clavel",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1280690315,
+   "lat": 48.875932,
+   "lon": 2.3590599,
+   "tags": {
+    "check_date:wheelchair": "2026-06-07",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147777",
+    "name": "Rue du 8 Mai 1945",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1286575311,
+   "lat": 48.8487927,
+   "lon": 2.3949891,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148569",
+    "name": "Boulevard Voltaire",
+    "note": "Accès uniquement au métro 9 et au RER A.",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1290450354,
+   "lat": 48.8753731,
+   "lon": 2.3987807,
+   "tags": {
+    "name": "Télégraphe- 1- Rue du Télégraphe",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "station": "Télégraphe",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1290926239,
+   "lat": 48.8639449,
+   "lon": 2.3699993,
+   "tags": {
+    "name": "Rue Oberkampf",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1291954620,
+   "lat": 48.8631929,
+   "lon": 2.3859356,
+   "tags": {
+    "artist_name": "Hector Guimard",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147891",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "2016-02-12",
+    "name": "Avenue de la République",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "ref:mhs": "PA00086549",
+    "source:heritage": "Base Mérimée 2016",
+    "tourism": "artwork",
+    "wheelchair": "no",
+    "wikipedia": "fr:Édicule Guimard"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1292131438,
+   "lat": 48.8644685,
+   "lon": 2.3686794,
+   "tags": {
+    "name": "Boulevard Voltaire Cirque d'hiver",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1298884187,
+   "lat": 48.8606253,
+   "lon": 2.3751888,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148308",
+    "name": "Rue Popincourt",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1300079809,
+   "lat": 48.8582832,
+   "lon": 2.3896042,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147950",
+    "name": "Rue de Mont-Louis",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1300079812,
+   "lat": 48.8582521,
+   "lon": 2.3902893,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147949",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Boulevard de Charonne",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086787",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "wheelchair": "no",
+    "wikidata": "Q1785459",
+    "wikipedia": "fr:Philippe Auguste (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1300281712,
+   "lat": 48.8475236,
+   "lon": 2.3960502,
+   "tags": {
+    "entrance": "emergency",
+    "exit": "emergency",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148568",
+    "name": "issue de secours - Avenue du Bel-Air",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1301125422,
+   "lat": 48.8556611,
+   "lon": 2.3700779,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148761",
+    "name": "Rue du Pasteur Wagner",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1301281035,
+   "lat": 48.8593257,
+   "lon": 2.3717368,
+   "tags": {
+    "check_date:wheelchair": "2024-10-08",
+    "name": "Rue du chemin Vert",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1301310263,
+   "lat": 48.856587,
+   "lon": 2.3704984,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147741",
+    "name": "Rue Saint-Sabin",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307180496,
+   "lat": 48.8584254,
+   "lon": 2.3792805,
+   "tags": {
+    "check_date:wheelchair": "2024-10-06",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148317",
+    "name": "Mairie du 11e",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "source": "survey 2013",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259005,
+   "lat": 48.8583922,
+   "lon": 2.378945,
+   "tags": {
+    "check_date:wheelchair": "2024-10-06",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148316",
+    "name": "Rue Sedaine",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259035,
+   "lat": 48.8609956,
+   "lon": 2.3745591,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148309",
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259042,
+   "lat": 48.8618135,
+   "lon": 2.3731857,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148312",
+    "name": "Boulevard Richard-Lenoir",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259149,
+   "lat": 48.8574501,
+   "lon": 2.3805061,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148840",
+    "name": "Rue Richard-Lenoir",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259164,
+   "lat": 48.8574968,
+   "lon": 2.3808198,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148313",
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259170,
+   "lat": 48.8611881,
+   "lon": 2.374764,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148310",
+    "name": "Saint-Ambroise",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "limited"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259187,
+   "lat": 48.8619408,
+   "lon": 2.3733584,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148311",
+    "name": "Rue Saint-Sébastien",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307259208,
+   "lat": 48.8575821,
+   "lon": 2.3807009,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148315",
+    "name": "Place Léon Blum",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307325765,
+   "lat": 48.8555169,
+   "lon": 2.3837583,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148323",
+    "name": "Rue Gobert",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "toilets:wheelchair": "no",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1307325874,
+   "lat": 48.8556153,
+   "lon": 2.3839772,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148322",
+    "name": "Rue de Belfort",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "toilets:wheelchair": "no",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1319529585,
+   "lat": 48.8820083,
+   "lon": 2.3934583,
+   "tags": {
+    "check_date:wheelchair": "2023-03-25",
+    "layer": "-1",
+    "name": "Place de Rhin-et-Danube",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1334006632,
+   "lat": 48.8503094,
+   "lon": 2.3841897,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148200",
+    "name": "Rue Faidherbe",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1336163508,
+   "lat": 48.8461065,
+   "lon": 2.3752027,
+   "tags": {
+    "check_date:wheelchair": "2024-05-25",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147984",
+    "name": "Rue Legraverend",
+    "railway": "subway_entrance",
+    "ref": "10",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1336163532,
+   "lat": 48.8517727,
+   "lon": 2.3739023,
+   "tags": {
+    "exit": "only",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148195",
+    "name": "Rue de Charonne",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1336163547,
+   "lat": 48.8459545,
+   "lon": 2.37525,
+   "tags": {
+    "check_date:wheelchair": "2024-05-25",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147985",
+    "name": "Rue de Chalon",
+    "railway": "subway_entrance",
+    "ref": "11",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1337999699,
+   "lat": 48.8517689,
+   "lon": 2.3271537,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148445",
+    "name": "Rue de Sèvres",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1351811584,
+   "lat": 48.8531289,
+   "lon": 2.3704126,
+   "tags": {
+    "check_date:wheelchair": "2024-03-30",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148192",
+    "name": "Rue du Faubourg Saint-Antoine (Hopital des Quinze-Vingts)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1352821529,
+   "lat": 48.8519992,
+   "lon": 2.3697904,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148660",
+    "name": "Rue de Lyon (Port de l'Arsenal)",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1376039414,
+   "lat": 48.8472408,
+   "lon": 2.386571,
+   "tags": {
+    "name": "Boulevard Diderot",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1376039415,
+   "lat": 48.8472937,
+   "lon": 2.3870516,
+   "tags": {
+    "name": "Rue Claude Tillier",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1420442958,
+   "lat": 48.8500227,
+   "lon": 2.3842099,
+   "tags": {
+    "check_date:wheelchair": "2024-07-08",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148199",
+    "name": "Rue Chaligny",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1445881449,
+   "lat": 48.8761687,
+   "lon": 2.3366396,
+   "tags": {
+    "name": "Rue de Châteaudun",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1445883728,
+   "lat": 48.876189,
+   "lon": 2.3385952,
+   "tags": {
+    "check_date:wheelchair": "2022-09-18",
+    "name": "Rue Bourdaloue (Église Notre-Dame-de-Lorette)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1445883730,
+   "lat": 48.8762406,
+   "lon": 2.3386163,
+   "tags": {
+    "name": "Rue Bourdaloue (Église Notre-Dame-de-Lorette)",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1468378338,
+   "lat": 48.8511692,
+   "lon": 2.3758861,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210110",
+    "name": "Rue Traversière",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1472147733,
+   "lat": 48.8703476,
+   "lon": 2.3256093,
+   "tags": {
+    "highway": "elevator",
+    "name": "Place de la Madeleine",
+    "name:etymology:wikidata": "Q330564",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1472170373,
+   "lat": 48.8846829,
+   "lon": 2.298006,
+   "tags": {
+    "check_date:wheelchair": "2025-10-13",
+    "name": "Place du Maréchal Juin",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1472170374,
+   "lat": 48.8847307,
+   "lon": 2.2976575,
+   "tags": {
+    "check_date:wheelchair": "2026-07-20",
+    "name": "Square Albert Besnard",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1472224814,
+   "lat": 48.8745808,
+   "lon": 2.2935194,
+   "tags": {
+    "name": "Avenue de la Grande Armée",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1477628220,
+   "lat": 48.8672199,
+   "lon": 2.3533263,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147817",
+    "name": "Square Émile Chautemps",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1481165973,
+   "lat": 48.8477733,
+   "lon": 2.3022497,
+   "tags": {
+    "name": "Boulevard Garibaldi Côté des numéros impairs",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1489806650,
+   "lat": 48.8610362,
+   "lon": 2.3210523,
+   "tags": {
+    "description": "Assemblée Nationale",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1489806658,
+   "lat": 48.8612624,
+   "lon": 2.3203741,
+   "tags": {
+    "description": "Assemblée Nationale",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1489807146,
+   "lat": 48.8602661,
+   "lon": 2.3211587,
+   "tags": {
+    "access": "emergency",
+    "description": "Assemblée Nationale",
+    "panoramax": "5b766a1f-695a-4314-999a-f2ac7496e0fd",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1490090140,
+   "lat": 48.8493444,
+   "lon": 2.2984904,
+   "tags": {
+    "name": "Avenue de la Motte-Picquet",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1499640534,
+   "lat": 48.8492879,
+   "lon": 2.2983916,
+   "tags": {
+    "name": "Avenue de la Motte-Piquet",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1499641644,
+   "lat": 48.8492786,
+   "lon": 2.2984041,
+   "tags": {
+    "name": "Avenue de la Motte-Piquet",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1512074304,
+   "lat": 48.8734841,
+   "lon": 2.3302393,
+   "tags": {
+    "name": "Haussmann-Mogador (Grands Magasins)",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1528117745,
+   "lat": 48.8473884,
+   "lon": 2.3864281,
+   "tags": {
+    "name": "Rue de Reuilly",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1528118940,
+   "lat": 48.8469807,
+   "lon": 2.3842681,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148822",
+    "name": "Rue de Chaligny",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1549563350,
+   "lat": 48.8795979,
+   "lon": 2.3890883,
+   "tags": {
+    "name": "Rue Botzaris",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1554676225,
+   "lat": 48.8545976,
+   "lon": 2.385687,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148318",
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577479588,
+   "lat": 48.8545665,
+   "lon": 2.3857403,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210135",
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577479591,
+   "lat": 48.8544898,
+   "lon": 2.3854672,
+   "tags": {
+    "exit_only": "no",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148320",
+    "name": "Rue de Charonne",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577479944,
+   "lat": 48.8518887,
+   "lon": 2.3898029,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148326",
+    "name": "Boulevard Voltaire",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577481481,
+   "lat": 48.8486935,
+   "lon": 2.3948895,
+   "tags": {
+    "exit": "yes",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148569",
+    "name": "Boulevard Voltaire",
+    "note": "Sortie uniquement.",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577481488,
+   "lat": 48.8487051,
+   "lon": 2.3970106,
+   "tags": {
+    "check_date:wheelchair": "2025-07-18",
+    "destination": "57;N11",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148328",
+    "name": "Avenue de Taillebourg",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577975884,
+   "lat": 48.8542111,
+   "lon": 2.3690312,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147742",
+    "name": "Boulevard Richard-Lenoir",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1577975915,
+   "lat": 48.8535785,
+   "lon": 2.3702356,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148194",
+    "name": "Rue de la Roquette",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1713195678,
+   "lat": 48.8616231,
+   "lon": 2.3477768,
+   "tags": {
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte Lescot",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no",
+    "wikidata": "Q3398924"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1824509174,
+   "lat": 48.8741951,
+   "lon": 2.3314573,
+   "tags": {
+    "level": "0",
+    "name": "Saint-Lazare RER Haussmann - Rue de Mogador",
+    "operator": "SNCF Gares & Connexions",
+    "operator:wikidata": "Q3098278",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1841593352,
+   "lat": 48.8618956,
+   "lon": 2.3465941,
+   "tags": {
+    "entrance": "yes",
+    "level": "-3",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1891141530,
+   "lat": 48.8724849,
+   "lon": 2.356165,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148765",
+    "name": "Boulevard de Strasbourg",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1920884346,
+   "lat": 48.8846542,
+   "lon": 2.3426667,
+   "tags": {
+    "addr:housenumber": "2",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1931490790,
+   "lat": 48.846951,
+   "lon": 2.2952337,
+   "tags": {
+    "name": "Rue du Commerce",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1931490791,
+   "lat": 48.8470732,
+   "lon": 2.2952199,
+   "tags": {
+    "name": "Rue Fondary",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1962533364,
+   "lat": 48.8753188,
+   "lon": 2.2938433,
+   "tags": {
+    "name": "Avenue Carnot",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1986875859,
+   "lat": 48.8667337,
+   "lon": 2.3225698,
+   "tags": {
+    "name": "Rue Royale",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1986875861,
+   "lat": 48.8670025,
+   "lon": 2.3217243,
+   "tags": {
+    "check_date:wheelchair": "2024-02-14",
+    "name": "Avenue Gabriel",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2003145897,
+   "lat": 48.8610496,
+   "lon": 2.3534934,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148396",
+    "name": "Rue Geoffroy l'Angevin (Fondation Galeries Lafayette)",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2043865143,
+   "lat": 48.8825732,
+   "lon": 2.3704508,
+   "tags": {
+    "check_date:wheelchair": "2025-09-22",
+    "name": "Avenue Secrétan",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2043865150,
+   "lat": 48.8826515,
+   "lon": 2.3704501,
+   "tags": {
+    "check_date:wheelchair": "2025-09-22",
+    "name": "Avenue Jean Jaurès",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2077327145,
+   "lat": 48.8579536,
+   "lon": 2.3796204,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148314",
+    "name": "Square Denis Poulot",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2121960450,
+   "lat": 48.8839956,
+   "lon": 2.3047115,
+   "tags": {
+    "name": "Place Monseigneur Loutil",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2121960452,
+   "lat": 48.8813965,
+   "lon": 2.3153991,
+   "tags": {
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2121960476,
+   "lat": 48.8840604,
+   "lon": 2.3041586,
+   "tags": {
+    "name": "Avenue de Villiers",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2124630269,
+   "lat": 48.863994,
+   "lon": 2.3808071,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147888",
+    "name": "Rue Servan",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2157840443,
+   "lat": 48.8843439,
+   "lon": 2.3694611,
+   "tags": {
+    "name": "Bassin de la villette",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2180096943,
+   "lat": 48.882289,
+   "lon": 2.321267,
+   "tags": {
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "1978",
+    "name": "Boulevard des Batignolles",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086725",
+    "source": "survey",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 08/2011",
+    "survey:date": "2017-09-20",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2211556504,
+   "lat": 48.8575455,
+   "lon": 2.3509863,
+   "tags": {
+    "level": "-1",
+    "name": "Rue de la Coutellerie",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "limited"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2283655555,
+   "lat": 48.8841823,
+   "lon": 2.3676321,
+   "tags": {
+    "description": "Escalier Mécanique - Escalator",
+    "entrance": "exit",
+    "name": "Rue de l'Aqueduc",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2283655556,
+   "lat": 48.8841921,
+   "lon": 2.3674216,
+   "tags": {
+    "entrance": "exit",
+    "name": "Rue de l'Aqueduc",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2366290073,
+   "lat": 48.8503251,
+   "lon": 2.3841862,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148200",
+    "name": "Rue Faidherbe",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2368647343,
+   "lat": 48.8740086,
+   "lon": 2.3157814,
+   "tags": {
+    "name": "Rue de La Boétie côté des n° pairs",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2376352176,
+   "lat": 48.883096,
+   "lon": 2.3710458,
+   "tags": {
+    "name": "Quai de la Loire",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2376352187,
+   "lat": 48.8821898,
+   "lon": 2.3702756,
+   "tags": {
+    "level": "0",
+    "name": "Boulevard de la Villette",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2467545174,
+   "lat": 48.8528569,
+   "lon": 2.3352734,
+   "tags": {
+    "check_date:wheelchair": "2025-09-06",
+    "name": "Rue du Four",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2467558257,
+   "lat": 48.8758594,
+   "lon": 2.3285472,
+   "tags": {
+    "level": "-1",
+    "name": "Rue Saint-Lazare",
+    "railway": "subway_entrance",
+    "ref": "11",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2467558261,
+   "lat": 48.8757613,
+   "lon": 2.3288284,
+   "tags": {
+    "check_date:wheelchair": "2024-05-11",
+    "name": "Rue de Caumartin",
+    "railway": "subway_entrance",
+    "ref": "10",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2506561045,
+   "lat": 48.8767208,
+   "lon": 2.3583286,
+   "tags": {
+    "check_date:wheelchair": "2022-07-20",
+    "direction": "292",
+    "level": "0",
+    "name": "Rue d'Alsace",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2506668788,
+   "lat": 48.8767332,
+   "lon": 2.35913,
+   "tags": {
+    "direction": "200",
+    "level": "-1",
+    "name": "Galerie marchande",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2506668789,
+   "lat": 48.8761787,
+   "lon": 2.3589263,
+   "tags": {
+    "check_date:wheelchair": "2025-12-05",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148780",
+    "name": "Rue du 8 mai 1945",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2535336387,
+   "lat": 48.8476905,
+   "lon": 2.3963706,
+   "tags": {
+    "access": "yes",
+    "bicycle": "dismount",
+    "highway": "elevator",
+    "level": "0;-1",
+    "name": "Avenue du Bel-Air (RER)",
+    "operator": "RATP",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "source": "survey:2014",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2544195495,
+   "lat": 48.8494222,
+   "lon": 2.2981853,
+   "tags": {
+    "check_date:wheelchair": "2023-08-29",
+    "name": "Rue de Pondichéry",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2544806222,
+   "lat": 48.8506766,
+   "lon": 2.3000308,
+   "tags": {
+    "name": "Avenue de Suffren",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2582234147,
+   "lat": 48.8453933,
+   "lon": 2.310357,
+   "tags": {
+    "name": "Boulevard Garibaldi",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2587264435,
+   "lat": 48.8477008,
+   "lon": 2.3022056,
+   "tags": {
+    "name": "Boulevard Garibaldi Côté des numéros pairs",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2601038287,
+   "lat": 48.8626571,
+   "lon": 2.334578,
+   "tags": {
+    "layer": "-1",
+    "name": "Carrousel du Louvre",
+    "opening_hours": "08:00-21:00",
+    "panoramax": "c5857d30-8539-4bb0-b17d-fe2a1bca87b5",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2648634843,
+   "lat": 48.8653548,
+   "lon": 2.3347419,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148700",
+    "name": "Avenue de l'Opéra",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2648634848,
+   "lat": 48.8661579,
+   "lon": 2.3340719,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148649",
+    "layer": "-1",
+    "name": "Rue des Pyramides",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2799009843,
+   "lat": 48.8702837,
+   "lon": 2.3255715,
+   "tags": {
+    "name": "Place de la Madeleine",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2935106322,
+   "lat": 48.855159,
+   "lon": 2.3066474,
+   "tags": {
+    "name": "Avenue de la Motte-Picquet",
+    "railway": "subway_entrance",
+    "ref": "3"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2952450785,
+   "lat": 48.8766402,
+   "lon": 2.3927207,
+   "tags": {
+    "check_date:wheelchair": "2026-02-23",
+    "name": "Rue des Fêtes",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3118177703,
+   "lat": 48.8648999,
+   "lon": 2.3950365,
+   "tags": {
+    "name": "Place Martin Nadaud",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3118177705,
+   "lat": 48.8651022,
+   "lon": 2.394888,
+   "tags": {
+    "name": "Rue Orfila",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3203613551,
+   "lat": 48.8611538,
+   "lon": 2.3673557,
+   "tags": {
+    "name": "Rue Saint-Sébastien",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "source": "Bing",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3218316862,
+   "lat": 48.851802,
+   "lon": 2.3737897,
+   "tags": {
+    "description": "entrance only",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210111",
+    "name": "Ledru-Rollin",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3612399011,
+   "lat": 48.8563002,
+   "lon": 2.3944412,
+   "tags": {
+    "artist_name": "Hector Guimard",
+    "artwork_type": "architecture",
+    "check_date:wheelchair": "2023-05-02",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "mhs:inscription_date": "2016-02-12",
+    "name": "Alexandre-Dumas",
+    "railway": "subway_entrance",
+    "ref:mhs": "PA00086784",
+    "source:heritage": "Base Mérimée 2016",
+    "tourism": "artwork",
+    "wheelchair": "no",
+    "wikidata": "Q1577219",
+    "wikipedia": "fr:Édicule Guimard"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3617859651,
+   "lat": 48.8836977,
+   "lon": 2.3497964,
+   "tags": {
+    "name": "Boulevard de la Chapelle (côté impairs)",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3617859652,
+   "lat": 48.883814,
+   "lon": 2.3497779,
+   "tags": {
+    "name": "Boulevard de la Chapelle (côté pairs)",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3656927672,
+   "lat": 48.8781307,
+   "lon": 2.3813207,
+   "tags": {
+    "name": "Rue Botzaris",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3742604703,
+   "lat": 48.8453388,
+   "lon": 2.3739147,
+   "tags": {
+    "access:RATP": "yes",
+    "description": "Accès métro",
+    "direction": "W",
+    "door": "no",
+    "level": "0",
+    "line:RATP": "1",
+    "railway": "subway_entrance",
+    "source": "plan public",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3752203846,
+   "lat": 48.876142,
+   "lon": 2.3265614,
+   "tags": {
+    "access": "no",
+    "level": "-2",
+    "name": "Cour du Havre",
+    "note": "En travaux, sortie condamnée.",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3752203850,
+   "lat": 48.8757386,
+   "lon": 2.3286385,
+   "tags": {
+    "name": "Rue de Caumartin",
+    "railway": "subway_entrance",
+    "ref": "10",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3753296381,
+   "lat": 48.8613742,
+   "lon": 2.3464116,
+   "tags": {
+    "entrance": "yes",
+    "name": "Porte Berger",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no",
+    "wikidata": "Q3398893"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3764969642,
+   "lat": 48.8518284,
+   "lon": 2.341747,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Rue Danton",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3764969643,
+   "lat": 48.851813,
+   "lon": 2.3418126,
+   "tags": {
+    "check_date:wheelchair": "2022-08-23",
+    "name": "Boulevard Saint-Michel",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3844500957,
+   "lat": 48.8514081,
+   "lon": 2.3142627,
+   "tags": {
+    "check_date:wheelchair": "2025-09-15",
+    "name": "Place André Tardieu",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4036868807,
+   "lat": 48.8800712,
+   "lon": 2.3570935,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "ESE",
+    "level": "-2",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4036868811,
+   "lat": 48.8801178,
+   "lon": 2.3568928,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "SSW",
+    "level": "-1",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4036868819,
+   "lat": 48.8802371,
+   "lon": 2.357217,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "ESE",
+    "level": "-2",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4050884846,
+   "lat": 48.8767107,
+   "lon": 2.3592174,
+   "tags": {
+    "direction": "200",
+    "level": "-1",
+    "name": "Galerie marchande",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4051218210,
+   "lat": 48.8759808,
+   "lon": 2.3261186,
+   "tags": {
+    "access:RATP": "yes",
+    "check_date:wheelchair": "2024-01-19",
+    "direction": "S",
+    "door": "no",
+    "entrance": "main",
+    "level": "-1",
+    "line:RATP": "3;12;13;14",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4051270978,
+   "lat": 48.8763863,
+   "lon": 2.3596253,
+   "tags": {
+    "level": "0",
+    "name": "Place du 11 novembre 1918",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4067925154,
+   "lat": 48.8822505,
+   "lon": 2.3380249,
+   "tags": {
+    "check_date:wheelchair": "2025-03-05",
+    "name": "Place Pigalle",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "knowledge;survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4067925156,
+   "lat": 48.8823864,
+   "lon": 2.3375312,
+   "tags": {
+    "check_date:wheelchair": "2026-03-13",
+    "name": "Place Pigalle",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4067925157,
+   "lat": 48.882429,
+   "lon": 2.3372862,
+   "tags": {
+    "check_date:wheelchair": "2026-03-13",
+    "name": "Place Pigalle",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4077261450,
+   "lat": 48.8741956,
+   "lon": 2.3315141,
+   "tags": {
+    "level": "0",
+    "name": "Saint-Lazare RER Haussmann - Rue de Mogador",
+    "operator": "SNCF Gares & Connexions",
+    "operator:wikidata": "Q3098278",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4083299230,
+   "lat": 48.845923,
+   "lon": 2.3548738,
+   "tags": {
+    "entrance": "exit",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088291275,
+   "lat": 48.879887,
+   "lon": 2.3566618,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "SSW",
+    "level": "-1",
+    "line:RATP": "4",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088291280,
+   "lat": 48.8799099,
+   "lon": 2.3567127,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "ESE",
+    "level": "-1",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088644286,
+   "lat": 48.8798815,
+   "lon": 2.3561302,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "SSW",
+    "level": "-2",
+    "line:RATP": "4",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088645299,
+   "lat": 48.8799077,
+   "lon": 2.3560465,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "SW",
+    "level": "-2",
+    "line:RATP": "4",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088645331,
+   "lat": 48.8801123,
+   "lon": 2.3571555,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "ESE",
+    "level": "-2",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088645341,
+   "lat": 48.8802807,
+   "lon": 2.3572385,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "ESE",
+    "level": "-2",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4088645342,
+   "lat": 48.880366,
+   "lon": 2.3572799,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "ESE",
+    "level": "-2",
+    "line:RATP": "5",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4099594696,
+   "lat": 48.8751712,
+   "lon": 2.3262349,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "N",
+    "level": "-5",
+    "line:RATP": "3;13;14",
+    "railway": "subway_entrance",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4100056153,
+   "lat": 48.8747365,
+   "lon": 2.3286525,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "SW",
+    "level": "-5",
+    "line:RATP": "9;A",
+    "railway": "subway_entrance",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4100121813,
+   "lat": 48.8756199,
+   "lon": 2.3281414,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "W",
+    "level": "-5",
+    "line:RATP": "12",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4100121828,
+   "lat": 48.8758535,
+   "lon": 2.3280694,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "W",
+    "level": "-5",
+    "line:RATP": "12",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4105299930,
+   "lat": 48.8792588,
+   "lon": 2.3622347,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "WSW",
+    "level": "-1",
+    "line:RATP": "7",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4107740128,
+   "lat": 48.845351,
+   "lon": 2.3741511,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147983",
+    "level": "-1",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4123427426,
+   "lat": 48.845549,
+   "lon": 2.373756,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "SW",
+    "level": "-1",
+    "line:RATP": "1",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4126621094,
+   "lat": 48.8556461,
+   "lon": 2.3474401,
+   "tags": {
+    "emergency": "only",
+    "railway": "subway_entrance"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4170171719,
+   "lat": 48.8807491,
+   "lon": 2.3741042,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148060",
+    "name": "Avenue Simón Bolívar",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre;mise à jour : 2014;survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4212981367,
+   "lat": 48.8800163,
+   "lon": 2.3990042,
+   "tags": {
+    "destination": "T3b;48",
+    "name": "Boulevard Sérurier",
+    "railway": "subway_entrance",
+    "source": "survey",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5321652780,
+   "lat": 48.862845,
+   "lon": 2.3465872,
+   "tags": {
+    "level": "0",
+    "name": "Rue Montorgueil",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5321652781,
+   "lat": 48.8603747,
+   "lon": 2.346447,
+   "tags": {
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte Marguerite de Navarre",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5513321979,
+   "lat": 48.8506809,
+   "lon": 2.3301684,
+   "tags": {
+    "name": "Rue Coëtlogon",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5913737144,
+   "lat": 48.8631753,
+   "lon": 2.3438818,
+   "tags": {
+    "check_date:wheelchair": "2026-04-19",
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte du Jour",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no",
+    "wikidata": "Q3399178"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5914444314,
+   "lat": 48.8623439,
+   "lon": 2.343435,
+   "tags": {
+    "entrance": "main",
+    "level": "-3",
+    "name": "Porte du Louvre",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5926169099,
+   "lat": 48.8672173,
+   "lon": 2.3474922,
+   "tags": {
+    "access": "customers",
+    "description": "Accès pour les possesseurs de tickets seulement.",
+    "description:en": "Access for ticket holders only",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147920",
+    "level": "0",
+    "name": "Rue des Petits Carreaux",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5926169118,
+   "lat": 48.8676297,
+   "lon": 2.3455211,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147919",
+    "level": "0",
+    "name": "Rue du Sentier",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5926452946,
+   "lat": 48.8665402,
+   "lon": 2.3522021,
+   "tags": {
+    "check_date:wheelchair": "2024-05-13",
+    "gtfs:stop_id": "IDFM:39928",
+    "name": "Rue Réaumur",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5926452948,
+   "lat": 48.8664974,
+   "lon": 2.3521765,
+   "tags": {
+    "check_date:wheelchair": "2024-05-13",
+    "gtfs:stop_id": "IDFM:39928",
+    "name": "Rue Réaumur",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5926463768,
+   "lat": 48.8661225,
+   "lon": 2.3523324,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147819",
+    "name": "Boulevard de Sébastopol",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5954227359,
+   "lat": 48.8616404,
+   "lon": 2.3452336,
+   "tags": {
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte du Pont Neuf",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no",
+    "wikidata": "Q3399186"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6021999022,
+   "lat": 48.8624146,
+   "lon": 2.3141796,
+   "tags": {
+    "access:RATP": "yes",
+    "amenity": "ticket_validator",
+    "barrier": "turnstile",
+    "direction": "SE",
+    "fee": "yes",
+    "level": "-2",
+    "line:RATP": "8;13",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6021999023,
+   "lat": 48.8623768,
+   "lon": 2.3139459,
+   "tags": {
+    "access:RATP": "yes",
+    "amenity": "ticket_validator",
+    "barrier": "turnstile",
+    "direction": "SE",
+    "fee": "yes",
+    "level": "-2",
+    "line:RATP": "8;13",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6024281259,
+   "lat": 48.853464,
+   "lon": 2.3456654,
+   "tags": {
+    "access:RATP": "yes",
+    "direction": "E",
+    "level": "-2",
+    "line:RATP": "10;RER B",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6132707328,
+   "lat": 48.8563123,
+   "lon": 2.3944953,
+   "tags": {
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6347770451,
+   "lat": 48.8716411,
+   "lon": 2.293627,
+   "tags": {
+    "artist_name": "Guimard",
+    "check_date:wheelchair": "2024-12-14",
+    "name": "Avenue des Portugais",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6347770453,
+   "lat": 48.8717143,
+   "lon": 2.2934029,
+   "tags": {
+    "artist_name": "Guimard",
+    "check_date:wheelchair": "2024-07-13",
+    "name": "Avenue Kléber",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6409438585,
+   "lat": 48.865462,
+   "lon": 2.3674763,
+   "tags": {
+    "name": "Rue Jean-Pierre Timbaud",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6409536332,
+   "lat": 48.8653425,
+   "lon": 2.3672446,
+   "tags": {
+    "name": "Rue Amelot",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6488162385,
+   "lat": 48.8650602,
+   "lon": 2.3584056,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148404",
+    "name": "Rue des Vertus",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6488285685,
+   "lat": 48.8659232,
+   "lon": 2.3250893,
+   "tags": {
+    "name": "Rue Cambon",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6497877888,
+   "lat": 48.8738969,
+   "lon": 2.384829,
+   "tags": {
+    "name": "Avenue Simon Bolivar",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6533557913,
+   "lat": 48.8505805,
+   "lon": 2.2929562,
+   "tags": {
+    "entrance": "yes",
+    "name": "Rue Viala",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6533557914,
+   "lat": 48.8506608,
+   "lon": 2.2930177,
+   "tags": {
+    "entrance": "exit",
+    "name": "Rue Desaix",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6550970318,
+   "lat": 48.8555695,
+   "lon": 2.3256627,
+   "tags": {
+    "oneway": "yes",
+    "public_transport": "stop_area",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6550976327,
+   "lat": 48.8515221,
+   "lon": 2.3265561,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148444",
+    "name": "Boulevard Raspail",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6831022802,
+   "lat": 48.8741885,
+   "lon": 2.3314399,
+   "tags": {
+    "level": "0",
+    "name": "Saint-Lazare RER Haussmann - Rue de Mogador",
+    "operator": "SNCF Gares & Connexions",
+    "operator:wikidata": "Q3098278",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6973842885,
+   "lat": 48.8707185,
+   "lon": 2.3608687,
+   "tags": {
+    "name": "Rue de Lancry",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 7058553668,
+   "lat": 48.8557116,
+   "lon": 2.3256228,
+   "tags": {
+    "check_date:wheelchair": "2024-03-22",
+    "panoramax": "df08d4ca-effc-473d-8a5f-cdf97a9d4378",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 7362749300,
+   "lat": 48.8512344,
+   "lon": 2.3434335,
+   "tags": {
+    "level": "-1",
+    "name": "Boulevard Saint-Germain (Musée du Moyen-Âge)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 7534122786,
+   "lat": 48.8534262,
+   "lon": 2.3683992,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148661",
+    "name": "Place de la Bastille (Place des Vosges)",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 7921510821,
+   "lat": 48.8460923,
+   "lon": 2.3547281,
+   "tags": {
+    "check_date:wheelchair": "2026-04-14",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 7958737746,
+   "lat": 48.8715661,
+   "lon": 2.3760913,
+   "tags": {
+    "check_date:wheelchair": "2024-11-03",
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50208156",
+    "name": "Rue de la Présentation",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 7958737748,
+   "lat": 48.8715937,
+   "lon": 2.375599,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50208155",
+    "name": "Cour de la Grâce de Dieu",
+    "railway": "subway_entrance",
+    "ref": "9",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8066810047,
+   "lat": 48.8713601,
+   "lon": 2.3763889,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50208157",
+    "name": "Rue de l'Orillon",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8093359968,
+   "lat": 48.884356,
+   "lon": 2.3595953,
+   "tags": {
+    "access": "customers",
+    "access:RATP": "yes",
+    "barrier": "yes",
+    "level": "-2",
+    "line:RATP": "2",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8267010251,
+   "lat": 48.8830912,
+   "lon": 2.3087147,
+   "tags": {
+    "name": "Avenue de Villiers",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8273908820,
+   "lat": 48.8581611,
+   "lon": 2.3532227,
+   "tags": {
+    "level": "0",
+    "name": "Rue du Temple",
+    "railway": "subway_entrance",
+    "ref": "7",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8294180737,
+   "lat": 48.8817346,
+   "lon": 2.3719355,
+   "tags": {
+    "check_date:wheelchair": "2025-08-06",
+    "description": "Sortie uniquement",
+    "description:en": "Exit only",
+    "name": "Rue de Chaumont",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9029759761,
+   "lat": 48.8697426,
+   "lon": 2.3705017,
+   "tags": {
+    "name": "Rue d'Aix",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9068717419,
+   "lat": 48.8696342,
+   "lon": 2.3697137,
+   "tags": {
+    "name": "Rue Bichat - Canal Saint-Martin",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9545578222,
+   "lat": 48.8624196,
+   "lon": 2.3439389,
+   "tags": {
+    "door": "yes",
+    "entrance": "yes",
+    "level": "0",
+    "name": "Porte du Louvre",
+    "railway": "subway_entrance",
+    "ref": "8",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9547125104,
+   "lat": 48.8626153,
+   "lon": 2.3470442,
+   "tags": {
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte Rambuteau",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no",
+    "wikidata": "Q3398938"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9554596026,
+   "lat": 48.8624385,
+   "lon": 2.3456578,
+   "tags": {
+    "door": "no",
+    "entrance": "yes",
+    "level": "0",
+    "name": "Porte Saint-Eustache",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "yes",
+    "wikidata": "Q3398947"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9554596027,
+   "lat": 48.8618343,
+   "lon": 2.3477173,
+   "tags": {
+    "entrance": "yes",
+    "level": "0",
+    "name": "Porte Lescot",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "yes",
+    "wikidata": "Q3398924"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9554596028,
+   "lat": 48.8618386,
+   "lon": 2.3476992,
+   "tags": {
+    "entrance": "yes",
+    "level": "0",
+    "name": "Porte Lescot",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "yes",
+    "wikidata": "Q3398924"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9554596030,
+   "lat": 48.8613568,
+   "lon": 2.3464837,
+   "tags": {
+    "entrance": "yes",
+    "name": "Porte Berger",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes",
+    "wikidata": "Q3398893"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9554596034,
+   "lat": 48.8605902,
+   "lon": 2.3465281,
+   "tags": {
+    "door": "sliding",
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte Marguerite de Navarre",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9554596035,
+   "lat": 48.8605973,
+   "lon": 2.3464988,
+   "tags": {
+    "door": "sliding",
+    "entrance": "main",
+    "level": "0",
+    "name": "Porte Marguerite de Navarre",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9701911585,
+   "lat": 48.8584305,
+   "lon": 2.3421839,
+   "tags": {
+    "name": "Pont Neuf - Monnaie de Paris",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9898424255,
+   "lat": 48.8511251,
+   "lon": 2.3758367,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210110",
+    "name": "Rue Traversière",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10049022960,
+   "lat": 48.8751585,
+   "lon": 2.2936217,
+   "tags": {
+    "description": "accès RER A",
+    "highway": "elevator",
+    "level": "0;-1",
+    "name": "Avenue Carnot",
+    "operator": "RATP",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10088308582,
+   "lat": 48.8672622,
+   "lon": 2.3124306,
+   "tags": {
+    "name": "Avenue du Général Eisenhower (Palais de la Découverte)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10099270353,
+   "lat": 48.8575322,
+   "lon": 2.350977,
+   "tags": {
+    "level": "-1",
+    "name": "Rue de la Coutellerie",
+    "railway": "subway_entrance",
+    "ref": "3",
+    "wheelchair": "limited"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10588216324,
+   "lat": 48.8755788,
+   "lon": 2.3977301,
+   "tags": {
+    "name": "Rue du Docteur Potain",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "station": "Télégraphe",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10805568914,
+   "lat": 48.8514939,
+   "lon": 2.3763586,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50210108",
+    "name": "Avenue Ledru-Rollin",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11002275109,
+   "lat": 48.8740366,
+   "lon": 2.384588,
+   "tags": {
+    "name": "Square Bolivar",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11367296616,
+   "lat": 48.8514863,
+   "lon": 2.3981902,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50147947",
+    "name": "Boulevard de Charonne",
+    "railway": "subway_entrance",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11390400837,
+   "lat": 48.8739748,
+   "lon": 2.3843203,
+   "tags": {
+    "name": "Rue de l'Équerre",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11420593324,
+   "lat": 48.8767486,
+   "lon": 2.3590715,
+   "tags": {
+    "direction": "200",
+    "level": "-1",
+    "name": "Galerie marchande",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11549274675,
+   "lat": 48.8626393,
+   "lon": 2.3469403,
+   "tags": {
+    "entrance": "yes",
+    "level": "0",
+    "name": "Porte Rambuteau",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "yes",
+    "wikidata": "Q3398938"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12596143656,
+   "lat": 48.8803756,
+   "lon": 2.3094394,
+   "tags": {
+    "alt_name": "Monceau",
+    "check_date:wheelchair": "2024-04-29",
+    "heritage": "3",
+    "heritage:operator": "mhs",
+    "level": "-1",
+    "mhs:inscription_date": "1978-05-29",
+    "name": "Place de la République-Dominicaine",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "ref:mhs": "PA00086724",
+    "source:heritage": "data.gouv.fr:Ministère de la Culture - 04/2015",
+    "wheelchair": "no",
+    "wikidata": "Q1717241",
+    "wikipedia": "fr:Monceau (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 13285269459,
+   "lat": 48.8511584,
+   "lon": 2.3763986,
+   "tags": {
+    "gtfs:stop_id": "IDFM:StopPlaceEntrance:50148197",
+    "name": "Rue du Faubourg Saint-Antoine",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 13476291297,
+   "lat": 48.8716493,
+   "lon": 2.3427777,
+   "tags": {
+    "name": "Boulevard Montmartre (Musée Grévin)",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  },
+  {
+   "id": 13645379537,
+   "lat": 48.8661835,
+   "lon": 2.3239337,
+   "tags": {
+    "name": "Rue de Rivoli",
+    "railway": "subway_entrance",
+    "ref": "2",
+    "wheelchair": "no"
+   },
+   "type": "node"
+  }
+ ],
+ "generator": "Overpass API 0.7.62.11 87bfad18",
+ "osm3s": {
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp_osm_base": "2026-07-26T20:17:06Z"
+ },
+ "version": 0.6
+}

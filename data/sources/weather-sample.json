@@ -1,0 +1,23 @@
+{
+ "current": {
+  "interval": 900,
+  "precipitation": 0.0,
+  "temperature_2m": 21.9,
+  "time": "2026-07-26T22:15",
+  "weather_code": 2
+ },
+ "current_units": {
+  "interval": "seconds",
+  "precipitation": "mm",
+  "temperature_2m": "°C",
+  "time": "iso8601",
+  "weather_code": "wmo code"
+ },
+ "elevation": 36.0,
+ "generationtime_ms": 0.0692605972290039,
+ "latitude": 48.86,
+ "longitude": 2.3599997,
+ "timezone": "Europe/Paris",
+ "timezone_abbreviation": "GMT+2",
+ "utc_offset_seconds": 7200
+}

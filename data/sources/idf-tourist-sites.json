@@ -1,0 +1,2505 @@
+{
+ "results": [
+  {
+   "adresse": "1 place de France",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.7336972221,
+    "lon": 2.29033215427
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.290332154267208,
+      48.73369722208547,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "0",
+   "nom_carto": "Opéra de Massy",
+   "nomcom": "MASSY",
+   "objectid": "157",
+   "typo_niv3": "Diffusion du spectacle vivant"
+  },
+  {
+   "adresse": "PLACE DE LA CONCORDE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8654594177,
+    "lon": 2.32122499526
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.321224995263475,
+      48.8654594176596,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75108",
+   "nom_carto": "Place de la Concorde",
+   "nomcom": "Paris",
+   "objectid": "169",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "PORTE PRINCIPALE - AVENUE WINSTON CHURCHILL",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8662506313,
+    "lon": 2.31253650689
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.312536506893655,
+      48.86625063131765,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75108",
+   "nom_carto": "Nef du Grand Palais",
+   "nomcom": "Paris",
+   "objectid": "175",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "24 RUE NUNGESSER ET COLI - IMMEUBLE MOLITOR",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8433592709,
+    "lon": 2.25140577505
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.251405775054557,
+      48.84335927087023,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Le Corbusier (appartement-atelier)",
+   "nomcom": "Paris",
+   "objectid": "228",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "ESCALE DU PECQ",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.8961595726,
+    "lon": 2.10607550452
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.106075504519856,
+      48.89615957255109,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78481",
+   "nom_carto": "Escale du Pecq",
+   "nomcom": "PECQ (LE)",
+   "objectid": "437",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "QUAI DU LOING",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.3907462154,
+    "lon": 2.80745291355
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.807452913552202,
+      48.390746215383565,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77491",
+   "nom_carto": "Halte",
+   "nomcom": "VENEUX-LES-SABLONS",
+   "objectid": "470",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "45 QUAI ALFRED SISLEY",
+   "dep": "92",
+   "geo_point_2d": {
+    "lat": 48.9404378743,
+    "lon": 2.33506075259
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.335060752594009,
+      48.94043787428711,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "92078",
+   "nom_carto": "Port Sisley",
+   "nomcom": "VILLENEUVE-LA-GARENNE",
+   "objectid": "527",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "7 RUE DU GENERAL DE GAULLE",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.8124623691,
+    "lon": 3.08422449384
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      3.084224493836573,
+      48.812462369110776,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77131",
+   "nom_carto": null,
+   "nomcom": "COULOMMIERS",
+   "objectid": "546",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "29 BIS AVENUE JEAN JAURES",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.7650615618,
+    "lon": 2.16550289588
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.165502895880544,
+      48.76506156179725,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78322",
+   "nom_carto": null,
+   "nomcom": "JOUY EN JOSAS",
+   "objectid": "568",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "132 RUE DU GENERAL DE GAULLE",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.9274564834,
+    "lon": 2.04577420795
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.045774207947005,
+      48.927456483370925,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78498",
+   "nom_carto": null,
+   "nomcom": "POISSY",
+   "objectid": "574",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "2 RUE RONSARD",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8848321249,
+    "lon": 2.34421329424
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.344213294236312,
+      48.884832124927236,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75118",
+   "nom_carto": "Halle Saint-Pierre",
+   "nomcom": "Paris 18EME",
+   "objectid": "37",
+   "typo_niv3": "Diffusion de l'art (autre que musée)"
+  },
+  {
+   "adresse": "PARKING DE LA GARE SNCF DE VALMONDOIS",
+   "dep": "95",
+   "geo_point_2d": {
+    "lat": 49.0920295091,
+    "lon": 2.20174136008
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.201741360076336,
+      49.09202950911843,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "95628",
+   "nom_carto": "Musée des tramways à vapeur et des chemins de fer secondaires franç",
+   "nomcom": "VALMONDOIS",
+   "objectid": "375",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "RUE DU PORT AUX CERISES",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.6912799524,
+    "lon": 2.39161012888
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.391610128884009,
+      48.691279952396805,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91201",
+   "nom_carto": "Port aux Cerises",
+   "nomcom": "DRAVEIL",
+   "objectid": "522",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "PORT DE PLAISANCE LA HAUTE-ILE",
+   "dep": "93",
+   "geo_point_2d": {
+    "lat": 48.8536241272,
+    "lon": 2.53913397247
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.539133972470132,
+      48.8536241272153,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "93050",
+   "nom_carto": "Port de plaisance de Neuilly-sur-Marne",
+   "nomcom": "NEUILLY-SUR-MARNE",
+   "objectid": "528",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "1 RUE KLEBER",
+   "dep": "93",
+   "geo_point_2d": {
+    "lat": 48.857862703,
+    "lon": 2.43692048536
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.436920485362343,
+      48.85786270295908,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "93048",
+   "nom_carto": null,
+   "nomcom": "MONTREUIL",
+   "objectid": "610",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "81, RUE DU GENERAL DE GAULLE",
+   "dep": "95",
+   "geo_point_2d": {
+    "lat": 48.9691955989,
+    "lon": 2.30520749499
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.305207494994459,
+      48.9691955988971,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "95210",
+   "nom_carto": null,
+   "nomcom": "ENGHIEN LES BAINS",
+   "objectid": "625",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "17 RUE DES CARMES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8483633584,
+    "lon": 2.3476608213
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.34766082130447,
+      48.84836335839434,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Eglise Saint-Ephrem",
+   "nomcom": "Paris",
+   "objectid": "109",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "44 RUE MOLITOR",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8453342484,
+    "lon": 2.26005358376
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.260053583764675,
+      48.845334248427854,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Eglise Saint-François de Molitor",
+   "nomcom": "Paris",
+   "objectid": "226",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "11 AVENUE DU PRÉSIDENT WILSON",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8647292298,
+    "lon": 2.2979411319
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.29794113189537,
+      48.86472922979085,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Musée d'art moderne de la ville de Paris",
+   "nomcom": "Paris",
+   "objectid": "234",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "PLACE DU GÉNÉRAL DE GAULLE",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.5298781594,
+    "lon": 2.01119494062
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.011194940618992,
+      48.529878159373744,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91200",
+   "nom_carto": "Musée du chateau de dourdan",
+   "nomcom": "DOURDAN",
+   "objectid": "323",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "DOMAINE DE Saint-JEAN-DE-BEAUREGARD",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.6618828045,
+    "lon": 2.16399350015
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.163993500147619,
+      48.661882804475454,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91560",
+   "nom_carto": "Domaine de Saint-Jean de Beauregard",
+   "nomcom": "Saint-JEAN-DE-BEAUREGARD",
+   "objectid": "329",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "AVENUE DU Château DE MALMAISON",
+   "dep": "92",
+   "geo_point_2d": {
+    "lat": 48.8716984038,
+    "lon": 2.16908524426
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.169085244258448,
+      48.87169840378636,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "92063",
+   "nom_carto": "Musée national des Châteaux de Malmaison et Bois-Préau",
+   "nomcom": "RUEIL-MALMAISON",
+   "objectid": "341",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "RUE DU MOULIN MOREL",
+   "dep": "95",
+   "geo_point_2d": {
+    "lat": 49.1072091598,
+    "lon": 2.18324965763
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.183249657629533,
+      49.107209159764906,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "95628",
+   "nom_carto": "Maison de la Meunerie",
+   "nomcom": "VALMONDOIS",
+   "objectid": "374",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "41 QUAI AUX VINS",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.9966415852,
+    "lon": 1.72265311453
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      1.722653114526018,
+      48.996641585205744,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78335",
+   "nom_carto": "Marines de Limay",
+   "nomcom": "LIMAY",
+   "objectid": "515",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": null,
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.8940130608,
+    "lon": 2.10901339832
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.109013398323627,
+      48.8940130608213,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78481",
+   "nom_carto": "Zone porturaire du Pecq",
+   "nomcom": "LE PECQ",
+   "objectid": "539",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "PLACE CHARLES DE GAULLE \n/ VILLA SaintE CHRISTINE",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.746340473,
+    "lon": 2.26688437556
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.266884375557501,
+      48.74634047297564,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91645",
+   "nom_carto": null,
+   "nomcom": "VERRIERES LE BUISSON",
+   "objectid": "594",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "57 RUE CUVIER - MUSÉUM NATIONAL D'HISTOIRE NATURELLE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8432910609,
+    "lon": 2.35827319799
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.358273197991625,
+      48.84329106092364,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Serres du jardin des plantes",
+   "nomcom": "Paris",
+   "objectid": "102",
+   "typo_niv3": "Espace de loisirs, espace récréatif"
+  },
+  {
+   "adresse": "QUAI DE LA CHARENTE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8968792206,
+    "lon": 2.38366673355
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.383666733554922,
+      48.89687922057816,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75119",
+   "nom_carto": "Port du pont de Flandres",
+   "nomcom": "Paris",
+   "objectid": "256",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "RUE GAUTHIER 1ER",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.2655473342,
+    "lon": 2.69710290359
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.697102903591634,
+      48.26554733421198,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77333",
+   "nom_carto": "Château musée municipal de Nemours",
+   "nomcom": "NEMOURS",
+   "objectid": "276",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "RUE Saint-THIBAUD (SOUS L'HÔTEL DIEU)",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.5610891966,
+    "lon": 3.295237813
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      3.295237812997271,
+      48.56108919662725,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77379",
+   "nom_carto": "Souterrains",
+   "nomcom": "PROVINS",
+   "objectid": "285",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "4 BIS RUE DE LA DIVISION LECLERC",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.7296619199,
+    "lon": 2.27545416748
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.27545416748144,
+      48.72966191991736,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91377",
+   "nom_carto": null,
+   "nomcom": "MASSY",
+   "objectid": "587",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "8 RUE LÉO LAGRANGE",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.6307113769,
+    "lon": 2.34356847921
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.343568479211792,
+      48.63071137687794,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91549",
+   "nom_carto": "Cimetière et église orthodoxe russe ND-de-l'assomption",
+   "nomcom": "SaintE-GENEVIEVE-DES-BOIS",
+   "objectid": "328",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "ESCALE DE BERCY",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8345475211,
+    "lon": 2.38017930135
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.380179301354605,
+      48.834547521120975,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75112",
+   "nom_carto": "Escale de Bercy",
+   "nomcom": "Paris",
+   "objectid": "448",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "ESCALE DE L'ÎLE-AUX-CYGNES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8552931969,
+    "lon": 2.28721391156
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.287213911562335,
+      48.85529319694419,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Escale de l'ïle-aux-Cygnes Bir-Hakeim",
+   "nomcom": "Paris",
+   "objectid": "451",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "25 RUE RASPAIL",
+   "dep": "94",
+   "geo_point_2d": {
+    "lat": 48.8095796746,
+    "lon": 2.39001807161
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.390018071613248,
+      48.809579674609544,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "94041",
+   "nom_carto": "Centre d’art contemporain d’ivry - le crédac",
+   "nomcom": "IVRY-SUR-SEINE",
+   "objectid": "23",
+   "typo_niv3": "Diffusion de l'art (autre que musée)"
+  },
+  {
+   "adresse": "52 RUE DE L'ARBRE SEC",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8609098712,
+    "lon": 2.34254698342
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.342546983422724,
+      48.86090987123793,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75101",
+   "nom_carto": "Musée de la presse",
+   "nomcom": "Paris",
+   "objectid": "57",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "1 BIS RUE DES CARMES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8495195064,
+    "lon": 2.34837580341
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.348375803411161,
+      48.849519506358774,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Musée des collections historiques de la préfecture de police",
+   "nomcom": "Paris",
+   "objectid": "117",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "12 RUE BERBIER DU METZ",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8350145227,
+    "lon": 2.35087292044
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.350872920439979,
+      48.83501452270638,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75113",
+   "nom_carto": "Château de la Reine Blanche",
+   "nomcom": "Paris",
+   "objectid": "199",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "16 RUE DE LA FAISANDERIE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8706262934,
+    "lon": 2.27706132569
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.277061325686461,
+      48.87062629344455,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Musée de la contrefaçon",
+   "nomcom": "Paris",
+   "objectid": "235",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "28 RUE DE CHAILLOT",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8679666007,
+    "lon": 2.29825112399
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.298251123992146,
+      48.86796660068509,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Paroisse Saint-Pierre de Chaillot",
+   "nomcom": "Paris",
+   "objectid": "242",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "60 RUE DE BASSANO",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8717144915,
+    "lon": 2.30022833431
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.300228334312598,
+      48.871714491513046,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75108",
+   "nom_carto": "Espace culturel Louis Vuitton",
+   "nomcom": "Paris 8EME",
+   "objectid": "27",
+   "typo_niv3": "Diffusion de l'art (autre que musée)"
+  },
+  {
+   "adresse": "10 RUE PAVÉE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8560170495,
+    "lon": 2.36048814163
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.360488141629762,
+      48.8560170495335,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75104",
+   "nom_carto": "Synagogue de la rue Pavée",
+   "nomcom": "Paris",
+   "objectid": "101",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "1 RUE DES FOSSÉS-Saint-BERNARD - PLACE MOHAMMED-V",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8489629605,
+    "lon": 2.35742396222
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.357423962224569,
+      48.84896296054433,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Institut du monde Arabe",
+   "nomcom": "Paris",
+   "objectid": "113",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "54 RUE DES SaintS-PÈRES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8538244993,
+    "lon": 2.33000289875
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.330002898751689,
+      48.85382449927539,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75107",
+   "nom_carto": "Bibliothèque de la societe de l'histoire du protestantisme francais",
+   "nomcom": "Paris",
+   "objectid": "140",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "129 RUE DE GRENELLE - ESPLANADE DES INVALIDES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8576639388,
+    "lon": 2.31285057757
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.312850577574167,
+      48.85766393875757,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75107",
+   "nom_carto": "Hôtel national des Invalides",
+   "nomcom": "Paris",
+   "objectid": "146",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "211 AVENUE JEAN-JAURÈS - EPPGHV",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.890721135,
+    "lon": 2.39585164733
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.395851647330332,
+      48.89072113500908,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75119",
+   "nom_carto": "Parc de la Villette",
+   "nomcom": "Paris",
+   "objectid": "255",
+   "typo_niv3": "Espace de loisirs, espace récréatif"
+  },
+  {
+   "adresse": "LA GRILLE ROYALE - PARC DE MARLY",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.8591107655,
+    "lon": 2.1056760997
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.105676099702672,
+      48.85911076548305,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78350",
+   "nom_carto": "Musée promenade",
+   "nomcom": "LOUVECIENNES",
+   "objectid": "428",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": null,
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.9572721514,
+    "lon": 2.87190231017
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.871902310171798,
+      48.957272151408965,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77284",
+   "nom_carto": "Halte de Meaux-Saint-Remy",
+   "nomcom": "MEAUX",
+   "objectid": "501",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "RUE LAZARE PONTICELLI",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.97282514,
+    "lon": 2.90481290883
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.904812908830309,
+      48.97282513997414,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77284",
+   "nom_carto": "Musee de la Grande Guerre",
+   "nomcom": "MEAUX",
+   "objectid": "40",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "AVENUE WINSTON CHURCHILL",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8660486153,
+    "lon": 2.31451714885
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.314517148845302,
+      48.86604861526489,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75108",
+   "nom_carto": "Petit Palais - musée des beaux-arts de la ville de Paris",
+   "nomcom": "Paris",
+   "objectid": "177",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "Château DE THOIRY",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.8638458885,
+    "lon": 1.79605593762
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      1.796055937624183,
+      48.86384588851816,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78616",
+   "nom_carto": "Château de Thoiry",
+   "nomcom": "THOIRY",
+   "objectid": "308",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "1 PARVIS DE LA DÉFENSE - TOIT DE LA GRANDE ARCHE DE LA DÉFENSE",
+   "dep": "92",
+   "geo_point_2d": {
+    "lat": 48.891335197,
+    "lon": 2.23820905232
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.23820905231625,
+      48.891335196988564,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "92062",
+   "nom_carto": "Musée de l'informatique",
+   "nomcom": "Paris-LA DEFENSE",
+   "objectid": "339",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "RUE HENRI ROSSIGNOL",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.7032446358,
+    "lon": 2.40304717067
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.403047170674905,
+      48.70324463581897,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91657",
+   "nom_carto": "Port premier Paris - sud",
+   "nomcom": "VIGNEUX-SUR-SEINE",
+   "objectid": "476",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": null,
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 49.0297400729,
+    "lon": 3.03514686375
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      3.03514686374743,
+      49.02974007287058,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77257",
+   "nom_carto": "Halte de Lizy-sur-Ourcq",
+   "nomcom": "LIZY-SUR-OURCQ",
+   "objectid": "500",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "3 PLACE Château GAILLARD",
+   "dep": "95",
+   "geo_point_2d": {
+    "lat": 48.9875733004,
+    "lon": 2.31957786458
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.319577864580416,
+      48.987573300392675,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "95428",
+   "nom_carto": null,
+   "nomcom": "MONTMORENCY",
+   "objectid": "630",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "211, AVENUE JEAN JAURÈS, 75019 PARIS",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8900865765,
+    "lon": 2.39175227622
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.391752276223555,
+      48.89008657646944,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75119",
+   "nom_carto": "LA GRANDE HALLE DE LA VILLETTE",
+   "nomcom": "PARIS",
+   "objectid": "5",
+   "typo_niv3": "Centre de congrès et parc d'exposition"
+  },
+  {
+   "adresse": "7 BOULEVARD PIERRE-CARLE",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.8569355732,
+    "lon": 2.62395830838
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.623958308379577,
+      48.85693557316839,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77337",
+   "nom_carto": "Siège de Nestlé France",
+   "nomcom": "NOISIEL",
+   "objectid": "278",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "4 RUE ROYALE",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.4028483116,
+    "lon": 2.6950686995
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.69506869949597,
+      48.402848311643275,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77186",
+   "nom_carto": null,
+   "nomcom": "FONTAINEBLEAU",
+   "objectid": "549",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "125 BIS, RUE JEAN JAURES",
+   "dep": "93",
+   "geo_point_2d": {
+    "lat": 48.9053582758,
+    "lon": 2.4393288221
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.439328822096146,
+      48.90535827578258,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "93008",
+   "nom_carto": null,
+   "nomcom": "BOBIGNY",
+   "objectid": "608",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "PARVIS DE LA DÉFENSE",
+   "dep": "92",
+   "geo_point_2d": {
+    "lat": 48.8927352831,
+    "lon": 2.2367030523
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.236703052295084,
+      48.8927352830714,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "92160",
+   "nom_carto": "ESPACE GRANDE ARCHE",
+   "nomcom": "PARIS LA DÉFENSE",
+   "objectid": "17",
+   "typo_niv3": "Centre de congrès et parc d'exposition"
+  },
+  {
+   "adresse": "62 RUE Saint-ANTOINE - HÔTEL DE SULLY",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8545133074,
+    "lon": 2.36371987588
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.363719875875816,
+      48.85451330740851,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75104",
+   "nom_carto": "Jeu de paume - site Sully",
+   "nomcom": "Paris",
+   "objectid": "90",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "1 PLACE ALPHONSE LAVERAN - COUR D'ENTRÉE DE L'EGLISE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8406938651,
+    "lon": 2.34147920886
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.341479208862518,
+      48.84069386509463,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Ancienne abbaye royale du Val de Grace",
+   "nomcom": "Paris",
+   "objectid": "105",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "7 BOULEVARD JOURDAN - RÉSIDENCE POUR ÉTUDIANTS",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8193292015,
+    "lon": 2.34327912521
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.343279125206603,
+      48.81932920154799,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75114",
+   "nom_carto": "Pavillon Suisse",
+   "nomcom": "Paris",
+   "objectid": "208",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "RUE DE LA TOUR - OFFICE DE TOURISME DE JOUARRE",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.9275488364,
+    "lon": 3.13098018908
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      3.130980189083762,
+      48.927548836403716,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77238",
+   "nom_carto": "Cryptes mérovingiennes",
+   "nomcom": "JOUARRE",
+   "objectid": "273",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "15 RUE DU LAU",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.4025330102,
+    "lon": 2.46458480017
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.464584800168903,
+      48.40253301020084,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91405",
+   "nom_carto": "Maison Cocteau",
+   "nomcom": "MILLY-LA-FORET",
+   "objectid": "327",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "2 RUE DE LA LÉGION D'HONNEUR",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.860310548,
+    "lon": 2.3246827324
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.32468273240465,
+      48.86031054796957,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75107",
+   "nom_carto": "Musée national de la légion d'honneur et des ordres de chevalerie",
+   "nomcom": "Paris",
+   "objectid": "424",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "54 BOULEVARD DE LA REINE",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.8090119435,
+    "lon": 2.13044999961
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.130449999614692,
+      48.80901194346093,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78646",
+   "nom_carto": "Musée Lambinet",
+   "nomcom": "VERSAILLES",
+   "objectid": "672",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "11 RUE POULBOT",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8865416809,
+    "lon": 2.33968053749
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.33968053748812,
+      48.886541680851245,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75118",
+   "nom_carto": "Musée espace Dali",
+   "nomcom": "Paris",
+   "objectid": "252",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "2 AVENUE CARNOT",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.9471591107,
+    "lon": 2.15386695754
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.153866957537524,
+      48.94715911066657,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78358",
+   "nom_carto": "Château de Maisons",
+   "nomcom": "MAISONS-LAFFITTE",
+   "objectid": "296",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "PLACE CHARLES DE GAULLE",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.8981098272,
+    "lon": 2.09503703356
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.095037033559793,
+      48.89810982724957,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78551",
+   "nom_carto": "Château de Saint Germain en Laye",
+   "nomcom": "SAINT-GERMAIN-EN-LAYE",
+   "objectid": "303",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "ESCALE DU JARDIN DES PLANTES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8471950797,
+    "lon": 2.36168235567
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.36168235566816,
+      48.84719507965814,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Escale Saint-Bernard, jardin des Plantes",
+   "nomcom": "Paris",
+   "objectid": "457",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "ENTRÉE PRINCIPALE PAR LA PYRAMIDE - (OU PAR LA GALERIE DU CARROUSEL)",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8609963623,
+    "lon": 2.33581863894
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.335818638937509,
+      48.860996362308484,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75101",
+   "nom_carto": "Musée du Louvre",
+   "nomcom": "Paris",
+   "objectid": "69",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "24 RUE PAVÉE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8571495139,
+    "lon": 2.36176762959
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.36176762959474,
+      48.85714951388949,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75104",
+   "nom_carto": "Bibliothèque historique de la ville de Paris - hôtel de Lamoignon",
+   "nomcom": "Paris",
+   "objectid": "84",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "82 BOULEVARD DE L'HÔPITAL",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8373255111,
+    "lon": 2.3595265486
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.359526548597269,
+      48.837325511137514,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75113",
+   "nom_carto": "Eglise Saint-Marcel",
+   "nomcom": "Paris",
+   "objectid": "201",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "SQUARE DES ABBESSES",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8845301473,
+    "lon": 2.33818130711
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.338181307113538,
+      48.88453014725002,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75118",
+   "nom_carto": "Mur des je t'aime",
+   "nomcom": "Paris",
+   "objectid": "249",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "23, RUE DU PORT",
+   "dep": "92",
+   "geo_point_2d": {
+    "lat": 48.8959282279,
+    "lon": 2.16758683019
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.167586830191531,
+      48.89592822790097,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "92050",
+   "nom_carto": "Halte",
+   "nomcom": "NANTERRE",
+   "objectid": "473",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "AEROPORT ORLY-OUEST",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.7280806673,
+    "lon": 2.35942634037
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.359426340371336,
+      48.728080667287884,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91479",
+   "nom_carto": null,
+   "nomcom": "PARAY-VIEILLE-POSTE",
+   "objectid": "639",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "2 AVENUE GORDON-BENNETT - STADE ROLAND-GARROS",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8477788879,
+    "lon": 2.25123607037
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.251236070368229,
+      48.84777888790906,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Tenniseum Roland-Garros",
+   "nomcom": "Paris",
+   "objectid": "243",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "AVENUE DE L'EUROPE",
+   "dep": "78",
+   "geo_point_2d": {
+    "lat": 48.7689463533,
+    "lon": 2.06223687628
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.062236876280414,
+      48.76894635333805,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "78297",
+   "nom_carto": "Usine Thalès",
+   "nomcom": "GUYANCOURT",
+   "objectid": "294",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "12 AVENUE VICTOR HUGO",
+   "dep": "94",
+   "geo_point_2d": {
+    "lat": 48.8332795804,
+    "lon": 2.47505053159
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.475050531587112,
+      48.83327958035986,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "94052",
+   "nom_carto": "Pavillon Baltard",
+   "nomcom": "NOGENT-SUR-MARNE",
+   "objectid": "357",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "RUES RAMBUTEAU, PIERRE LESCOT ET BERGER",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8623000086,
+    "lon": 2.34824030396
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.348240303964582,
+      48.86230000864934,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75101",
+   "nom_carto": "Forum des Halles",
+   "nomcom": "Paris",
+   "objectid": "62",
+   "typo_niv3": "Espace de loisirs, espace récréatif"
+  },
+  {
+   "adresse": "17 RUE GEOFFROY L'ASNIER",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8548496071,
+    "lon": 2.35636156894
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.35636156894033,
+      48.85484960713565,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75104",
+   "nom_carto": "Mémorial de la Shoah",
+   "nomcom": "Paris",
+   "objectid": "93",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "15 RUE DE L'ECOLE DE MÉDECINE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8508012241,
+    "lon": 2.34122088481
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.341220884809982,
+      48.85080122413488,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75106",
+   "nom_carto": "Couvent des Cordeliers",
+   "nomcom": "Paris",
+   "objectid": "125",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "2 BOULEVARD DE STRASBOURG - ATELIER HOGUET",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8695338506,
+    "lon": 2.35460612936
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.354606129360202,
+      48.86953385058226,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75110",
+   "nom_carto": "Musée de l'eventail",
+   "nomcom": "Paris",
+   "objectid": "187",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "27 RUE DE LA CONVENTION",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8447883615,
+    "lon": 2.27993440518
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.279934405176227,
+      48.84478836149155,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75115",
+   "nom_carto": "Imprimerie nationale",
+   "nomcom": "Paris",
+   "objectid": "211",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "9 PLACE VICTOR HUGO",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8693616712,
+    "lon": 2.28487171578
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.284871715780342,
+      48.869361671176016,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Eglise Saint-Honoré-d'Eylau",
+   "nomcom": "Paris",
+   "objectid": "217",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "SYNDICAT D'INITIATIVE",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.3156481372,
+    "lon": 2.69088811038
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.690888110375458,
+      48.31564813718762,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77216",
+   "nom_carto": "Donjon et pont médiéval",
+   "nomcom": "GREZ-SUR-LOING",
+   "objectid": "271",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "25 CHEMIN DES ILES",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.5698832476,
+    "lon": 2.48685884514
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.486858845139274,
+      48.56988324764854,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91435",
+   "nom_carto": "Port privé de Morsang-sur-Seine",
+   "nomcom": "MORSANG-SUR-SEINE",
+   "objectid": "523",
+   "typo_niv3": "Haltes, escales ou ports fluviaux de plaisance"
+  },
+  {
+   "adresse": "6 PLACE PAUL PAINLEVÉ",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8506056916,
+    "lon": 2.34369021952
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.343690219524547,
+      48.85060569163545,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Musée national du moyen-age",
+   "nomcom": "Paris",
+   "objectid": "119",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "16 RUE CHAPTAL - HÔTEL SCHEFFER RENAN",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8809100818,
+    "lon": 2.33334735194
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.333347351943861,
+      48.88091008179285,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75109",
+   "nom_carto": "Musée de la vie romantique",
+   "nomcom": "Paris",
+   "objectid": "185",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "18 AVENUE HENRI BARBUSSE",
+   "dep": "94",
+   "geo_point_2d": {
+    "lat": 48.7934049079,
+    "lon": 2.39269843182
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.392698431820368,
+      48.793404907866474,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "94081",
+   "nom_carto": "Explor@dôme",
+   "nomcom": "VITRY-SUR-SEINE",
+   "objectid": "218",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "11 PLACE DES ETATS-UNIS",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8679986937,
+    "lon": 2.29289517911
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.292895179114626,
+      48.86799869366008,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Musée Baccarat",
+   "nomcom": "Paris",
+   "objectid": "231",
+   "typo_niv3": "Musée et écomusée"
+  },
+  {
+   "adresse": "35 RUE DU CHEVALIER-DE-LA-BARRE - PARVIS DU SACRÉ COEUR",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8871779194,
+    "lon": 2.34340214701
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.343402147008772,
+      48.88717791943479,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75118",
+   "nom_carto": "Basilique du sacré-coeur de Montmartre",
+   "nomcom": "Paris",
+   "objectid": "246",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "BOIS DE BOULOGNE",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8781689607,
+    "lon": 2.2639289322
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.263928932197786,
+      48.87816896068404,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75116",
+   "nom_carto": "Jardin d'Accimatation",
+   "nomcom": "Paris",
+   "objectid": "385",
+   "typo_niv3": "Espace de loisirs, espace récréatif"
+  },
+  {
+   "adresse": "1 PLACE DOUMER",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.9617074521,
+    "lon": 2.87777650813
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.877776508133888,
+      48.96170745211032,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77284",
+   "nom_carto": null,
+   "nomcom": "MEAUX",
+   "objectid": "555",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "71 AVENUE DE FONTAINEBLEAU",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.5301925247,
+    "lon": 2.543880933
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.543880933003632,
+      48.530192524660855,
+      -100000.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77407",
+   "nom_carto": null,
+   "nomcom": "ST FARGEAU PONTHIERRY",
+   "objectid": "562",
+   "typo_niv3": "Offices du tourisme et syndicats d'initiative"
+  },
+  {
+   "adresse": "ACCÈS : QUAI Saint MICHEL, QUAI DU MARCHÉ NEUF",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.8533791718,
+    "lon": 2.34697251954
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.346972519535243,
+      48.85337917179143,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75105",
+   "nom_carto": "Petit pont",
+   "nomcom": "Paris",
+   "objectid": "124",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "140 RUE DU BAC",
+   "dep": "75",
+   "geo_point_2d": {
+    "lat": 48.85083539,
+    "lon": 2.32293221505
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.322932215047694,
+      48.850835389978876,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "75107",
+   "nom_carto": "Chapelle ND de la médaille miraculeuse",
+   "nomcom": "Paris",
+   "objectid": "141",
+   "typo_niv3": "Site et monument"
+  },
+  {
+   "adresse": "RUE DU PORT AUX CERISES",
+   "dep": "91",
+   "geo_point_2d": {
+    "lat": 48.6957856787,
+    "lon": 2.4001105937
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.400110593701476,
+      48.69578567874624,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "91201",
+   "nom_carto": "Ile de loisirs du port aux Cerises",
+   "nomcom": "DRAVEIL",
+   "objectid": "391",
+   "typo_niv3": "Espace de loisirs, espace récréatif"
+  },
+  {
+   "adresse": "73, RUE DES ROCHES",
+   "dep": "77",
+   "geo_point_2d": {
+    "lat": 48.2941490204,
+    "lon": 2.43950495484
+   },
+   "geo_shape": {
+    "geometry": {
+     "coordinates": [
+      2.439504954839814,
+      48.29414902042139,
+      0.0
+     ],
+     "type": "Point"
+    },
+    "properties": {},
+    "type": "Feature"
+   },
+   "insee": "77060",
+   "nom_carto": "Ile de loisirs de Buthiers",
+   "nomcom": "BUTHIERS",
+   "objectid": "408",
+   "typo_niv3": "Espace de loisirs, espace récréatif"
+  }
+ ],
+ "total_count": 672
+}

@@ -1,0 +1,1425 @@
+{
+ "elements": [
+  {
+   "id": 264514896,
+   "lat": 48.8553245,
+   "lon": 2.347542,
+   "tags": {
+    "STIF:zone": "1",
+    "elevator": "yes",
+    "level": "-2",
+    "name": "Cité",
+    "name:ko": "시테",
+    "name:ru": "Ситэ",
+    "name:zh": "西岱",
+    "network": "Métro de Paris",
+    "network:wikidata": "Q50716",
+    "operator": "RATP",
+    "operator:wikidata": "Q643290",
+    "public_transport": "station",
+    "railway": "station",
+    "ref:FR:FANTOIR": "75104S095P",
+    "ref:FR:RATP": "1969",
+    "ref:FR:STIF": "22150",
+    "source": "STIF - 12/2016",
+    "station": "subway",
+    "subway": "yes",
+    "type:RATP": "metro",
+    "wheelchair": "no",
+    "wikidata": "Q1094294",
+    "wikipedia": "fr:Cité (métro de Paris)"
+   },
+   "type": "node"
+  },
+  {
+   "id": 790027804,
+   "lat": 48.8756298,
+   "lon": 2.3241317,
+   "tags": {
+    "elevator": "yes",
+    "level": "0",
+    "name": "1. Cour de Rome",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1079716564,
+   "lat": 48.8532243,
+   "lon": 2.3458787,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "level": "-3;-2;-1;0",
+    "name": "Saint-Michel",
+    "operator": "RATP",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1272604556,
+   "lat": 48.8626092,
+   "lon": 2.3468825,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2;-3",
+    "name": "Porte Rambuteau",
+    "railway": "subway_entrance",
+    "ref": "4",
+    "wheelchair": "no",
+    "wikidata": "Q3398938"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1472147733,
+   "lat": 48.8703476,
+   "lon": 2.3256093,
+   "tags": {
+    "highway": "elevator",
+    "name": "Place de la Madeleine",
+    "name:etymology:wikidata": "Q330564",
+    "railway": "subway_entrance",
+    "ref": "1",
+    "source": "survey",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1499641494,
+   "lat": 48.8487525,
+   "lon": 2.2987428,
+   "tags": {
+    "highway": "elevator",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 1499641509,
+   "lat": 48.8488426,
+   "lon": 2.2988085,
+   "tags": {
+    "highway": "elevator",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2535336387,
+   "lat": 48.8476905,
+   "lon": 2.3963706,
+   "tags": {
+    "access": "yes",
+    "bicycle": "dismount",
+    "highway": "elevator",
+    "level": "0;-1",
+    "name": "Avenue du Bel-Air (RER)",
+    "operator": "RATP",
+    "railway": "subway_entrance",
+    "ref": "6",
+    "source": "survey:2014",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2623437764,
+   "lat": 48.8675637,
+   "lon": 2.3494974,
+   "tags": {
+    "highway": "elevator",
+    "note": "escalier",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2847425365,
+   "lat": 48.8773049,
+   "lon": 2.359213,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;-2;-1;0",
+    "source": "survey 2014"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2889627319,
+   "lat": 48.8748837,
+   "lon": 2.3269185,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-6;-5",
+    "operator": "SNCF",
+    "ref": "1005"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2889627334,
+   "lat": 48.8750603,
+   "lon": 2.3263887,
+   "tags": {
+    "highway": "elevator",
+    "level": "-6;-5;-4",
+    "operator": "SNCF",
+    "ref": "1004"
+   },
+   "type": "node"
+  },
+  {
+   "id": 2889627342,
+   "lat": 48.8752152,
+   "lon": 2.3269389,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-6;-5",
+    "operator": "SNCF",
+    "ref": "1006"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3133512774,
+   "lat": 48.8582094,
+   "lon": 2.2944151,
+   "tags": {
+    "fixme": "position estimated",
+    "highway": "elevator",
+    "level": "2;3",
+    "min_height": "115.73"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3133512777,
+   "lat": 48.8583182,
+   "lon": 2.294576,
+   "tags": {
+    "fixme": "position estimated",
+    "highway": "elevator",
+    "level": "2;3",
+    "min_height": "115.73"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3137314979,
+   "lat": 48.8769923,
+   "lon": 2.3590713,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1;0",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3207012642,
+   "lat": 48.8703169,
+   "lon": 2.3074594,
+   "tags": {
+    "highway": "elevator",
+    "source": "knowledge"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3207012645,
+   "lat": 48.8708629,
+   "lon": 2.3070704,
+   "tags": {
+    "elevator": "yes",
+    "source": "knowledge"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3232276493,
+   "lat": 48.8799032,
+   "lon": 2.358312,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1;0;1",
+    "note": "pas de ref dans l'ascenseur",
+    "operator": "SNCF",
+    "ref": "1012",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3232278480,
+   "lat": 48.8806997,
+   "lon": 2.3570031,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2;-3",
+    "operator": "SNCF",
+    "ref": "2101",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3232278491,
+   "lat": 48.8806355,
+   "lon": 2.3573206,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2;-3",
+    "operator": "SNCF",
+    "ref": "2102",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3232278781,
+   "lat": 48.8809448,
+   "lon": 2.3577076,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1;0;1",
+    "operator": "SNCF",
+    "ref": "2107",
+    "survey:date": "2023-10-07"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3415716471,
+   "lat": 48.8761426,
+   "lon": 2.3256014,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;-2;0",
+    "ref": "3 - Parking",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3695353925,
+   "lat": 48.8609659,
+   "lon": 2.3525477,
+   "tags": {
+    "highway": "elevator",
+    "level": "1;2;3"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3697377428,
+   "lat": 48.8610279,
+   "lon": 2.3523327,
+   "tags": {
+    "highway": "elevator",
+    "level": "1;4;5;6",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3697377430,
+   "lat": 48.86104,
+   "lon": 2.3523385,
+   "tags": {
+    "highway": "elevator",
+    "level": "1;4;5;6",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3697377432,
+   "lat": 48.8610512,
+   "lon": 2.3523445,
+   "tags": {
+    "highway": "elevator",
+    "level": "1;4;5;6",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3697627572,
+   "lat": 48.8601856,
+   "lon": 2.3520571,
+   "tags": {
+    "highway": "elevator",
+    "level": "4;5",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3699515111,
+   "lat": 48.8603733,
+   "lon": 2.3525665,
+   "tags": {
+    "highway": "elevator",
+    "level": "-1;0;1",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3883369587,
+   "lat": 48.8727648,
+   "lon": 2.3300356,
+   "tags": {
+    "bicycle": "dismount",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3883369590,
+   "lat": 48.8728173,
+   "lon": 2.3285944,
+   "tags": {
+    "bicycle": "dismount",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 3883369592,
+   "lat": 48.8729073,
+   "lon": 2.3287207,
+   "tags": {
+    "bicycle": "dismount",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037905240,
+   "lat": 48.8806957,
+   "lon": 2.3541743,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037905241,
+   "lat": 48.8807006,
+   "lon": 2.3541488,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037905242,
+   "lat": 48.8807055,
+   "lon": 2.3541232,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037948671,
+   "lat": 48.8801603,
+   "lon": 2.3549445,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;1",
+    "ref": "AS12 VGL2"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037948672,
+   "lat": 48.8801825,
+   "lon": 2.3548319,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;1",
+    "ref": "AS13 VGL1"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037948673,
+   "lat": 48.8809238,
+   "lon": 2.3576968,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1;0;1",
+    "operator": "SNCF",
+    "ref": "2108",
+    "survey:date": "2023-10-07"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037948674,
+   "lat": 48.880966,
+   "lon": 2.3577184,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1;0;1",
+    "operator": "SNCF",
+    "ref": "2106",
+    "survey:date": "2023-10-07"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037948794,
+   "lat": 48.8815044,
+   "lon": 2.355036,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;1"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4037948795,
+   "lat": 48.8815457,
+   "lon": 2.3548355,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;1"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4047530694,
+   "lat": 48.8759968,
+   "lon": 2.3246572,
+   "tags": {
+    "door": "sliding",
+    "highway": "elevator",
+    "level": "-1;0;1",
+    "operator": "SNCF",
+    "ref": "3580",
+    "repeat_on": "-1-1",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4070140092,
+   "lat": 48.8763564,
+   "lon": 2.3594775,
+   "tags": {
+    "highway": "elevator",
+    "level": "-4;-3;-2;-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4070354308,
+   "lat": 48.8748602,
+   "lon": 2.3296164,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-6;-5;-3",
+    "operator": "SNCF",
+    "ref": "1008"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4070354327,
+   "lat": 48.8750949,
+   "lon": 2.3295228,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-5;-3",
+    "operator": "SNCF",
+    "ref": "1009"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4089519092,
+   "lat": 48.8798371,
+   "lon": 2.3582031,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-6;-5;-4;-3;-2",
+    "operator": "SNCF",
+    "ref": "1013",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4089519093,
+   "lat": 48.8799305,
+   "lon": 2.3578984,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-6;-5;-4;-3;-2",
+    "note": "ref 1014 valide",
+    "operator": "SNCF",
+    "ref": "1014",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4089550886,
+   "lat": 48.8822217,
+   "lon": 2.3579439,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-3",
+    "operator": "SNCF",
+    "ref": "2105",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4089550887,
+   "lat": 48.8822649,
+   "lon": 2.3576237,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-3",
+    "operator": "SNCF",
+    "ref": "2104",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4089563575,
+   "lat": 48.8813078,
+   "lon": 2.3581963,
+   "tags": {
+    "highway": "elevator",
+    "level": "-4;-3;-2",
+    "operator": "SNCF",
+    "ref": "1010",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4089841806,
+   "lat": 48.8810106,
+   "lon": 2.3590584,
+   "tags": {
+    "highway": "elevator",
+    "level": "-7;-6;-5;-4",
+    "operator": "SNCF",
+    "ref": "1011",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4097367990,
+   "lat": 48.8761674,
+   "lon": 2.32606,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;-2;-1;0;1",
+    "operator": "SNCF",
+    "ref": "3581",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4097550492,
+   "lat": 48.8757488,
+   "lon": 2.3263553,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-4",
+    "operator": "SNCF",
+    "ref": "1003"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4099981915,
+   "lat": 48.8748187,
+   "lon": 2.3287427,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;0",
+    "operator": "SNCF",
+    "ref": "1007"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4110110309,
+   "lat": 48.8618439,
+   "lon": 2.3477043,
+   "tags": {
+    "highway": "elevator",
+    "level": "-4;-3;-2;-1;0",
+    "name": "Ascenseurs Lescot",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4217750696,
+   "lat": 48.8625487,
+   "lon": 2.3141768,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1",
+    "operator": "SNCF",
+    "ref": "4518",
+    "source": "SNCF Transilien - Plans d'architecte et plan de communication - Prestation de saisie réalisée par Arx IT en hiver 2016",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4217750728,
+   "lat": 48.8626741,
+   "lon": 2.3140425,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1",
+    "operator": "SNCF",
+    "ref": "4517",
+    "source": "SNCF Transilien - Plans d'architecte et plan de communication - Prestation de saisie réalisée par Arx IT en hiver 2016",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4217750762,
+   "lat": 48.8628262,
+   "lon": 2.3140373,
+   "tags": {
+    "highway": "elevator",
+    "level": "-2;-1",
+    "operator": "SNCF",
+    "ref": "4516",
+    "source": "SNCF Transilien - Plans d'architecte et plan de communication - Prestation de saisie réalisée par Arx IT en hiver 2016",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4426707044,
+   "lat": 48.8620837,
+   "lon": 2.3428319,
+   "tags": {
+    "access": "private",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 4985719644,
+   "lat": 48.8531299,
+   "lon": 2.3430129,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;-2",
+    "location": "underground"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5081275146,
+   "lat": 48.8611539,
+   "lon": 2.3473611,
+   "tags": {
+    "highway": "elevator",
+    "indoor": "yes",
+    "level": "-5;-4",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5084712016,
+   "lat": 48.8608896,
+   "lon": 2.3472905,
+   "tags": {
+    "highway": "elevator",
+    "indoor": "yes",
+    "level": "-5;-4",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5097577715,
+   "lat": 48.8515621,
+   "lon": 2.3754595,
+   "tags": {
+    "addr:city": "Paris",
+    "addr:housenumber": "95",
+    "addr:postcode": "75011",
+    "addr:street": "Rue du Faubourg Saint-Antoine",
+    "amenity": "doctors",
+    "description": "Le Dr Sawsen SALAH-BERLY est ophtalmologiste spécialiste des uvéites et de l'atteinte ophtalmologique des maladies rares et des maladies de systèmes. Elle exerce au cabinet Med-Ophta Paris, situé au coeur du 11ème arrondissement de Paris.",
+    "elevator": "yes",
+    "facebook": "https://www.facebook.com/drsawsensalahberly/",
+    "healthcare": "doctor",
+    "healthcare:speciality": "ophthalmology",
+    "name": "Docteur Sawsen Salah-Berly",
+    "payment:coins": "yes",
+    "payment:credit_cards": "yes",
+    "payment:mastercard": "yes",
+    "payment:notes": "yes",
+    "payment:visa": "yes",
+    "phone": "+33186953095",
+    "toilets:access": "visitors",
+    "toilets:handwashing": "yes",
+    "toilets:number": "1",
+    "toilets:wheelchair": "yes",
+    "twitter": "https://twitter.com/drsalahberly",
+    "website": "https://uveite-retine.com",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5685869509,
+   "lat": 48.8530091,
+   "lon": 2.3431667,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;-2",
+    "location": "underground"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5685869510,
+   "lat": 48.8531156,
+   "lon": 2.342986,
+   "tags": {
+    "highway": "elevator",
+    "level": "-3;-2",
+    "location": "underground"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5914409034,
+   "lat": 48.8624092,
+   "lon": 2.3439412,
+   "tags": {
+    "access": "yes",
+    "description": "access to the underground mall",
+    "door": "yes",
+    "highway": "elevator",
+    "level": "0;-3",
+    "name": "Ascenseur Porte du Louvre",
+    "source": "survey",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 5988351931,
+   "lat": 48.8625344,
+   "lon": 2.3147529,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;1",
+    "operator": "SNCF",
+    "ref": "4538",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6007514686,
+   "lat": 48.8605711,
+   "lon": 2.3254143,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;-1;-2",
+    "operator": "SNCF",
+    "ref": "4537",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6014886957,
+   "lat": 48.8606986,
+   "lon": 2.3257643,
+   "tags": {
+    "highway": "elevator",
+    "level": "-1;-2",
+    "operator": "SNCF",
+    "ref": "4536",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6014886962,
+   "lat": 48.8606128,
+   "lon": 2.3256239,
+   "tags": {
+    "highway": "elevator",
+    "level": "-1;-2",
+    "operator": "SNCF",
+    "ref": "4535",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6046637283,
+   "lat": 48.8572047,
+   "lon": 2.2909669,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "level": "0;-1",
+    "operator": "SNCF",
+    "ref": "4540",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6046794814,
+   "lat": 48.8576216,
+   "lon": 2.290506,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "level": "-2;-1",
+    "location": "underground",
+    "ref": "4542",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6047143078,
+   "lat": 48.8575095,
+   "lon": 2.2906919,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "level": "-2;-1",
+    "location": "underground",
+    "ref": "4541",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6466296811,
+   "lat": 48.8606093,
+   "lon": 2.3465063,
+   "tags": {
+    "bicycle": "yes",
+    "highway": "elevator",
+    "level": "-4;-3;0",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6749700721,
+   "lat": 48.870726,
+   "lon": 2.3090487,
+   "tags": {
+    "highway": "elevator",
+    "level": "0-5"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6802520285,
+   "lat": 48.8780601,
+   "lon": 2.3258025,
+   "tags": {
+    "highway": "elevator",
+    "level": "1;2",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6857200914,
+   "lat": 48.88154,
+   "lon": 2.3324449,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 6857200939,
+   "lat": 48.8817826,
+   "lon": 2.3330483,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8719349085,
+   "lat": 48.8632434,
+   "lon": 2.3441963,
+   "tags": {
+    "highway": "elevator",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8758692838,
+   "lat": 48.8624266,
+   "lon": 2.3457166,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "level": "0;-2;-3",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 8758692839,
+   "lat": 48.8624525,
+   "lon": 2.3456919,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "level": "0;-2;-3",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9383604200,
+   "lat": 48.8613684,
+   "lon": 2.3464904,
+   "tags": {
+    "highway": "elevator",
+    "indoor": "yes",
+    "ref": "2",
+    "source": "survey"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9470008147,
+   "lat": 48.8508594,
+   "lon": 2.3482388,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9545122411,
+   "lat": 48.8606019,
+   "lon": 2.3465371,
+   "tags": {
+    "bicycle": "yes",
+    "highway": "elevator",
+    "level": "-4;-3;0",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9547734928,
+   "lat": 48.8620532,
+   "lon": 2.3472444,
+   "tags": {
+    "highway": "elevator",
+    "level": "-5;-4",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9547835994,
+   "lat": 48.8606969,
+   "lon": 2.3470959,
+   "tags": {
+    "highway": "elevator",
+    "indoor": "yes",
+    "level": "-5;-4"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9549382182,
+   "lat": 48.8618398,
+   "lon": 2.3477216,
+   "tags": {
+    "highway": "elevator",
+    "level": "-4;-3;-2;-1;0",
+    "name": "Ascenseurs Lescot",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9714531784,
+   "lat": 48.8625158,
+   "lon": 2.3008847,
+   "tags": {
+    "highway": "elevator",
+    "level": "-1;0",
+    "ref": "4548"
+   },
+   "type": "node"
+  },
+  {
+   "id": 9714561032,
+   "lat": 48.8627059,
+   "lon": 2.3008665,
+   "tags": {
+    "highway": "elevator",
+    "level": "-1;0",
+    "ref": "4549"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10049022960,
+   "lat": 48.8751585,
+   "lon": 2.2936217,
+   "tags": {
+    "description": "accès RER A",
+    "highway": "elevator",
+    "level": "0;-1",
+    "name": "Avenue Carnot",
+    "operator": "RATP",
+    "railway": "subway_entrance",
+    "ref": "5",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10065188353,
+   "lat": 48.8632419,
+   "lon": 2.3396996,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10121846472,
+   "lat": 48.8515171,
+   "lon": 2.3400778,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10159873167,
+   "lat": 48.8486807,
+   "lon": 2.3415165,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 10920532652,
+   "lat": 48.8504606,
+   "lon": 2.3736345,
+   "tags": {
+    "access": "permit",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11052759116,
+   "lat": 48.8791425,
+   "lon": 2.3587716,
+   "tags": {
+    "access": "yes",
+    "highway": "elevator",
+    "wheelchair": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11114591401,
+   "lat": 48.8577129,
+   "lon": 2.3726781,
+   "tags": {
+    "highway": "elevator",
+    "indoor": "yes"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11161995464,
+   "lat": 48.8536327,
+   "lon": 2.3477003,
+   "tags": {
+    "access": "wheelchair",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11175226138,
+   "lat": 48.8782828,
+   "lon": 2.3585398,
+   "tags": {
+    "highway": "elevator",
+    "start_date": "2023-11"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11283372273,
+   "lat": 48.870646,
+   "lon": 2.3090418,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11303530065,
+   "lat": 48.8817675,
+   "lon": 2.3535692,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11385801695,
+   "lat": 48.8800615,
+   "lon": 2.3553974,
+   "tags": {
+    "highway": "elevator",
+    "level": "0;1;2"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11745043460,
+   "lat": 48.8614619,
+   "lon": 2.3497365,
+   "tags": {
+    "description": "dessert le parking souterrain",
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11910634288,
+   "lat": 48.8829372,
+   "lon": 2.3638543,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 11916979524,
+   "lat": 48.8553022,
+   "lon": 2.3311509,
+   "tags": {
+    "highway": "elevator",
+    "ref": "D"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12120458034,
+   "lat": 48.8805658,
+   "lon": 2.3567905,
+   "tags": {
+    "highway": "elevator",
+    "level": "-1;0;1"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385757,
+   "lat": 48.8824816,
+   "lon": 2.3569962,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385758,
+   "lat": 48.8825505,
+   "lon": 2.3566679,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385759,
+   "lat": 48.8825778,
+   "lon": 2.3565291,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385760,
+   "lat": 48.8826189,
+   "lon": 2.3563289,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385761,
+   "lat": 48.882661,
+   "lon": 2.3561252,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385779,
+   "lat": 48.8827013,
+   "lon": 2.3559258,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343385798,
+   "lat": 48.8827688,
+   "lon": 2.3557612,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12343400720,
+   "lat": 48.882782,
+   "lon": 2.3555515,
+   "tags": {
+    "access": "no",
+    "description": "Service elevator",
+    "highway": "elevator",
+    "level": "-1;0"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12483454932,
+   "lat": 48.863154,
+   "lon": 2.3045882,
+   "tags": {
+    "description": "EPMR",
+    "disabled": "designated",
+    "highway": "elevator",
+    "source": "https://www.data.gouv.fr/fr/datasets/ascenseurs-escalators-tele-surveillance-temps-reel/"
+   },
+   "type": "node"
+  },
+  {
+   "id": 12697568162,
+   "lat": 48.8475401,
+   "lon": 2.3588637,
+   "tags": {
+    "access": "private",
+    "access:conditional": "no @ (wind > 45 km/h)",
+    "capacity:persons": "0",
+    "highway": "elevator",
+    "level": "0;1",
+    "maxweight": "430 kg"
+   },
+   "type": "node"
+  },
+  {
+   "id": 13100589121,
+   "lat": 48.8709182,
+   "lon": 2.3242018,
+   "tags": {
+    "access": "yes",
+    "amenity": "parking_entrance",
+    "description": "Accès ascenseur Parc à Vélos",
+    "highway": "elevator",
+    "parking": "underground"
+   },
+   "type": "node"
+  },
+  {
+   "id": 13768084402,
+   "lat": 48.8817089,
+   "lon": 2.3701595,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  },
+  {
+   "id": 13768084403,
+   "lat": 48.8817081,
+   "lon": 2.3703144,
+   "tags": {
+    "highway": "elevator"
+   },
+   "type": "node"
+  }
+ ],
+ "generator": "Overpass API 0.7.62.11 87bfad18",
+ "osm3s": {
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp_osm_base": "2026-07-26T20:17:06Z"
+ },
+ "version": 0.6
+}
