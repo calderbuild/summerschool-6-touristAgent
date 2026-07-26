@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { Lang } from "./i18n";
+import { speakable } from "./speakable";
 
 // Feature detection that is SSR-safe (server snapshot = unsupported) and avoids
 // setState-in-effect: the control simply appears after hydration where supported.
@@ -107,7 +108,7 @@ export function useSpeechOutput() {
     (key: number, text: string, lang: Lang) => {
       if (!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
-      const clean = text.replace(/\[\[[^\]]*\]\]/g, "").trim();
+      const clean = speakable(text);
       if (!clean) return;
       const u = new SpeechSynthesisUtterance(clean);
       u.lang = BCP47[lang];

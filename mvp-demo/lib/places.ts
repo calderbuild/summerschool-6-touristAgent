@@ -70,13 +70,15 @@ export const PLACES: Place[] = [
     openingHours: "09:00-18:00; late to 21:45 Wed & Fri; closed Tue",
     nearestTransit: "M1/M7 Palais Royal-Musée du Louvre",
     stationStepFree: "Partial (line 14 Pyramides/Châtelet nearby are step-free)",
-    wheelchair: "Yes (fully accessible; free for wheelchair users + 1 companion)",
+    wheelchair:
+      "Yes (fully accessible; free for a disabled visitor + 1 companion, supporting document required at the desk)",
     accessibleToilet: "Yes",
     status: "open",
     officialUrl: "https://www.louvre.fr/en",
     source: "Official site + web search 2026-07-23",
     lastVerified: "2026-07-23",
-    notes: "New 2026 dual pricing (EEA vs non-EEA). Free under 18, EU 18-25, 1st Sat evening.",
+    notes:
+      "New 2026 dual pricing (EEA vs non-EEA). Free under 18, EU 18-25, 1st Sat evening. A disabled visitor and their companion are exempt from the 1 Jul to 31 Aug 2026 reservation requirement and have priority access without queuing (louvre.fr accessibility pages, checked 2026-07-26).",
   },
   {
     id: "notre-dame",
@@ -259,13 +261,15 @@ export const PLACES: Place[] = [
     openingHours: "09:00-18:30; closed Mon",
     nearestTransit: "RER C Versailles Château Rive Gauche",
     stationStepFree: "Partial",
-    wheelchair: "Yes (accessible; free for disabled visitors + companion; adapted routes)",
+    wheelchair:
+      "Yes (accessible; free for a disabled visitor + companion on presentation of a disability card or a European disabled parking permit; adapted routes)",
     accessibleToilet: "Yes",
     status: "open",
     officialUrl: "https://en.chateauversailles.fr",
     source: "Official site + web search 2026-07-23",
     lastVerified: "2026-07-23",
-    notes: "Outside Paris (~40 min by RER C). EEA reduced rates. Gardens paid on Musical Fountains days.",
+    notes:
+      "Outside Paris (~40 min by RER C). EEA reduced rates. Gardens paid on Musical Fountains days. Free entry still requires booking a free timeslot online, and disabled visitors enter through entrance A (en.chateauversailles.fr, checked 2026-07-26).",
   },
   {
     id: "galeries-lafayette",

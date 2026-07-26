@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { ROUTES, type ProfileId } from "@/lib/data";
 import { useSpeechInput, useSpeechOutput } from "@/lib/useSpeech";
+import { speakable } from "@/lib/speakable";
 import ChatRouteCard from "./ChatRouteCard";
 import WeatherChip from "../WeatherChip";
 import {
@@ -419,6 +420,7 @@ export default function ChatShell() {
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const pinnedRef = useRef(true);
   const busyRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
@@ -479,6 +481,28 @@ export default function ChatShell() {
       vv.removeEventListener("scroll", set);
     };
   }, []);
+
+  // Grow the composer with what is being typed, up to the same cap the class
+  // already sets. Without this the box is one line tall forever: "Gare de Lyon
+  // to the Eiffel Tower, no stairs, and she tires quickly" is four lines of
+  // text shown through a one-line window, and the traveller cannot see the
+  // start of their own sentence. Done in JS rather than with field-sizing
+  // because that property is still missing in Safari and Firefox, and the
+  // phone in the demo is an iPhone. Voice dictation lands in the same state,
+  // so it grows the box too.
+  // The ceiling is measured in lines rather than pixels because a pixel cap cuts
+  // the last line through the middle of the letters, which reads as broken rather
+  // than as scrollable. Four lines is where it stops growing and starts scrolling.
+  const MAX_COMPOSER_LINES = 4;
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    const cs = getComputedStyle(el);
+    const line = parseFloat(cs.lineHeight) || 24;
+    const pad = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, line * MAX_COMPOSER_LINES + pad) + "px";
+  }, [input]);
 
   // Only auto-scroll when the user is already at the bottom; instant during a
   // stream so it never fights a finger scrolling up to read.
@@ -566,8 +590,10 @@ export default function ChatShell() {
       // connection) still ends the stream cleanly, which would otherwise settle as
       // a blank answer with no error and no Retry to get out of it.
       if (!received) setError("generic");
-      // Announce the settled answer once (markers stripped) via the shell's live region.
-      setAnnounce(acc.replace(/\[\[[^\]]*\]\]/g, "").trim());
+      // Announce the settled answer once via the shell's live region, put through
+      // the same markdown-to-speech pass as read-aloud: a screen reader is handed
+      // this string verbatim and would otherwise spell out every cited URL.
+      setAnnounce(speakable(acc));
     } catch (e) {
       if (!(e instanceof DOMException && e.name === "AbortError")) setError("generic");
     } finally {
@@ -728,6 +754,7 @@ export default function ChatShell() {
             className="flex items-end gap-2 rounded-2xl border border-ink/15 bg-surface-2 p-1.5 pl-3.5 focus-within:border-signal/60"
           >
             <textarea
+              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -739,7 +766,7 @@ export default function ChatShell() {
               rows={1}
               aria-label={t("chat_input_label")}
               placeholder={t("chat_placeholder")}
-              className="max-h-32 flex-1 resize-none bg-transparent py-2.5 text-[16px] leading-relaxed text-ink outline-none placeholder:text-ink-soft/70"
+              className="flex-1 resize-none bg-transparent py-2.5 text-[16px] leading-relaxed text-ink outline-none placeholder:text-ink-soft/70"
             />
             {voice.supported && !streaming && (
               <button

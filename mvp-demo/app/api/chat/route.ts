@@ -191,13 +191,15 @@ ${serviceCatalogue()}
 
 These answer the practical questions around a trip rather than the sightseeing: what to do in an emergency, how to reach the official transport accessibility line, whether a companion gets in free. Two rules when you use them. Always state the caveat in the same breath as the fact, because every one of these has a condition that decides whether it actually applies to a foreign visitor. And for anyone who cannot make a voice call, 114 is the emergency route to give, not 112.
 
+An entitlement is never quoted without the condition attached to it. Free entry for a disabled visitor and a companion is real at several of these sites, and at every one of them it depends on something: a supporting document at the desk, a timeslot booked in advance, a particular entrance. That condition is stated in the same sentence as the entitlement, because a traveller who is told only the good half gets turned away at the desk.
+
 Every price or opening time you state is traceable: name the date it was checked (the "checked" field) and link the official site (the "official" field) as a markdown link, so the traveller can confirm it before they travel. When a value is an estimate, unverified or unknown, say so in the same breath and send them to the official site rather than presenting it as fact. Booking and prices change; the official site is always the authority.
 
 For an itinerary request (a day plan, "what should I see", or several sights at once), build an ordered step-free plan: pick 2 to 4 attractions from the knowledge base that suit the profile, favouring step-free or working-lift sites for a wheelchair user. Give each stop its entry budget, how long to spend, opening hours and its step-free situation, then connect the stops with step-free transit or a level walk. Close with an approximate total budget and total time. If a prepared route links two of the stops, use its [[route:id]] marker.
 
 Always end your reply with a one-line verdict on its own line, separated from the paragraph above by a blank line, so the key takeaway stands out. Begin that line with "Bottom line:" in English, "En bref :" in French, or "结论：" in Chinese, then one short sentence: whether the trip is step-free and the single most important action (for example the step-free way around a broken lift).
 
-Replies are in the language the traveller writes in (English, French, or Chinese): concise, warm, practical and free of emoji.`;
+Replies are in the language the traveller writes in (English, French, or Chinese): concise, warm, practical, free of emoji, and punctuated with commas and full stops rather than dashes.`;
 }
 
 export async function POST(req: Request) {
@@ -255,15 +257,34 @@ export async function POST(req: Request) {
 
   const payload = [{ role: "system", content: systemPrompt(profile, weather) }, ...messages];
 
+  // The timeout covers reaching the model, not reading from it. A single signal
+  // passed to fetch would stay armed while the answer streams and cut a long one
+  // off mid-sentence, so the timer is cleared the moment the headers land. This
+  // matters because a stalled connection is the one upstream failure the model
+  // fallback below could not see: a retired id answers 400 and falls through in
+  // milliseconds, but a hang would sit there until the function's own 60s
+  // deadline killed the request, and the traveller would get nothing at all.
+  const CONNECT_TIMEOUT_MS = 20_000;
   async function callModel(model: string) {
-    return fetch("https://api.deepseek.com/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({ model, stream: true, messages: payload }),
-    });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), CONNECT_TIMEOUT_MS);
+    try {
+      return await fetch("https://api.deepseek.com/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify({ model, stream: true, messages: payload }),
+        signal: ctrl.signal,
+      });
+    } catch {
+      // A refused, timed-out or aborted connection is reported the same way an
+      // HTTP error is, so the caller's fallback loop handles both alike.
+      return new Response(null, { status: 504 });
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   // The reasoning model is what makes the visible chain-of-thought possible, so
