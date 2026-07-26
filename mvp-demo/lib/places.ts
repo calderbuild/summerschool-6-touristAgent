@@ -78,7 +78,7 @@ export const PLACES: Place[] = [
     source: "Official site + web search 2026-07-23",
     lastVerified: "2026-07-23",
     notes:
-      "New 2026 dual pricing (EEA vs non-EEA). Free under 18, EU 18-25, 1st Sat evening. A disabled visitor and their companion are exempt from the 1 Jul to 31 Aug 2026 reservation requirement and have priority access without queuing (louvre.fr accessibility pages, checked 2026-07-26).",
+      "New 2026 dual pricing (EEA vs non-EEA). Free under 18, EU 18-25, 1st Sat evening. A disabled visitor and their companion are exempt from the 1 Jul to 31 Aug 2026 reservation requirement and have priority access without queuing (louvre.fr accessibility pages, checked 2026-07-26). The site does not say which non-French documents count as proof, so a visitor from outside France should confirm their own document with the museum before travelling rather than assume it is accepted.",
   },
   {
     id: "notre-dame",
@@ -269,7 +269,7 @@ export const PLACES: Place[] = [
     source: "Official site + web search 2026-07-23",
     lastVerified: "2026-07-23",
     notes:
-      "Outside Paris (~40 min by RER C). EEA reduced rates. Gardens paid on Musical Fountains days. Free entry still requires booking a free timeslot online, and disabled visitors enter through entrance A (en.chateauversailles.fr, checked 2026-07-26).",
+      "Outside Paris (~40 min by RER C). EEA reduced rates. Gardens paid on Musical Fountains days. Free entry still requires booking a free timeslot online, and disabled visitors enter through entrance A (en.chateauversailles.fr, checked 2026-07-26). The proof named is a disability card or a European disabled parking permit, so a visitor holding neither should ask Versailles directly before counting on free entry.",
   },
   {
     id: "galeries-lafayette",

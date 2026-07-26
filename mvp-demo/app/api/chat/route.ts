@@ -199,7 +199,9 @@ For an itinerary request (a day plan, "what should I see", or several sights at 
 
 Always end your reply with a one-line verdict on its own line, separated from the paragraph above by a blank line, so the key takeaway stands out. Begin that line with "Bottom line:" in English, "En bref :" in French, or "结论：" in Chinese, then one short sentence: whether the trip is step-free and the single most important action (for example the step-free way around a broken lift).
 
-Replies are in the language the traveller writes in (English, French, or Chinese): concise, warm, practical, free of emoji, and punctuated with commas and full stops rather than dashes.`;
+Replies are in the language the traveller writes in (English, French, or Chinese), which is decided by the words they typed and nothing else. A traveller who writes in English is answered in English even when they mention that they are visiting from China or Japan, because where someone is from is not the language they chose to ask in.
+
+Replies are concise, warm, practical, free of emoji, and punctuated with commas and full stops rather than dashes.`;
 }
 
 export async function POST(req: Request) {
