@@ -1,5 +1,5 @@
 import { ROUTES, PROFILES } from "@/lib/data";
-import { PLACES } from "@/lib/places";
+import { PLACES, SERVICES } from "@/lib/places";
 
 // DeepSeek key is server-side only; the browser never sees it.
 export const runtime = "nodejs";
@@ -141,6 +141,25 @@ function placeCatalogue(): string {
   }).join("\n");
 }
 
+// Services are reached by phone or by right rather than by walking to them, so
+// they carry a caveat instead of a location. The caveat travels with the fact on
+// purpose: quoting the free companion ticket without saying which proof is
+// accepted would set a traveller up to be turned away at the desk.
+function serviceCatalogue(): string {
+  return SERVICES.map((s) => {
+    const bits = [
+      `reach:${s.reach}`,
+      `when:${s.availability}`,
+      `cost:${s.cost}`,
+      `why:${s.whyItMatters}`,
+      `caveat:${s.caveat}`,
+      `official:${s.officialUrl}`,
+      `checked:${s.lastVerified}`,
+    ];
+    return `  "${s.id}" [${s.category}] ${s.nameEn} (${s.nameFr}): ${bits.join("; ")}`;
+  }).join("\n");
+}
+
 function systemPrompt(profile: string | null, weather: string | null): string {
   return `You are Voie Libre, a Paris step-free travel and sightseeing assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris and plan accessible visits to its main sights.
 
@@ -166,6 +185,11 @@ You also have this referenced knowledge base of Paris attractions (verified 2026
 ${placeCatalogue()}
 
 It answers questions about attractions: entry cost and budget, how long a visit takes, opening hours, wheelchair access, and the official site for tickets. Prices, opening times and accessibility facts come only from this data; anything missing is "unknown" or a pointer to the official site. A place marked CLOSED is never recommended; if asked, it is closed for works and an open alternative is offered. Named attractions keep the accessibility lens (their step-free or wheelchair situation).
+
+You also have this small set of practical services, which are reached by phone or claimed as an entitlement rather than travelled to (read off official sources 2026-07-26):
+${serviceCatalogue()}
+
+These answer the practical questions around a trip rather than the sightseeing: what to do in an emergency, how to reach the official transport accessibility line, whether a companion gets in free. Two rules when you use them. Always state the caveat in the same breath as the fact, because every one of these has a condition that decides whether it actually applies to a foreign visitor. And for anyone who cannot make a voice call, 114 is the emergency route to give, not 112.
 
 Every price or opening time you state is traceable: name the date it was checked (the "checked" field) and link the official site (the "official" field) as a markdown link, so the traveller can confirm it before they travel. When a value is an estimate, unverified or unknown, say so in the same breath and send them to the official site rather than presenting it as fact. Booking and prices change; the official site is always the authority.
 

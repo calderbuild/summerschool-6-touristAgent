@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { PLACES } from "@/lib/places";
+import { PLACES, SERVICES } from "@/lib/places";
 import { ROUTES } from "@/lib/data";
 import { ArrowLeft, ExternalLink, Search } from "lucide-react";
 
@@ -234,6 +234,54 @@ export default function AdminConsole() {
                     </td>
                   </tr>
                 )}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Practical services. Listed separately from places because a phone
+            number has no location to search by, and because the caveat is the
+            field a reviewer most needs to read. */}
+        <section aria-labelledby="services" className="mt-8">
+          <h2 id="services" className="font-display text-[18px] font-bold text-ink">
+            Practical services ({SERVICES.length})
+          </h2>
+          <p className="mt-1 text-[13px] text-ink-soft">
+            Reached by phone or claimed as an entitlement rather than travelled to. Every entry carries the
+            condition that decides whether it applies to a visitor, and the assistant is told to say it out loud.
+          </p>
+          <div className="mt-3 overflow-x-auto rounded-2xl border border-ink/10 bg-surface">
+            <table className="w-full min-w-[860px] border-collapse text-left">
+              <thead>
+                <tr className="border-b border-ink/10 font-mono text-[10.5px] uppercase tracking-wide text-ink-faint">
+                  <th className="px-4 py-2.5 font-bold">Service</th>
+                  <th className="px-3 py-2.5 font-bold">Category</th>
+                  <th className="px-3 py-2.5 font-bold">Reach</th>
+                  <th className="px-3 py-2.5 font-bold">Caveat</th>
+                  <th className="px-3 py-2.5 font-bold">Verified</th>
+                </tr>
+              </thead>
+              <tbody>
+                {SERVICES.map((s) => (
+                  <tr key={s.id} className="border-b border-ink/[0.06] align-top last:border-0">
+                    <td className="px-4 py-3">
+                      <span className="block text-[14px] font-semibold text-ink">{s.nameEn}</span>
+                      <a
+                        href={s.officialUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="mt-0.5 inline-flex items-center gap-1 text-[12.5px] text-signal hover:underline"
+                      >
+                        Official source
+                        <ExternalLink size={11} strokeWidth={2.2} aria-hidden />
+                      </a>
+                    </td>
+                    <td className="px-3 py-3 text-[13px] text-ink-soft">{s.category}</td>
+                    <td className="px-3 py-3 text-[13px] text-ink-soft">{s.reach}</td>
+                    <td className="px-3 py-3 text-[13px] text-caution-ink">{s.caveat}</td>
+                    <td className="px-3 py-3 font-mono text-[12px] text-ink-soft">{s.lastVerified}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
