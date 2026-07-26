@@ -35,9 +35,13 @@ const CSP = [
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
-  // Nothing here should ever be framed. Reframing an accessibility route inside
-  // another page is a way to show someone a lift status that is not ours.
-  "frame-ancestors 'none'",
+  // No other site may frame this one: reframing an accessibility route inside
+  // someone else's page is a way to show a traveller a lift status that is not
+  // ours. Our own origin is allowed, which is worth nothing to an attacker (to
+  // use it they would already have to be serving from this domain) and is how
+  // the phone layout gets checked at a true 390px, since window resizing is
+  // clamped by the OS and lies about having worked.
+  "frame-ancestors 'self'",
   "upgrade-insecure-requests",
 ].join("; ");
 
@@ -50,7 +54,8 @@ const nextConfig: NextConfig = {
         headers: [
           { key: "Content-Security-Policy", value: CSP },
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
+          // The pre-CSP equivalent of frame-ancestors above, kept in step with it.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
           // Other sites get our origin, never the path. A route someone planned
           // is not something to hand to a third party in a Referer.
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

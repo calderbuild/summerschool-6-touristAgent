@@ -37,7 +37,8 @@ function clientIp(req: Request): string {
   );
 }
 
-function rateLimited(ip: string): boolean {
+/** Seconds to wait if this address is over its allowance, otherwise 0. */
+function rateLimited(ip: string): number {
   const now = Date.now();
   // Sweep expired buckets so the map cannot grow unbounded under IP churn/spoofing.
   if (HITS.size > 2000) {
@@ -46,12 +47,12 @@ function rateLimited(ip: string): boolean {
   }
   const w = HITS.get(ip);
   if (w && now - w.t < WINDOW_MS) {
-    if (w.n >= MAX_PER_WINDOW) return true;
+    if (w.n >= MAX_PER_WINDOW) return Math.ceil((WINDOW_MS - (now - w.t)) / 1000);
     w.n++;
-    return false;
+    return 0;
   }
   HITS.set(ip, { n: 1, t: now });
-  return false;
+  return 0;
 }
 
 // ---- Live weather (Open-Meteo, no key), cached module-scope for 10 min -------
@@ -217,10 +218,13 @@ export async function POST(req: Request) {
     });
   }
 
-  if (rateLimited(clientIp(req))) {
-    return new Response(JSON.stringify({ error: "rate_limited" }), {
+  // Say when to come back rather than only that the door is shut: a 429 with no
+  // Retry-After leaves both a person and a well-behaved client guessing.
+  const wait = rateLimited(clientIp(req));
+  if (wait > 0) {
+    return new Response(JSON.stringify({ error: "rate_limited", retryAfter: wait }), {
       status: 429,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "Retry-After": String(wait) },
     });
   }
 
@@ -281,7 +285,10 @@ export async function POST(req: Request) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${key}`,
         },
-        body: JSON.stringify({ model, stream: true, messages: payload }),
+        // The input is capped above; this caps the output. Without it a single
+        // request can spend an unbounded amount on the key, and the answers this
+        // product gives are a few paragraphs, never a thousand of them.
+        body: JSON.stringify({ model, stream: true, messages: payload, max_tokens: 2000 }),
         signal: ctrl.signal,
       });
     } catch {
