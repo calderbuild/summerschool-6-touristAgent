@@ -317,6 +317,41 @@ const DICT: Record<string, Entry> = {
   weather_storm: { en: "thunderstorm", fr: "orage", zh: "雷雨" },
   weather_unsettled: { en: "unsettled", fr: "variable", zh: "天气不稳" },
 
+  // A wrong address is a dead end, and a dead end is the one thing this product
+  // is against. So the 404 does what a blocked lift does here: says what
+  // happened plainly, then offers the way round.
+  nf_code: { en: "Page not found", fr: "Page introuvable", zh: "页面不存在" },
+  nf_title: {
+    en: "This address leads nowhere.",
+    fr: "Cette adresse ne mène nulle part.",
+    zh: "这个地址没有内容。",
+  },
+  nf_body: {
+    en: "The link may be old, or a word may be mistyped. Both ways into Voie Libre still work:",
+    fr: "Le lien est peut-être ancien, ou un mot mal saisi. Les deux entrées de Voie Libre fonctionnent toujours :",
+    zh: "链接可能已失效，或地址里有拼写错误。进入 Voie Libre 的两个入口都还在：",
+  },
+  nf_chat: {
+    en: "Ask the assistant",
+    fr: "Interroger l'assistant",
+    zh: "向助手提问",
+  },
+  nf_chat_hint: {
+    en: "Describe where you are going and how far you can walk.",
+    fr: "Décrivez votre destination et la distance que vous pouvez marcher.",
+    zh: "说出你要去哪里、能走多远。",
+  },
+  nf_routes: {
+    en: "Browse the step-free routes",
+    fr: "Parcourir les itinéraires sans marches",
+    zh: "浏览无楼梯路线",
+  },
+  nf_routes_hint: {
+    en: "Four checked routes across Paris, with the barriers named.",
+    fr: "Quatre itinéraires vérifiés dans Paris, avec les obstacles nommés.",
+    zh: "四条已核对的巴黎路线，逐段标出障碍。",
+  },
+
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
   disclaimer: {
     en: "Prototype with curated demo data. Live lift status and routing connect to IDFM, RATP, OpenStreetMap and Google Maps.",
