@@ -20,7 +20,11 @@ There is no test suite. `npm run build` is the gate: it runs TypeScript and prer
 so a clean build is the closest thing to "tests pass" here.
 
 Requires `.env.local` (gitignored):
-- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` — client-side, restrict by HTTP referrer in Cloud Console.
+- `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` — client-side, so it ships in the JS bundle and anyone can read
+  it. It is therefore its own dedicated key, locked in Cloud Console to the production host plus
+  `localhost:3000/3001` by HTTP referrer and to the Maps JavaScript API only. Never reuse a key
+  from another project here: a shared key cannot be referrer-locked without breaking the other
+  project, and a bundled key is a published key.
 - `DEEPSEEK_API_KEY` — **server-side only, never prefix with `NEXT_PUBLIC`**. Used only by the
   route handler. Set both as Vercel production env vars at deploy.
 
