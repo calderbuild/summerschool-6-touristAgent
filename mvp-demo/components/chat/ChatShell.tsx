@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { memo, useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { ROUTES, type ProfileId } from "@/lib/data";
@@ -279,6 +279,10 @@ function Reasoning({
   const [open, setOpen] = useState(true);
   const collapsedOnce = useRef(false);
   const bodyRef = useRef<HTMLDivElement>(null);
+  // Names the panel this toggle owns. aria-expanded alone tells a screen reader
+  // that something is collapsed without telling it what, so there is nothing to
+  // move to.
+  const panelId = useId();
 
   useEffect(() => {
     if (!isLast && hasContent && !collapsedOnce.current) {
@@ -297,6 +301,10 @@ function Reasoning({
         onClick={() => setOpen((v) => !v)}
         className="flex min-h-9 w-full items-center gap-1.5 px-3 py-1.5 text-left text-[12px] font-semibold text-ink-soft hover:text-ink"
         aria-expanded={open}
+        // Only while the panel is really there. The body unmounts when collapsed,
+        // and aria-controls pointing at an id that does not exist is a broken
+        // reference, which is worse than not claiming one.
+        aria-controls={open ? panelId : undefined}
       >
         <ChevronRight size={13} strokeWidth={2.4} className={`transition-transform ${open ? "rotate-90" : ""}`} aria-hidden />
         {thinking ? t("chat_thinking") : t("chat_reasoning")}
@@ -309,7 +317,7 @@ function Reasoning({
         )}
       </button>
       {open && (
-        <div ref={bodyRef} className="max-h-48 overflow-y-auto border-t border-ink/10 px-3 py-2">
+        <div id={panelId} ref={bodyRef} className="max-h-48 overflow-y-auto border-t border-ink/10 px-3 py-2">
           <p className="whitespace-pre-wrap break-words font-mono text-[11.5px] leading-relaxed text-ink-soft">{cleanReasoning(text)}</p>
         </div>
       )}
@@ -694,7 +702,10 @@ export default function ChatShell() {
       </header>
 
       {/* conversation */}
-      <main ref={scrollRef} onScroll={onScroll} className="flex-1 overflow-y-auto overscroll-contain" aria-label={t("conversation_label")}>
+      {/* No aria-label here. There is one main region, and the log inside already
+          carries this exact name, so labelling both made a screen reader say it
+          twice on the way in. */}
+      <main ref={scrollRef} onScroll={onScroll} className="flex-1 overflow-y-auto overscroll-contain">
         <div className="mx-auto w-full max-w-3xl px-4 py-6">
           {empty ? (
             <EmptyState profile={profile} setProfile={setProfile} onSend={send} />
@@ -716,7 +727,14 @@ export default function ChatShell() {
                     speechSupported={speech.supported}
                   />
                 ))}
-                {showTakingLong && <li className="text-[13px] text-ink-soft">{t("chat_taking_longer")}</li>}
+                {/* Announced, not just drawn: this line appears fifteen seconds
+                    into a wait with nothing else on the screen, so for anyone not
+                    watching the screen it is the only sign the app is still alive. */}
+                {showTakingLong && (
+                  <li role="status" className="text-[13px] text-ink-soft">
+                    {t("chat_taking_longer")}
+                  </li>
+                )}
                 {error && (
                   <li role="alert" className="flex flex-wrap items-center gap-2 text-[13px] text-barrier">
                     {t(error === "rate" ? "chat_error_busy" : "chat_error")}
@@ -765,6 +783,10 @@ export default function ChatShell() {
               }}
               rows={1}
               aria-label={t("chat_input_label")}
+              // The line under the composer says the data is curated demo data.
+              // That is a caveat about the answers, so it belongs to the box you
+              // type in, not to a paragraph a screen reader may never reach.
+              aria-describedby="composer-disclaimer"
               placeholder={t("chat_placeholder")}
               className="flex-1 resize-none bg-transparent py-2.5 text-[16px] leading-relaxed text-ink outline-none placeholder:text-ink-soft/70"
             />
@@ -801,7 +823,9 @@ export default function ChatShell() {
               </button>
             )}
           </form>
-          <p className="mt-1.5 px-1 text-[11px] text-ink-soft">{t("disclaimer")}</p>
+          <p id="composer-disclaimer" className="mt-1.5 px-1 text-[11px] text-ink-soft">
+            {t("disclaimer")}
+          </p>
         </div>
       </div>
     </div>

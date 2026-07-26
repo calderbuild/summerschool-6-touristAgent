@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useId, useState } from "react";
 import { ROUTES, type RouteNode } from "@/lib/data";
 import { useI18n } from "@/lib/i18n";
 import AccessRibbon from "./AccessRibbon";
@@ -56,6 +56,9 @@ function verdictSummary(t: (k: string) => string, from: string, to: string, barr
 function ChatRouteCard({ id, profile }: { id: string; profile?: string | null }) {
   const { t, lang } = useI18n();
   const [showMap, setShowMap] = useState(false);
+  // Names the panel the toggle opens, so "expanded" refers to something a screen
+  // reader can actually move to.
+  const mapPanelId = useId();
   const route = ROUTES.find((r) => r.id === id);
   if (!route) return null;
 
@@ -151,6 +154,10 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
           type="button"
           onClick={() => setShowMap((v) => !v)}
           aria-expanded={showMap}
+          // Only while the map is mounted. It is deliberately not rendered until
+          // opened, so claiming to control it while it is closed would point at
+          // an id that is not in the document.
+          aria-controls={showMap ? mapPanelId : undefined}
           className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-ink/15 bg-surface-2 px-2.5 py-1.5 text-[12.5px] font-semibold text-ink transition-colors hover:border-signal/50"
         >
           <MapIcon size={14} strokeWidth={2.2} aria-hidden />
@@ -163,7 +170,7 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
           />
         </button>
         {showMap && (
-          <div className="mt-2 h-[240px]">
+          <div id={mapPanelId} className="mt-2 h-[240px]">
             <RouteMap route={route} />
           </div>
         )}
