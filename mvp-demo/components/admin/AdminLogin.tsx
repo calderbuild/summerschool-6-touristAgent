@@ -43,11 +43,18 @@ export default function AdminLogin({ configured }: { configured: boolean }) {
         return;
       }
       const body = await res.json().catch(() => ({}));
-      setError(
-        body?.error === "admin_not_configured"
-          ? "No admin password is set on the server. Add ADMIN_PASSWORD to the environment."
-          : "That password does not match. Try again."
-      );
+      if (body?.error === "admin_not_configured") {
+        setError("No admin password is set on the server. Add ADMIN_PASSWORD to the environment.");
+      } else if (body?.error === "too_many_attempts") {
+        // Says how long, because "try again later" leaves someone reloading and
+        // guessing. The number comes from the server, not from a guess here.
+        const mins = Math.max(1, Math.ceil((body.retryAfter ?? 900) / 60));
+        setError(
+          `Too many attempts. Sign-in is paused for about ${mins} minute${mins === 1 ? "" : "s"}.`
+        );
+      } else {
+        setError("That password does not match. Try again.");
+      }
     } catch {
       setError("Could not reach the server. Check the connection and try again.");
     } finally {
