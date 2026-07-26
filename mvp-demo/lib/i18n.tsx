@@ -222,6 +222,65 @@ const DICT: Record<string, Entry> = {
     zh: "此处换乘，电梯未核实",
   },
   conversation_label: { en: "Conversation", fr: "Conversation", zh: "对话" },
+
+  // "How this works" page
+  hiw_link: { en: "How this works", fr: "Comment ça marche", zh: "工作原理" },
+  hiw_eyebrow: { en: "Under the hood", fr: "Sous le capot", zh: "技术说明" },
+  hiw_title: {
+    en: "What this is built from, and why each part is there.",
+    fr: "Avec quoi c'est construit, et pourquoi chaque brique est là.",
+    zh: "这个产品由什么构成，以及每一部分为什么在这里。",
+  },
+  hiw_intro: {
+    en: "A confident wrong answer about a lift is worse than no answer, because someone acts on it and then cannot get back out. Everything below exists to make that harder.",
+    fr: "Une réponse fausse mais assurée sur un ascenseur est pire que pas de réponse : quelqu'un s'y fie, puis ne peut plus faire demi-tour. Tout ce qui suit existe pour rendre cela plus difficile.",
+    zh: "关于电梯的一个自信但错误的回答，比没有回答更糟，因为有人会照着做，然后出不来。下面这一切的存在，都是为了让这种事更难发生。",
+  },
+  hiw_measured_title: {
+    en: "What the open data actually contains",
+    fr: "Ce que contiennent réellement les données ouvertes",
+    zh: "开放数据里实际有什么",
+  },
+  hiw_measured_source: {
+    en: "Counted from our own cached OpenStreetMap extract, central Paris, 2026-07-26",
+    fr: "Comptés depuis notre propre extrait OpenStreetMap en cache, centre de Paris, 26/07/2026",
+    zh: "根据我们自己缓存的 OpenStreetMap 数据统计，巴黎市中心，2026-07-26",
+  },
+  hiw_guards_title: {
+    en: "The checks on what the assistant says",
+    fr: "Les garde-fous sur ce que dit l'assistant",
+    zh: "对助手所说内容的把关",
+  },
+  hiw_guards_intro: {
+    en: "A language model will fill a gap with something plausible unless it is stopped. These are the five things that stop it here.",
+    fr: "Un modèle de langage comblera un vide avec quelque chose de plausible si rien ne l'en empêche. Voici les cinq choses qui l'en empêchent ici.",
+    zh: "语言模型如果不加约束，就会用听起来合理的内容填补空白。以下五点是在这里约束它的东西。",
+  },
+  hiw_stack_title: {
+    en: "Every technology, and the reason for it",
+    fr: "Chaque technologie, et sa raison",
+    zh: "每项技术，以及选它的理由",
+  },
+  hiw_stack_intro: {
+    en: "Each reason below would change if the product were different. That is the test: \"popular\", \"free\" and \"what we already knew\" are not reasons, so they are not on this page.",
+    fr: "Chaque raison ci-dessous changerait si le produit était différent. C'est le test : « populaire », « gratuit » et « ce que nous savions déjà » ne sont pas des raisons, donc elles ne figurent pas ici.",
+    zh: "下面每一条理由，如果产品换了就不再成立。这就是判据：「流行」「免费」「我们本来就会」不算理由，所以不出现在这一页。",
+  },
+  hiw_because: { en: "Why this and not the obvious alternative", fr: "Pourquoi celui-ci plutôt que l'évident", zh: "为什么选它而不是那个显而易见的选项" },
+  layer_front: { en: "Front end", fr: "Front-end", zh: "前端" },
+  layer_back: { en: "Back end", fr: "Back-end", zh: "后端" },
+  layer_model: { en: "The model", fr: "Le modèle", zh: "模型" },
+  layer_data: { en: "Data layer", fr: "Couche de données", zh: "数据层" },
+  hiw_gap_title: {
+    en: "The gap we have not closed",
+    fr: "La lacune que nous n'avons pas comblée",
+    zh: "我们还没有填上的缺口",
+  },
+  hiw_gap_body: {
+    en: "Lift status is a snapshot, not a live feed. The transit authority publishes real-time lift data behind a free token we have not wired up, so every lift status here is described as of this morning. We would rather name that than let a status look live when it is not.",
+    fr: "L'état des ascenseurs est un instantané, pas un flux en direct. L'autorité de transport publie des données d'ascenseurs en temps réel derrière un jeton gratuit que nous n'avons pas branché : chaque état ici est donc présenté comme celui de ce matin. Nous préférons le dire plutôt que de laisser croire à du temps réel.",
+    zh: "电梯状态是一个快照，不是实时数据。交通管理方通过一个免费 token 提供实时电梯数据，我们还没有接上，所以这里每个电梯状态都标注为今早的情况。我们宁愿说清楚，也不让一个状态看起来像是实时的。",
+  },
   routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },
   browse_routes: {
     en: "Browse all prepared routes",

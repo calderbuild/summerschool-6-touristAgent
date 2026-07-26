@@ -1049,14 +1049,25 @@ function EmptyState({
         ))}
       </ul>
 
-      {/* The route browser stays a plainly-labeled path, never a hidden feature. */}
-      <Link
-        href={routesHref(lang)}
-        className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink sm:mt-8"
-      >
-        {t("browse_routes")}
-        <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
-      </Link>
+      {/* Both secondary paths stay plainly labelled rather than hidden. The
+          second one is where the "we do not invent lifts" claim is actually
+          backed up, so it needs a door, not a footnote. */}
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 sm:mt-8">
+        <Link
+          href={routesHref(lang)}
+          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"
+        >
+          {t("browse_routes")}
+          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
+        </Link>
+        <Link
+          href="/how-it-works"
+          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:text-ink"
+        >
+          {t("hiw_link")}
+          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
+        </Link>
+      </div>
     </div>
   );
 }
