@@ -97,6 +97,10 @@ export default function App() {
   const { t, lang } = useI18n();
   const [profile, setProfile] = useState<ProfileId>("wheelchair");
   const [mapView, setMapView] = useState<"map" | "3d">("map");
+  // The 3D view leans on a free third-party tile service and on WebGL, either of
+  // which can be missing on the day. Rather than leave a dead panel on screen,
+  // fall back to the flat map and say why, so pressing 3D can retry.
+  const [threeDFellBack, setThreeDFellBack] = useState(false);
   const active = PROFILE_META.find((p) => p.id === profile)!;
   const route = ROUTES.find((r) => r.id === active.routeId)!;
 
@@ -202,7 +206,10 @@ export default function App() {
                   {(["map", "3d"] as const).map((v) => (
                     <button
                       key={v}
-                      onClick={() => setMapView(v)}
+                      onClick={() => {
+                        setMapView(v);
+                        if (v === "3d") setThreeDFellBack(false);
+                      }}
                       aria-pressed={mapView === v}
                       className={`grid min-h-9 min-w-11 place-items-center rounded-md px-3 text-[12px] font-bold transition-colors ${
                         mapView === v
@@ -219,9 +226,21 @@ export default function App() {
                 {mapView === "map" ? (
                   <RouteMap route={route} />
                 ) : (
-                  <MetroMap nodes={route.nodes} className="h-full w-full rounded-lg" />
+                  <MetroMap
+                    nodes={route.nodes}
+                    className="h-full w-full rounded-lg"
+                    onUnavailable={() => {
+                      setThreeDFellBack(true);
+                      setMapView("map");
+                    }}
+                  />
                 )}
               </div>
+              {threeDFellBack && (
+                <p role="status" className="mt-2 text-[12.5px] leading-snug text-caution-ink">
+                  {t("map_3d_fell_back")}
+                </p>
+              )}
             </div>
             <div className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
               <h3 className="text-[11px] font-bold uppercase tracking-wide text-ink-soft">

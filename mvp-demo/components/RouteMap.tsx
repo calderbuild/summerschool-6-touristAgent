@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
-import { APIProvider, Map, useMap } from "@vis.gl/react-google-maps";
+import { useEffect, useState } from "react";
+import { APIProvider, APILoadingStatus, Map, useApiLoadingStatus, useMap } from "@vis.gl/react-google-maps";
 import type { DemoRoute } from "@/lib/data";
 import { statusHex } from "@/lib/status";
 import { useI18n } from "@/lib/i18n";
 
 const KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+declare global {
+  interface Window {
+    gm_authFailure?: () => void;
+  }
+}
 
 function RouteOverlay({ route }: { route: DemoRoute }) {
   const map = useMap();
@@ -117,20 +123,83 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
   return null;
 }
 
+function Notice({ children, dashed = false }: { children: string; dashed?: boolean }) {
+  return (
+    <div
+      className={`grid h-full min-h-[220px] place-items-center rounded-xl border bg-ink/[0.03] p-6 text-center text-[13px] leading-snug text-ink-soft ${
+        dashed ? "border-dashed border-ink/25" : "border-ink/10"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Watches the Maps script rather than assuming it arrives.
+ *
+ *  A key can be present and still be refused: the wrong HTTP referrer
+ *  restriction, an exhausted quota, or a privacy extension that blocks
+ *  maps.googleapis.com all end with an empty grey box and no explanation. That
+ *  is the worst thing to be looking at during a pitch, because it reads as "the
+ *  route is broken" when the route is fine. So the failure gets said out loud,
+ *  and it says which half failed. */
+function LoadGuard({ children }: { children: React.ReactNode }) {
+  const { t } = useI18n();
+  const status = useApiLoadingStatus();
+  const [slow, setSlow] = useState(false);
+  const [rejected, setRejected] = useState(false);
+
+  // A rejected key does not fail the script load, so the library's status stays
+  // LOADED and only Google knows. It reports it by calling this global, which
+  // nothing installs by default. This is the path a referrer restriction takes:
+  // add the wrong domain to the key and every map silently becomes Google's own
+  // grey apology box, with nothing from us explaining that the route is fine.
+  useEffect(() => {
+    const previous = window.gm_authFailure;
+    window.gm_authFailure = () => {
+      setRejected(true);
+      previous?.();
+    };
+    return () => {
+      window.gm_authFailure = previous;
+    };
+  }, []);
+
+  const failed =
+    rejected || status === APILoadingStatus.FAILED || status === APILoadingStatus.AUTH_FAILURE;
+  const pending = status === APILoadingStatus.NOT_LOADED || status === APILoadingStatus.LOADING;
+
+  // A blocked script fires an error and lands on FAILED, but a stalled network
+  // just stays LOADING forever, which looks identical to a working map that has
+  // not painted yet. After ten seconds, say so.
+  useEffect(() => {
+    if (!pending) return;
+    const timer = window.setTimeout(() => setSlow(true), 10_000);
+    return () => window.clearTimeout(timer);
+  }, [pending]);
+
+  if (failed) return <Notice>{t("map_failed")}</Notice>;
+
+  return (
+    <>
+      {children}
+      {pending && slow && (
+        <p role="status" className="absolute inset-x-0 bottom-0 bg-paper/90 px-3 py-1.5 text-center text-[12px] text-ink-soft">
+          {t("map_slow")}
+        </p>
+      )}
+    </>
+  );
+}
+
 export default function RouteMap({ route }: { route: DemoRoute }) {
   const { t } = useI18n();
 
-  if (!KEY) {
-    return (
-      <div className="grid h-full min-h-[220px] place-items-center rounded-xl border border-dashed border-ink/25 bg-ink/[0.03] p-6 text-center text-[13px] leading-snug text-ink-soft">
-        {t("map_missing")}
-      </div>
-    );
-  }
+  if (!KEY) return <Notice dashed>{t("map_missing")}</Notice>;
 
   return (
     <div
-      className="h-full w-full overflow-hidden rounded-xl border border-ink/10"
+      className="relative h-full w-full overflow-hidden rounded-xl border border-ink/10"
       // Not role="img": the zoom control and the map canvas itself are focusable,
       // and an image role would hide them from a screen reader while leaving them
       // in the tab order.
@@ -138,16 +207,18 @@ export default function RouteMap({ route }: { route: DemoRoute }) {
       aria-label={`${t("route_map_label")}: ${route.from} → ${route.to}`}
     >
       <APIProvider apiKey={KEY}>
-        <Map
-          defaultCenter={{ lat: 48.858, lng: 2.34 }}
-          defaultZoom={12}
-          gestureHandling="cooperative"
-          disableDefaultUI
-          zoomControl
-          className="h-full w-full"
-        >
-          <RouteOverlay route={route} />
-        </Map>
+        <LoadGuard>
+          <Map
+            defaultCenter={{ lat: 48.858, lng: 2.34 }}
+            defaultZoom={12}
+            gestureHandling="cooperative"
+            disableDefaultUI
+            zoomControl
+            className="h-full w-full"
+          >
+            <RouteOverlay route={route} />
+          </Map>
+        </LoadGuard>
       </APIProvider>
     </div>
   );

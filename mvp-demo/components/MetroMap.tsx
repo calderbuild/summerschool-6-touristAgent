@@ -42,6 +42,11 @@ const PARIS_STYLE = {
       source: "omt",
       "source-layer": "building",
       minzoom: 13,
+      // The tileset flags building parts that are not meant to be extruded on
+      // their own (a spire counted separately from its church, a courtyard wing
+      // inside its block). Extruding them anyway stacks two solids in the same
+      // place and the shared faces flicker as the camera moves.
+      filter: ["!=", ["get", "hide_3d"], true] as unknown as unknown[],
       paint: {
         "fill-extrusion-color": [
           "interpolate",
@@ -78,10 +83,31 @@ function segmentColor(node: RouteNode | undefined): string {
   return node?.line?.color ?? "#6b7683"; // walking legs (no line) render neutral
 }
 
-export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; className?: string }) {
+// The tiles come from a free third-party service, so "it never answered" is a
+// real outcome and not a hypothetical one. Long enough that a slow conference
+// network still wins, short enough that nobody stares at an empty box.
+const FIRST_PAINT_DEADLINE_MS = 8000;
+
+export default function MetroMap({
+  nodes,
+  className,
+  onUnavailable,
+}: {
+  nodes: RouteNode[];
+  className?: string;
+  /** Called once when the 3D view cannot be shown, so the page can fall back to
+   *  the flat map instead of leaving the traveller with a dead panel. */
+  onUnavailable?: () => void;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const { t } = useI18n();
   const [failed, setFailed] = useState(false);
+  // Held in a ref so the effect does not restart every time the parent rerenders
+  // with a new inline callback.
+  const onUnavailableRef = useRef(onUnavailable);
+  useEffect(() => {
+    onUnavailableRef.current = onUnavailable;
+  }, [onUnavailable]);
 
   useEffect(() => {
     if (!ref.current || nodes.length === 0) return;
@@ -91,6 +117,27 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
     // be told apart from a map that never came alive at all.
     let drawn = false;
     const markers: import("maplibre-gl").Marker[] = [];
+
+    // Re-armed rather than fired when nobody is looking: a browser pauses
+    // animation frames in a hidden tab, so a map that is merely waiting for the
+    // tab to come back would otherwise be declared broken. The deadline only
+    // means anything while someone is actually watching it.
+    let deadline = 0;
+    const giveUp = () => {
+      if (cancelled || drawn) return;
+      if (document.hidden) {
+        deadline = window.setTimeout(giveUp, FIRST_PAINT_DEADLINE_MS);
+        return;
+      }
+      setFailed(true);
+      onUnavailableRef.current?.();
+    };
+
+    // WebGL missing throws and the tile service failing fires an error, but a
+    // request that simply never comes back fires nothing at all, and neither
+    // "load" nor "error" ever arrives. That silence was the one way this panel
+    // could stay blank forever with nothing said about it.
+    deadline = window.setTimeout(giveUp, FIRST_PAINT_DEADLINE_MS);
 
     (async () => {
       try {
@@ -119,6 +166,7 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
         map.on("load", () => {
           if (!map) return;
           drawn = true;
+          window.clearTimeout(deadline);
           // Route drawn as per-line coloured segments, plus a soft glow underneath.
           const features = nodes.slice(1).map((node, i) => ({
             type: "Feature" as const,
@@ -163,15 +211,17 @@ export default function MetroMap({ nodes, className }: { nodes: RouteNode[]; cla
           // One tile that fails to arrive is not a broken map. Only an error
           // before the first render is fatal; otherwise a single hiccup would
           // cover a perfectly good 3D view for the rest of the session.
-          if (!cancelled && !drawn) setFailed(true);
+          giveUp();
         });
       } catch {
-        if (!cancelled) setFailed(true);
+        // No WebGL, or the maplibre chunk itself failed to arrive.
+        giveUp();
       }
     })();
 
     return () => {
       cancelled = true;
+      window.clearTimeout(deadline);
       markers.forEach((m) => m.remove());
       map?.remove();
     };

@@ -85,6 +85,21 @@ const DICT: Record<string, Entry> = {
     fr: "La carte 3D n'a pas pu se charger. Les détails de l'itinéraire restent disponibles.",
     zh: "3D 地图加载失败。路线信息不受影响。",
   },
+  map_3d_fell_back: {
+    en: "The 3D view could not load, so the flat map is showing instead. Press 3D to try again.",
+    fr: "La vue 3D n'a pas pu se charger, le plan est affiché à la place. Appuyez sur 3D pour réessayer.",
+    zh: "3D 视图未能加载，已改为显示平面地图。点击 3D 可重试。",
+  },
+  map_failed: {
+    en: "The map could not load. This is the map service, not the route: every stop and lift status below is unchanged.",
+    fr: "La carte n'a pas pu se charger. C'est le service de cartographie, pas l'itinéraire : chaque arrêt et chaque ascenseur ci-dessous sont inchangés.",
+    zh: "地图未能加载。问题在地图服务，不在路线：下方每个站点和电梯状态均不受影响。",
+  },
+  map_slow: {
+    en: "The map is taking longer than usual to load.",
+    fr: "La carte met plus de temps que d'habitude à charger.",
+    zh: "地图加载时间比平时长。",
+  },
 
   legend_ok: { en: "Step-free", fr: "Sans marches", zh: "无楼梯" },
   legend_lift: { en: "Working lift", fr: "Ascenseur en service", zh: "电梯可用" },
