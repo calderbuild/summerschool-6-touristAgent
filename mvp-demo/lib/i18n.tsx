@@ -201,9 +201,25 @@ const DICT: Record<string, Entry> = {
     zh: "或从这些开始",
   },
   hero_line_label: {
-    en: "A step-free line that honestly marks the stretch we do not know.",
-    fr: "Une ligne sans marches qui signale honnêtement le tronçon que nous ne connaissons pas.",
-    zh: "一条无楼梯路线，如实标出我们不确定的路段。",
+    en: "A diagram of central Paris: the Seine, Line 14 drawn as the one fully step-free line, and every other line hatched because its accessibility cannot be promised.",
+    fr: "Un schéma du centre de Paris : la Seine, la ligne 14 tracée comme la seule ligne entièrement sans marches, et toutes les autres hachurées car leur accessibilité n'est pas garantie.",
+    zh: "巴黎市中心示意图：塞纳河、被画成唯一全程无楼梯的 14 号线，以及以斜纹标出的其他线路，因为它们的无障碍状况无法保证。",
+  },
+  hero_stat_caption: {
+    en: "of stairways in central Paris do not record how many steps they are.",
+    fr: "des escaliers du centre de Paris n'indiquent pas leur nombre de marches.",
+    zh: "的巴黎市中心楼梯没有记录台阶数量。",
+  },
+  hero_stat_source: {
+    en: "1,313 of 3,246 · OpenStreetMap, counted 2026-07-26",
+    fr: "1 313 sur 3 246 · OpenStreetMap, comptés le 26/07/2026",
+    zh: "3,246 处中 1,313 处 · OpenStreetMap，2026-07-26 统计",
+  },
+  legend_m14: { en: "Line 14, step-free", fr: "Ligne 14, sans marches", zh: "14 号线，无楼梯" },
+  legend_interchange_unknown: {
+    en: "Change here, lift unverified",
+    fr: "Changement ici, ascenseur non vérifié",
+    zh: "此处换乘，电梯未核实",
   },
   conversation_label: { en: "Conversation", fr: "Conversation", zh: "对话" },
   routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },

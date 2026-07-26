@@ -832,27 +832,107 @@ export default function ChatShell() {
   );
 }
 
-// The signature motif: the product's own transit language, a step-free line that
-// honestly hatches the stretch we do not know. Reuses the status palette so the
-// hero, the spine and the map all speak the same visual language.
-function StepFreeLine() {
+/** The signature element: a fragment of the actual city, drawn in the network's
+ *  own hand.
+ *
+ *  Paris arrives here through the Métro's drawing language rather than through
+ *  postcards. The Seine is the one curve in a city the RATP draws with straight
+ *  lines, with the Île de la Cité where it really sits. Line 14 crosses it as the
+ *  single confident stroke, because it is the only fully step-free line in the
+ *  system and it is in its own RATP purple. Every other line on the diagram is
+ *  hatched, which is the literal truth: about thirty of three hundred stations
+ *  have a working lift, and most stairways will not even tell you how many steps
+ *  they are. The picture makes the product's argument before the headline does.
+ */
+function ParisNetwork() {
   const { t } = useI18n();
   return (
-    <svg viewBox="0 0 340 44" className="h-auto w-full max-w-[420px]" role="img" aria-label={t("hero_line_label")}>
+    <svg
+      viewBox="0 0 400 196"
+      className="h-auto w-full max-w-[520px]"
+      role="img"
+      aria-label={t("hero_line_label")}
+    >
       <defs>
-        <pattern id="vl-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-unknown)" strokeWidth="2.4" />
+        <pattern id="vl-hero-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="5" stroke="var(--color-unknown)" strokeWidth="1.8" strokeOpacity="0.5" />
         </pattern>
       </defs>
-      <line x1="20" y1="22" x2="112" y2="22" stroke="var(--color-ok)" strokeWidth="4" strokeLinecap="round" />
-      <rect x="118" y="18" width="84" height="8" rx="4" fill="url(#vl-hatch)" />
-      <rect x="118" y="18" width="84" height="8" rx="4" fill="none" stroke="var(--color-unknown)" strokeOpacity="0.6" />
-      <line x1="208" y1="22" x2="320" y2="22" stroke="var(--color-signal)" strokeWidth="4" strokeLinecap="round" />
-      <circle cx="20" cy="22" r="7" fill="var(--color-ok)" />
-      <circle cx="112" cy="22" r="7" fill="var(--color-signal)" />
-      <circle cx="208" cy="22" r="7" fill="var(--color-unknown)" />
-      <circle cx="320" cy="22" r="9" fill="var(--color-ink)" />
-      <circle cx="320" cy="22" r="3" fill="var(--color-canvas)" />
+
+      {/* the river, behind everything */}
+      <path
+        d="M -8 96 C 68 128 138 140 206 112 S 330 62 408 78"
+        fill="none"
+        stroke="var(--line-rerb)"
+        strokeWidth="13"
+        strokeOpacity="0.5"
+        strokeLinecap="round"
+      />
+      {/* The lines you have to change onto, leaving Line 14 at a real
+          interchange and heading off at the diagram's 45 degrees. Dashed rather
+          than coloured, because their lifts are the thing nobody can promise.
+          They branch off 14 instead of crossing it: the story is "ride the one
+          line we can vouch for, then you are on your own", not "here is a
+          tangle". */}
+      <path
+        d="M 306 74 L 366 134 L 366 176"
+        fill="none"
+        stroke="var(--color-unknown)"
+        strokeWidth="3.5"
+        strokeOpacity="0.45"
+        strokeDasharray="8 8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 232 148 L 172 88 L 100 88"
+        fill="none"
+        stroke="var(--color-unknown)"
+        strokeWidth="3.5"
+        strokeOpacity="0.45"
+        strokeDasharray="8 8"
+        strokeLinecap="round"
+      />
+
+      {/* Line 14: the one continuous stroke. 45-degree geometry, as the Métro
+          diagram draws it. The dash animation runs from a hidden state to this
+          one, so the line is already complete if animation never runs at all. */}
+      <path
+        id="vl-m14"
+        d="M 306 20 L 306 74 L 232 148 L 132 148"
+        fill="none"
+        stroke="var(--line-m14)"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="vl-draw"
+      />
+
+      {/* Plain stops on 14 sit on the line; the two interchanges where an
+          unverifiable line branches off get the hatch square the app uses for
+          "unknown" everywhere else. Those two squares are the whole product: the
+          moment a trip either works or quietly does not. */}
+      <circle cx="306" cy="20" r="6" fill="var(--color-paper)" stroke="var(--line-m14)" strokeWidth="3.4" />
+      <circle cx="132" cy="148" r="8.5" fill="var(--line-m14)" />
+      <circle cx="132" cy="148" r="3" fill="var(--color-paper)" />
+      {[
+        [306, 74],
+        [232, 148],
+      ].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <rect x={x - 8} y={y - 8} width="16" height="16" rx="3" fill="var(--color-paper)" />
+          <rect
+            x={x - 8}
+            y={y - 8}
+            width="16"
+            height="16"
+            rx="3"
+            fill="url(#vl-hero-hatch)"
+            stroke="var(--color-unknown)"
+            strokeOpacity="0.75"
+            strokeWidth="1.6"
+          />
+        </g>
+      ))}
     </svg>
   );
 }
@@ -881,32 +961,53 @@ function EmptyState({
             {t("chat_intro_title")}
           </h2>
           <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-soft">{t("chat_intro_body")}</p>
-          <div className="mt-6 sm:mt-7">
-            <StepFreeLine />
+          {/* Diagram and evidence side by side. The picture says only Line 14 can
+              be promised; the number says why that matters, and it is our own
+              measurement rather than a claim. */}
+          {/* Side by side at every width, not stacked. Stacked, this pair ate
+              320px of a 390px screen and pushed the profile picker and every
+              suggestion below the fold, so a phone user landed on a diagram with
+              nothing to do. The diagram is the hero on a desktop and a supporting
+              mark on a phone, which is what the height cap encodes. */}
+          <div className="mt-5 grid grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] items-center gap-x-4 sm:mt-7 sm:gap-x-8 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <ParisNetwork />
+            <figure className="border-l-2 border-ink/12 pl-3 sm:max-w-[15rem] sm:pl-4">
+              <div className="font-display text-[30px] font-extrabold leading-none tracking-tight text-ink tabular-nums sm:text-[40px]">
+                59.6<span className="align-top text-[19px] text-ink-soft sm:text-[24px]">%</span>
+              </div>
+              <figcaption className="mt-1.5 text-[12px] leading-snug text-ink-soft sm:text-[12.5px]">
+                {t("hero_stat_caption")}
+              </figcaption>
+              <p className="mt-1.5 hidden font-mono text-[10px] uppercase tracking-wide text-ink-faint sm:mt-2 sm:block">
+                {t("hero_stat_source")}
+              </p>
+            </figure>
           </div>
-          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
-            <li className="inline-flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-ok)" }} aria-hidden />
-              {t("legend_ok")}
-            </li>
-            <li className="inline-flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--color-signal)" }} aria-hidden />
-              {t("legend_lift")}
-            </li>
-            <li className="inline-flex items-center gap-1.5">
-              <span className="hatch-unknown inline-block h-2.5 w-2.5 rounded-[2px] ring-1 ring-unknown/50" aria-hidden />
-              {t("legend_unknown")}
-            </li>
-          </ul>
-          {/* Live Paris weather, the one runtime data source, made visible. */}
-          <div className="mt-5">
+          {/* Two items, because the drawing above uses two marks. A legend that
+              lists a colour the picture does not contain is a legend for a
+              different picture. */}
+          {/* Legend and live weather share one row. Both are small metadata about
+              the drawing above, and giving each its own line cost a phone the
+              example prompts, which are the fastest way to a first answer. */}
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2.5">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
+              <li className="inline-flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--line-m14)" }} aria-hidden />
+                {t("legend_m14")}
+              </li>
+              <li className="inline-flex items-center gap-1.5">
+                <span className="hatch-unknown inline-block h-2.5 w-2.5 rounded-[2px] ring-1 ring-unknown/50" aria-hidden />
+                {t("legend_interchange_unknown")}
+              </li>
+            </ul>
+            {/* The one runtime data source, made visible. */}
             <WeatherChip />
           </div>
         </div>
       </section>
 
       {/* Who is travelling, the personalization a generic map can't do. */}
-      <p className="mt-8 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("profile_q")}</p>
+      <p className="mt-6 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("profile_q")}</p>
       <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {PROFILE_META.map((p) => {
           const Icon = p.icon;
@@ -928,7 +1029,7 @@ function EmptyState({
       </div>
 
       {/* Try, one tidy list with a hover cue, not three identical tiles. */}
-      <p className="mt-8 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("chat_try")}</p>
+      <p className="mt-6 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("chat_try")}</p>
       <ul className="mt-3 divide-y divide-ink/8 overflow-hidden rounded-2xl border border-ink/10 bg-surface">
         {["chat_suggest_1", "chat_suggest_2", "chat_suggest_3"].map((k) => (
           <li key={k}>

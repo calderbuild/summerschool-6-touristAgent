@@ -112,6 +112,22 @@ html {
   line-height: 1;
 }
 
+/* Line 14 drawing itself across the hero, once, on arrival. The element's own
+   state is the finished line and the animation runs *from* the hidden state, so
+   if animation never runs (reduced motion, a throttled background tab, an old
+   browser) the line is simply already there. Content never waits on motion. */
+.vl-draw {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 0;
+  animation: vl-draw 1100ms cubic-bezier(0.2, 0, 0, 1) 120ms 1 backwards;
+}
+
+@keyframes vl-draw {
+  from {
+    stroke-dashoffset: 320;
+  }
+}
+
 /* Focus ring visible for keyboard users on any interactive element */
 :where(a, button, select, input, textarea, [tabindex]):focus-visible {
   outline: 3px solid var(--color-signal);
