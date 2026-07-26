@@ -203,7 +203,10 @@ export const PLACES: Place[] = [
     status: "open",
     officialUrl: "https://www.paris-pantheon.fr/en",
     source: "Official site (CMN); 2026 price NOT verified",
-    lastVerified: "2026-07-23 (price is a 2025 estimate)",
+    // A date, and only a date. The estimate caveat lives in `source` and `notes`,
+    // which is where the assistant already reads it from; leaving it in here meant
+    // anything treating this field as a date got a sentence instead.
+    lastVerified: "2026-07-23",
     notes: "Price is a 2025 estimate, confirm 2026 on the official site. Crypt of French notables; Foucault pendulum.",
   },
   {
@@ -340,7 +343,7 @@ export const PLACES: Place[] = [
     status: "open",
     officialUrl: "https://nelsons.paris/",
     source: "OpenStreetMap (Overpass, wheelchair=yes) 2026-07-26",
-    lastVerified: "2026-07-26 (OSM tags, not confirmed with the venue)",
+    lastVerified: "2026-07-26",
     notes: "16 Rue Coquillière. Tel +33 1 42 36 74 24. Both the entrance and the toilet are tagged accessible, which is rare enough to be worth saying out loud. Ring ahead to confirm before relying on it.",
   },
   {
@@ -361,7 +364,7 @@ export const PLACES: Place[] = [
     status: "open",
     officialUrl: "http://restaurantletresor.com/",
     source: "OpenStreetMap (Overpass, wheelchair=yes) 2026-07-26",
-    lastVerified: "2026-07-26 (OSM tags, not confirmed with the venue)",
+    lastVerified: "2026-07-26",
     notes: "9 Rue du Trésor, in the Marais. Tel +33 1 42 71 35 17. Entrance and toilet both tagged accessible. Ring ahead to confirm before relying on it.",
   },
   {
@@ -382,7 +385,7 @@ export const PLACES: Place[] = [
     status: "open",
     officialUrl: "http://www.le-louchebem.fr/",
     source: "OpenStreetMap (Overpass, wheelchair=yes) 2026-07-26",
-    lastVerified: "2026-07-26 (OSM tags, not confirmed with the venue)",
+    lastVerified: "2026-07-26",
     notes: "31 Rue Berger. Tel +33 1 42 33 12 99. You can get in, but the toilet is explicitly NOT accessible, so say that when recommending it: for a wheelchair user a long meal here may not work even though the door does.",
   },
   {
@@ -403,7 +406,7 @@ export const PLACES: Place[] = [
     status: "open",
     officialUrl: "https://pharmacie-forum-des-halles-paris.pharmabest.com/",
     source: "OpenStreetMap (Overpass, wheelchair=yes) 2026-07-26",
-    lastVerified: "2026-07-26 (OSM tags, not confirmed with the venue)",
+    lastVerified: "2026-07-26",
     notes: "Rue Rambuteau, inside the Forum des Halles. Tel +33 1 40 41 91 45. Open Sundays, which most Paris pharmacies are not. For a pharmacy on duty outside these hours, call 15 or 112 and ask.",
   },
 ];

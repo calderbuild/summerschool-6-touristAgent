@@ -134,6 +134,10 @@ function placeCatalogue(): string {
       // Carried so the reply can cite where a fact came from and when it was
       // checked, instead of asking the traveller to take our word for it.
       `official:${p.officialUrl}`,
+      // Provenance, not just the date. This is what separates a price read off
+      // the venue's own site from an OpenStreetMap tag somebody contributed, and
+      // the model needs the difference to know which facts to hedge.
+      `source:${p.source}`,
       `checked:${p.lastVerified}`,
     ];
     const flag = p.status === "closed" ? "CLOSED, do not recommend; " : "";

@@ -30,9 +30,11 @@ export function speakable(text: string): string {
       .replace(/\*([^*\n]+)\*|_([^_\n]+)_/g, (_m, a, b) => a ?? b)
       // A heading's hashes and a list's dashes are layout, not words. The line
       // break that follows is what creates the pause, so nothing replaces them.
-      .replace(/^\s{0,3}#{1,6}\s+/gm, "")
-      .replace(/^\s*[-*]\s+/gm, "")
-      .replace(/^\s*\d+[.)]\s+/gm, "")
+      // Indentation is matched as spaces and tabs, never \s, which would also eat
+      // the blank line before a list and run two paragraphs together in speech.
+      .replace(/^[ \t]{0,3}#{1,6}[ \t]+/gm, "")
+      .replace(/^[ \t]*[-*][ \t]+/gm, "")
+      .replace(/^[ \t]*\d+[.)][ \t]+/gm, "")
       // Rules and table pipes read as noise.
       .replace(/^\s*([-*_]\s*){3,}$/gm, "")
       .replace(/[ \t]*\|[ \t]*/g, ", ")
