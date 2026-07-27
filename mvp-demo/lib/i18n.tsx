@@ -315,10 +315,15 @@ const DICT: Record<string, Entry> = {
   // a booking at one station, a member of staff at another, and the wrong platform
   // at a third, so the line that counts them cannot name one of the three.
   verdict_conditional: { en: "with a condition", fr: "sous condition", zh: "有条件"},
+  // This used to read "lift status is as of this morning, not a live feed", which
+  // claimed a snapshot we have never held: the lift dataset refuses us without a
+  // token, so there is no lift status here of any age. What is read live is the
+  // station's accessibility class, and saying which of the two you are looking at
+  // is the whole point.
   freshness_note: {
-    en: "Lift status is as of this morning, not a live feed.",
-    fr: "État des ascenseurs de ce matin, pas un flux en direct.",
-    zh: "电梯状态为今晨数据，非实时更新。",
+    en: "Station accessibility is read live from the operator. Whether a lift is working is not published to us at all.",
+    fr: "L'accessibilité des gares est lue en direct chez l'exploitant. L'état de marche d'un ascenseur ne nous est pas communiqué.",
+    zh: "车站无障碍等级是实时从运营方读取的。某台电梯此刻是否正常，我们完全拿不到。",
   },
 
   honesty_title: { en: "We would rather say “unknown” than guess", fr: "Nous préférons dire « inconnu » plutôt que deviner", zh: "我们宁可说“未知”，也不猜测" },

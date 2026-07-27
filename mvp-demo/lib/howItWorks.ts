@@ -13,6 +13,17 @@ import type { Lang } from "./i18n";
 
 export type Tri = Record<Lang, string>;
 
+/**
+ * One retired sentence worth remembering, because it survived two honesty passes.
+ *
+ * The guard entry below, and the freshness note on every chat route card, used to
+ * say "lift status is as of this morning, not a live feed". It reads as careful
+ * hedging and it was false: there is no lift status in this product at all, of any
+ * age. A stale-but-honest snapshot is a different product from one with no data,
+ * and only the second one is ours. `lifts.test.ts` now fails if that sentence
+ * comes back in any language.
+ */
+
 export interface Choice {
   /** The layer this belongs to, so the page reads as an architecture. */
   layer: "front" | "back" | "model" | "data";
@@ -278,9 +289,9 @@ export const GUARDS: Guard[] = [
       zh: "每个回答都带着来源和日期",
     },
     body: {
-      en: "Prices and opening times are given with the date they were checked and a link to the official site, so you can confirm before you travel. Lift status is described as of this morning, not as live, because we do not have a live feed and saying otherwise would be the most dangerous sentence in the product.",
-      fr: "Les prix et horaires sont donnés avec la date de vérification et un lien vers le site officiel, pour confirmer avant de partir. L'état des ascenseurs est présenté comme celui de ce matin, non comme du temps réel, car nous n'avons pas de flux en direct et prétendre le contraire serait la phrase la plus dangereuse du produit.",
-      zh: "价格和开放时间都附带核对日期和官方网站链接，方便你出行前确认。电梯状态被描述为今早的情况，而不是实时，因为我们没有实时数据源，声称有会是这个产品里最危险的一句话。",
+      en: "Prices and opening times are given with the date they were checked and a link to the official site, so you can confirm before you travel. Lift status is not described at all, because the dataset that carries it refuses us without a registered token. There is no snapshot of it either, and claiming one would be the most dangerous sentence in the product.",
+      fr: "Les prix et horaires sont donnés avec la date de vérification et un lien vers le site officiel, pour confirmer avant de partir. L'état des ascenseurs n'est pas présenté du tout, car le jeu de données qui le porte nous refuse l'accès sans jeton enregistré. Il n'en existe pas non plus d'instantané, et en revendiquer un serait la phrase la plus dangereuse du produit.",
+      zh: "价格和开放时间都附带核对日期和官方网站链接，方便你出行前确认。电梯状态我们根本不描述，因为承载它的数据集在没有注册 token 时拒绝我们。我们也没有它的任何快照，声称有会是这个产品里最危险的一句话。",
     },
   },
   {

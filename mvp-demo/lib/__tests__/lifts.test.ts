@@ -115,3 +115,28 @@ describe("the endpoint's contract", () => {
     }
   });
 });
+
+describe("what the interface may say about lift freshness", () => {
+  it("never claims a snapshot of lift status, of any age", () => {
+    // The chat card printed "Lift status is as of this morning, not a live feed"
+    // and /how-it-works repeated it. Both read as careful hedging and both were
+    // false: there is no lift status here at all, this morning's or otherwise.
+    // A stale-but-honest snapshot is a different product from one with no data,
+    // and only one of them is ours.
+    const files = [
+      join(APP, "lib", "i18n.tsx"),
+      join(APP, "lib", "howItWorks.ts"),
+      join(APP, "lib", "data.ts"),
+    ];
+    const claim = /(lift status|état des ascenseurs|电梯状态)[^.\n]{0,60}(as of this morning|de ce matin|今早|今晨)/i;
+    for (const f of files) {
+      const src = readFileSync(f, "utf8");
+      // Comments may quote the retired sentence to explain why it went.
+      const prose = src
+        .split("\n")
+        .filter((l) => !l.trim().startsWith("//") && !l.trim().startsWith("*"))
+        .join("\n");
+      expect(prose, f).not.toMatch(claim);
+    }
+  });
+});
