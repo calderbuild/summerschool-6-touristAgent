@@ -53,110 +53,43 @@ export interface DemoRoute {
   finalWalk?: { metres: number; climbM: number | null; minutes: number } | null;
 }
 
-const M14 = { label: "M14", color: "#62259D" };
 const M1 = { label: "M1", color: "#FFCD00" };
-const RERC = { label: "RER C", color: "#F3D311" };
 const RERB = { label: "RER B", color: "#7BA3DC" };
 
+/**
+ * What a hand-written route is allowed to cite.
+ *
+ * All three used to list "IDFM · État des ascenseurs", which is the live lift
+ * dataset this app cannot read: it answers ForbiddenAccess without a registered
+ * token, and /how-it-works says so on the same site. Two of them also cited
+ * "RATP · accessible stations" and "SNCF · gare accessibility", neither of which
+ * anything here has ever fetched. A source line is a claim about provenance, so it
+ * names only what was actually read.
+ */
+function ROUTE_SOURCES(venue?: string): string[] {
+  return [
+    "IDFM · Accessibilité en gare (Licence Ouverte)",
+    "IDFM · Référentiel des arrêts (Licence Ouverte)",
+    "OpenStreetMap (lifts and stairways, ODbL)",
+    ...(venue ? [venue] : []),
+  ];
+}
+
 export const ROUTES: DemoRoute[] = [
-  {
-    id: "gdl-eiffel",
-    from: "Gare de Lyon",
-    to: "Tour Eiffel",
-    title: {
-      // No profile in the title: the picker directly above already says who is
-      // travelling, and two profiles share this route, so naming one of them
-      // here made the other traveller read a label that was not about them.
-      en: "Gare de Lyon → Eiffel Tower",
-      fr: "Gare de Lyon → Tour Eiffel",
-      zh: "里昂车站 → 埃菲尔铁塔",
-    },
-    sources: ["IDFM · État des ascenseurs", "RATP · accessible stations", "OpenStreetMap", "Tour Eiffel access info"],
-    nodes: [
-      {
-        name: "Gare de Lyon",
-        line: M14,
-        coord: { lat: 48.8443, lng: 2.3743 },
-        at: "ok",
-        steps: 0,
-        atText: {
-          en: "Step-free lift from the concourse down to the Line 14 platform.",
-          fr: "Ascenseur sans marches du hall jusqu'au quai de la ligne 14.",
-          zh: "从大厅到 14 号线站台有无障碍电梯，全程无楼梯。",
-        },
-      },
-      {
-        name: "Châtelet",
-        line: M14,
-        coord: { lat: 48.8583, lng: 2.347 },
-        into: {
-          status: "ok",
-          text: {
-            en: "Ride Line 14 towards Saint-Lazare, 3 stops, fully step-free.",
-            fr: "Ligne 14 vers Saint-Lazare, 3 stations, entièrement sans marches.",
-            zh: "乘 14 号线往 Saint-Lazare 方向，3 站，全程无楼梯。",
-          },
-        },
-        at: "unknown",
-        steps: null,
-        atText: {
-          en: "Change here for RER C. The lift at this interchange is not reported, so treat it as unknown.",
-          fr: "Correspondance vers le RER C. L'ascenseur de cette correspondance n'est pas renseigné, à considérer comme inconnu.",
-          zh: "在此换乘 RER C。此换乘处的电梯无数据，按“未知”处理。",
-        },
-      },
-      {
-        name: "Champ de Mars–Tour Eiffel",
-        line: RERC,
-        coord: { lat: 48.8556, lng: 2.2894 },
-        into: {
-          status: "unknown",
-          text: {
-            en: "Take RER C, 4 stops. Some RER C stations are step-free; confirm platform access on the day.",
-            fr: "RER C, 4 stations. Certaines gares du RER C sont sans marches ; vérifiez l'accès au quai le jour même.",
-            zh: "乘 RER C，4 站。RER C 部分车站无楼梯，请当天确认站台通行。",
-          },
-        },
-        at: "lift_down",
-        steps: 28,
-        atText: {
-          en: "The lift to street level is reported out of service today.",
-          fr: "L'ascenseur vers la rue est signalé hors service aujourd'hui.",
-          zh: "通往地面的电梯今日报告为故障。",
-        },
-        barrier: {
-          en: "Out of service means 28 steps up to the exit.",
-          fr: "Hors service signifie 28 marches jusqu'à la sortie.",
-          zh: "电梯故障意味着出站要走 28 级台阶。",
-        },
-        alt: {
-          en: "Stay on one more stop and take the level-boarding bus 82 back to the Tower.",
-          fr: "Descendez une station plus loin et prenez le bus 82, à plancher bas, jusqu'à la Tour.",
-          zh: "多坐一站，换乘低地板的 82 路公交返回铁塔。",
-        },
-      },
-      {
-        name: "Tour Eiffel",
-        coord: { lat: 48.8584, lng: 2.2945 },
-        into: {
-          status: "ok",
-          text: {
-            en: "Level walk of about 700 m along the Champ de Mars (paved, gentle slope).",
-            fr: "Marche à plat d'environ 700 m le long du Champ-de-Mars (pavé, légère pente).",
-            zh: "沿战神广场步行约 700 米（铺装路面，缓坡），全程平坦。",
-          },
-        },
-        walkM: 700,
-        at: "lift",
-        atText: {
-          en: "The Tower's own lifts reach the 1st and 2nd floors.",
-          fr: "Les ascenseurs de la Tour desservent les 1er et 2e étages.",
-          zh: "铁塔自有电梯可达一层与二层。",
-        },
-        restroom: true,
-      },
-    ],
-  },
+  // The Gare de Lyon to Eiffel Tower route used to sit here and it has been
+  // removed rather than corrected, because nothing in it could be corrected
+  // without writing a new journey by hand. It changed onto RER C at Chatelet,
+  // where RER C does not call (its central stops are Saint-Michel Notre-Dame,
+  // Musee d'Orsay, Invalides, Pont de l'Alma, Champ de Mars). It said Gare de
+  // Lyon to Chatelet on line 14 was three stops; the timetable says one. And its
+  // centrepiece was a lift "reported out of service today" with 28 steps as the
+  // consequence, which is a live status from the one dataset this app cannot read
+  // and a step count from nowhere.
+  //
+  // The journey itself is still answerable and the router answers it for real:
+  // there is no step-free station near the tower in the open timetable, so a
+  // wheelchair is sent to Invalides and told the last 1,451 m are on foot. That is
+  // a worse-sounding answer and a true one, which is the trade this product makes.
   {
     id: "bastille-louvre",
     from: "Bastille",
@@ -166,7 +99,7 @@ export const ROUTES: DemoRoute[] = [
       fr: "Bastille → le Louvre",
       zh: "巴士底 → 卢浮宫",
     },
-    sources: ["IDFM · État des ascenseurs", "RATP · accessible stations", "OpenStreetMap", "Louvre access info"],
+    sources: ROUTE_SOURCES("Musée du Louvre official access page"),
     nodes: [
       {
         name: "Bastille",
@@ -241,7 +174,7 @@ export const ROUTES: DemoRoute[] = [
       fr: "Gare du Nord → Notre-Dame",
       zh: "北站 → 巴黎圣母院",
     },
-    sources: ["IDFM · État des ascenseurs", "SNCF · gare accessibility", "OpenStreetMap"],
+    sources: ROUTE_SOURCES(),
     nodes: [
       {
         name: "Gare du Nord",
@@ -262,9 +195,9 @@ export const ROUTES: DemoRoute[] = [
         into: {
           status: "unknown",
           text: {
-            en: "RER B towards Saint-Michel, 3 stops.",
-            fr: "RER B vers Saint-Michel, 3 stations.",
-            zh: "乘 RER B 往 Saint-Michel 方向，3 站。",
+            en: "RER B towards Saint-Michel, 2 stops.",
+            fr: "RER B vers Saint-Michel, 2 stations.",
+            zh: "乘 RER B 往 Saint-Michel 方向，2 站。",
           },
         },
         at: "stairs",

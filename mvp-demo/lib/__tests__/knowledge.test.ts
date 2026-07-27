@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { join, resolve } from "node:path";
 import { PLACES, SERVICES } from "../places";
 import { ROUTES } from "../data";
 import { legendKey, statusHex } from "../status";
+
+/** Resolved from this file, so the suite answers the same from either directory. */
+const APP = resolve(fileURLToPath(import.meta.url), "../../..");
 
 /**
  * The honesty rules, enforced rather than remembered.
@@ -159,5 +165,106 @@ describe("status vocabulary", () => {
     expect(passable.size).toBe(1);
     expect(blocked.size).toBe(1);
     expect(new Set([...passable, ...blocked, unknown]).size).toBe(3);
+  });
+});
+
+/**
+ * The hand-written routes state facts a dataset can check. These are the checks.
+ *
+ * Written after a review found three of them wrong at once on the same route: it
+ * called a one-stop ride "3 stops", changed onto RER C at Chatelet where RER C
+ * does not call, and built its whole story on a lift "reported out of service
+ * today", which is a live status from the one dataset this app cannot read. Two of
+ * the three were verifiable against files already in the repository, so from here
+ * the machine checks them rather than a reader.
+ */
+describe("what a hand-written route may claim", () => {
+  const network = JSON.parse(
+    readFileSync(join(APP, "lib", "network.json"), "utf8"),
+  ) as { stations: Record<string, { name: string; lines: string[] }>; hops: { a: string; b: string; line: string }[] };
+
+  const norm = (s: string) =>
+    s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const idOf = (name: string) =>
+    Object.entries(network.stations).find(([, s]) => norm(s.name) === norm(name))?.[0];
+  /** "M14" -> "14", "RER B" -> "B", which is how the timetable names them. */
+  const lineId = (label: string) => label.replace(/^M/, "").replace(/^RER\s+/, "").trim();
+
+  function hopsBetween(a: string, b: string, line: string): number | null {
+    const A = idOf(a), B = idOf(b);
+    if (!A || !B) return null;
+    const adj = new Map<string, Set<string>>();
+    for (const h of network.hops) {
+      if (h.line !== line) continue;
+      (adj.get(h.a) ?? adj.set(h.a, new Set()).get(h.a)!).add(h.b);
+      (adj.get(h.b) ?? adj.set(h.b, new Set()).get(h.b)!).add(h.a);
+    }
+    const seen = new Set([A]);
+    let edge = [A], d = 0;
+    while (edge.length) {
+      if (edge.includes(B)) return d;
+      const next: string[] = [];
+      for (const n of edge) for (const m of adj.get(n) ?? []) if (!seen.has(m)) { seen.add(m); next.push(m); }
+      edge = next; d += 1;
+    }
+    return null;
+  }
+
+  it("never states a stop count the timetable contradicts", () => {
+    const problems: string[] = [];
+    for (const r of ROUTES) {
+      r.nodes.forEach((node, i) => {
+        const said = node.into?.text.en.match(/\b(\d+)\s+stops?\b/);
+        if (!said || i === 0 || !node.line) return;
+        const from = r.nodes[i - 1].name;
+        const real = hopsBetween(from, node.name, lineId(node.line.label));
+        // A leg the graph cannot see is a separate finding, covered below.
+        if (real === null) return;
+        if (real !== Number(said[1])) {
+          problems.push(`${r.id}: ${from} -> ${node.name} says ${said[1]}, timetable says ${real}`);
+        }
+      });
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it("never rides a line the timetable does not run through that station", () => {
+    const problems: string[] = [];
+    for (const r of ROUTES) {
+      for (const node of r.nodes) {
+        if (!node.line) continue;
+        const id = idOf(node.name);
+        if (!id) continue; // a landmark rather than a station
+        const lines = network.stations[id].lines;
+        if (!lines.includes(lineId(node.line.label))) {
+          problems.push(`${r.id}: ${node.name} is drawn on ${node.line.label}, which the timetable does not run there (${lines.join(", ")})`);
+        }
+      }
+    }
+    expect(problems).toEqual([]);
+  });
+
+  it("never reports a lift as out of service, because no feed here says so", () => {
+    // `lift_down` is a real status the type carries for the day a live feed exists.
+    // Until then a hand-written one is a fabricated outage, and a traveller cannot
+    // tell it from a real one.
+    for (const r of ROUTES) {
+      for (const node of r.nodes) {
+        expect(node.at, `${r.id} / ${node.name}`).not.toBe("lift_down");
+        expect(node.into?.status, `${r.id} / into ${node.name}`).not.toBe("lift_down");
+      }
+    }
+  });
+
+  it("cites only datasets this project has actually read", () => {
+    // The lift dataset answers ForbiddenAccess without a token and /how-it-works
+    // says so, so a route card citing it contradicts the same site.
+    for (const r of ROUTES) {
+      for (const s of r.sources) {
+        expect(s, `${r.id} sources`).not.toMatch(/ascenseurs/i);
+        expect(s, `${r.id} sources`).not.toMatch(/^RATP · accessible stations$/);
+        expect(s, `${r.id} sources`).not.toMatch(/^SNCF · gare accessibility$/);
+      }
+    }
   });
 });

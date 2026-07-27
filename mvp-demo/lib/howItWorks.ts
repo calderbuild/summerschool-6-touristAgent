@@ -98,9 +98,9 @@ export const CHOICES: Choice[] = [
     layer: "data",
     name: "No database",
     role: {
-      en: "The knowledge base is a typed file in the codebase: 17 places, 5 practical services, 3 routes.",
-      fr: "La base de connaissances est un fichier typé dans le code : 17 lieux, 5 services pratiques, 3 itinéraires.",
-      zh: "知识库是代码库里的一个带类型的文件：17 个地点、5 项实用服务、3 条路线。",
+      en: "The knowledge base is a typed file in the codebase: 17 places, 5 practical services, 2 field-noted routes.",
+      fr: "La base de connaissances est un fichier typé dans le code : 17 lieux, 5 services pratiques, 2 itinéraires relevés sur place.",
+      zh: "知识库是代码库里的一个带类型的文件：17 个地点、5 项实用服务、2 条实地记录的路线。",
     },
     because: {
       en: "Every record was checked by a person and carries how confident that check was. A database would add something to run, back up and keep available during a demo, and it would not add a single verified fact. When a fact changes we change the file and redeploy, and the change is in the git history with a reason.",

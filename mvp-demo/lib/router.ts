@@ -120,6 +120,31 @@ export const COVERAGE = (() => {
   };
 })();
 
+/**
+ * What our own data says about the line everyone calls fully step-free.
+ *
+ * "Only Metro Line 14 is fully step-free" was in the system prompt, the hero's
+ * alt text and a route's leg text as a plain fact. RATP does publish the line as
+ * accessible end to end, and it is almost certainly true on the ground, but it is
+ * their claim and not ours: in the registers this app reads, 9 of the line's 21
+ * stations have every platform marked accessible and 6 carry a station-level
+ * class of "booking required". Five of those six are shared with RER or
+ * Transilien, so the class is describing the whole station rather than line 14.
+ *
+ * Computed rather than written down, so the sentence cannot outlive the data.
+ */
+export const LINE14 = (() => {
+  const on = Object.values(NET.stations).filter((s) => s.lines.includes("14"));
+  const conditional = on.filter((s) => s.access?.level === 3 || s.access?.level === 4);
+  return {
+    stations: on.length,
+    everyPlatform: on.filter((s) => s.platforms.boarding === "yes").length,
+    conditional: conditional.length,
+    /** Of those, the ones where another mode shares the station. */
+    conditionalShared: conditional.filter((s) => s.lines.length > 1).length,
+  };
+})();
+
 // ---------------------------------------------------------------------------
 // what a station costs a traveller
 // ---------------------------------------------------------------------------

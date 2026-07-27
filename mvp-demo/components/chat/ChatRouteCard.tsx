@@ -50,7 +50,7 @@ function statusLabel(t: (k: string) => string, n: RouteNode): string {
 
 /**
  * A card comes from one of two markers, and the difference is worth keeping:
- * `[[route:id]]` is one of the three journeys the team walked in person, so it
+ * `[[route:id]]` is one of the journeys the team noted on foot, so it
  * carries a named barrier and the way around it; `[[plan:A|B]]` is computed from
  * the operator's timetable for any pair in the network. The card below draws both
  * the same way, because to the traveller they are the same question.
