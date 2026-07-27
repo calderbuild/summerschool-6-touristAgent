@@ -196,6 +196,21 @@ const DICT: Record<string, Entry> = {
     fr: "m. Cette pente vient des données de terrain, pas d'un itinéraire évalué : personne ne publie le trottoir.",
     zh: "米。这个坡度来自地形数据，不是经过评级的路线：人行道数据没人公布。",
   },
+  plan_walk_1: {
+    en: "The last",
+    fr: "Les derniers",
+    zh: "最后",
+  },
+  plan_walk_2: {
+    en: "m on foot take about",
+    fr: "m à pied prennent environ",
+    zh: "米步行约需",
+  },
+  plan_walk_3: {
+    en: "min at this traveller's pace. Nobody publishes the pavement, so that is a walking model rather than a promise.",
+    fr: "min à l'allure de ce voyageur. Personne ne publie le trottoir : c'est un modèle de marche, pas une promesse.",
+    zh: "分钟（按这位出行者的速度）。人行道数据没人公布，所以这是步行模型，不是承诺。",
+  },
   plan_graph: { en: "Timetable graph built", fr: "Graphe des horaires construit", zh: "时刻表图谱构建于" },
   hiw_criteria_title: {
     en: "The decision, and what it cost",
@@ -292,6 +307,7 @@ const DICT: Record<string, Entry> = {
   // counts because on the way to Sacré-Cœur it is the journey's real obstacle,
   // and no count of stations can see it.
   verdict_climb: { en: "m of climb on foot", fr: "m de montée à pied", zh: "米步行上坡" },
+  verdict_walk: { en: "min on foot at the end", fr: "min à pied pour finir", zh: "分钟步行收尾" },
   // A station the operator will only get you through with a member of staff or a
   // booking is not step-free, and calling the trip clear because nothing is
   // literally broken is how a traveller ends up stranded at a gate.
@@ -459,9 +475,19 @@ const DICT: Record<string, Entry> = {
     zh: "我们还没有填上的缺口",
   },
   hiw_gap_body: {
-    en: "Whether a particular lift is working right now is the one thing this cannot tell you. Île-de-France Mobilités publishes it, 944 lifts each with its own update time, under a licence that requires a registered token: without one the records answer \u201cForbiddenAccess\u201d, and we have not registered. So the station classes on this site are read live from their open register, and every individual lift status is described as of this morning. The gap is named rather than papered over.",
-    fr: "Savoir si un ascenseur précis fonctionne en ce moment est la seule chose que ce site ne peut pas vous dire. Île-de-France Mobilités le publie, 944 ascenseurs avec leur heure de mise à jour, sous une licence exigeant un jeton enregistré : sans jeton, les enregistrements répondent « ForbiddenAccess », et nous ne sommes pas enregistrés. Les classes d'accessibilité des gares sont donc lues en direct dans leur registre ouvert, et chaque état d'ascenseur est présenté comme celui de ce matin. Le manque est nommé, pas masqué.",
-    zh: "某一台电梯此刻是否正常，是本站唯一无法告诉你的事。法兰西岛交通局确实发布了这份数据（944 台电梯，各带更新时间），但它使用需注册 token 的许可协议：没有 token 时接口直接返回 ForbiddenAccess，而我们没有注册。因此站点的车站无障碍等级是从其开放名录实时读取的，而每一台电梯的状态都标注为今早的情况。这个缺口我们直接说明，而不是掩盖。",
+    en: "Whether a particular lift is working right now is the first of two things this cannot tell you. Île-de-France Mobilités publishes it, 944 lifts each with its own update time, under a licence that requires a registered token: without one the records answer \u201cForbiddenAccess\u201d, and we have not registered. The station classes here are read from their open register instead, no individual lift is called working anywhere on this site, and the line below asks our own endpoint whether we can see the lifts at this moment, so it answers for today rather than for the day the sentence was written.",
+    fr: "Savoir si un ascenseur précis fonctionne en ce moment est la première des deux choses que ce site ne peut pas vous dire. Île-de-France Mobilités le publie, 944 ascenseurs avec leur heure de mise à jour, sous une licence exigeant un jeton enregistré : sans jeton, les enregistrements répondent « ForbiddenAccess », et nous ne sommes pas enregistrés. Les classes d'accessibilité des gares sont donc lues dans leur registre ouvert, aucun ascenseur n'est déclaré en service ici, et la ligne ci-dessous interroge notre propre point d'accès pour savoir si nous voyons les ascenseurs à cet instant : elle répond pour aujourd'hui, pas pour le jour où la phrase a été écrite.",
+    zh: "某一台电梯此刻是否正常，是本站两件无法告诉你的事之一。法兰西岛交通局确实发布了这份数据（944 台电梯，各带更新时间），但它使用需注册 token 的许可协议：没有 token 时接口直接返回 ForbiddenAccess，而我们没有注册。因此站点的车站无障碍等级改从其开放名录读取，站内任何地方都不会说某台电梯正常，而下面这行会去问我们自己的接口：此刻到底能不能看到电梯状态。它回答的是当下，不是写下这句话的那天。",
+  },
+  hiw_gap2_title: {
+    en: "The second gap is in the timetable",
+    fr: "La seconde lacune est dans les horaires",
+    zh: "第二个缺口在时刻表里",
+  },
+  hiw_gap2_body: {
+    en: "This graph is metro, tram, RER and Transilien, and the open timetable's RER C stops at Gare d'Austerlitz: its Paris branch, Champ de Mars Tour Eiffel included, has no trains in the file, and buses are not modelled at all. So the Eiffel Tower has no step-free station near it that we can see. A wheelchair journey there is sent to Invalides and told, in the route itself, that the last 1,451 m are on foot and roughly 23 minutes. Another app draws a line to the tower and says nothing. We would rather give you the number and let you decide.",
+    fr: "Ce graphe couvre métro, tram, RER et Transilien, et le RER C des horaires ouverts s'arrête à la gare d'Austerlitz : sa branche parisienne, Champ de Mars Tour Eiffel comprise, n'a aucun train dans le fichier, et les bus ne sont pas modélisés. La tour Eiffel n'a donc aucune gare sans marches visible pour nous. Un trajet en fauteuil est dirigé vers Invalides, et l'itinéraire dit lui-même que les 1 451 derniers mètres se font à pied, soit environ 23 minutes. Une autre application trace un trait jusqu'à la tour sans rien dire. Nous préférons donner le chiffre et vous laisser décider.",
+    zh: "这张图谱包含地铁、有轨电车、RER 和 Transilien，而开放时刻表里的 RER C 到奥斯特里茨站就断了：它的巴黎段（包括战神广场埃菲尔铁塔站）在文件里没有任何列车，公交则完全没有建模。所以在我们能看到的数据里，埃菲尔铁塔附近没有无台阶车站。轮椅出行会被送到荣军院站，并在路线里直接说明：最后 1451 米要靠步行，大约 23 分钟。别的应用会画一条线直达铁塔，然后什么也不说。我们宁愿把这个数字给你，让你自己决定。",
   },
   routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },
   browse_routes: {

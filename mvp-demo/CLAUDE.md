@@ -16,8 +16,16 @@ npm run lint       # eslint (flat config, eslint.config.mjs)
 vercel --prod      # deploy; env vars must be set in the Vercel project
 ```
 
-There is no test suite. `npm run build` is the gate: it runs TypeScript and prerenders,
-so a clean build is the closest thing to "tests pass" here.
+The gate is `npx vitest run` plus `npx tsc --noEmit` plus `npm run lint`, and it must be run
+from this directory: several tests read source files to check a claim, and they resolve paths
+from the test file, but the vitest config does not follow you up to the repository root.
+
+Most of those tests exist to stop an honesty regression rather than a crash: that no station is
+ever called step-free on unpublished data, that the classifier never invents a lift status, that
+the graph keeps every branch the timetable runs, and that both of the places which derive a
+one-line verdict can see a long final walk. When you add a state or a status, grep for everything
+that summarises it and fix them in the same commit; a passing test at the data layer has already
+failed to protect a second, independent classification downstream.
 
 Requires `.env.local` (gitignored):
 - `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` — client-side, so it ships in the JS bundle and anyone can read

@@ -215,6 +215,10 @@ export default function HowItWorks() {
             {t("hiw_gap_title")}
           </h2>
           <p className="mt-2.5 max-w-2xl text-[14px] leading-relaxed text-ink-soft">{t("hiw_gap_body")}</p>
+          <h3 className="mt-6 font-display text-[16px] font-bold leading-tight text-ink sm:text-[17px]">
+            {t("hiw_gap2_title")}
+          </h3>
+          <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-ink-soft">{t("hiw_gap2_body")}</p>
           <Link
             href="/routes"
             className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"

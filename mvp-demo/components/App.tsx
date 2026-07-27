@@ -373,6 +373,13 @@ export default function App({
                           {route.finalWalk.climbM} {t("plan_climb_3")}
                         </>
                       )}
+                    {route.finalWalk && route.finalWalk.minutes >= 10 && (
+                      <>
+                        {" "}
+                        {t("plan_walk_1")} {route.finalWalk.metres} {t("plan_walk_2")}{" "}
+                        {route.finalWalk.minutes} {t("plan_walk_3")}
+                      </>
+                    )}
                   </span>
                 </p>
                 <div className="mt-3 border-t border-ink/10 pt-3">

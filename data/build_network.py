@@ -367,13 +367,25 @@ def main() -> None:
 
     # ---- every hop the timetable actually runs -------------------------------
     # The obvious shortcut is to take the longest stop pattern per route and call
-    # that the line. It is wrong on exactly the lines that matter: RER C's longest
-    # single pattern is a branch to Dourdan, so a graph built that way has no Champ
-    # de Mars and cannot route anybody to the Eiffel Tower. So this keeps the union
-    # of consecutive stop pairs across all 74,472 trips, which is the network as
-    # run, branches included, and reads the ride time off the timetable instead of
-    # guessing it from distance. The longest pattern is still kept, but only as the
-    # display order of a line.
+    # that the line. It loses every branch, so this keeps the union of consecutive
+    # stop pairs across all 74,472 trips, which is the network as run, and reads
+    # the ride time off the timetable instead of guessing it from distance. The
+    # longest pattern is still kept, but only as the display order of a line.
+    #
+    # What the union cannot do is invent trips the feed does not contain, and this
+    # feed does not contain RER C through Paris. Its single route with
+    # route_short_name "C" runs 2,786 trips over 37 stations, all on the southern
+    # branches, ending at Gare d'Austerlitz. Champ de Mars Tour Eiffel is in
+    # stops.txt as IDFM:73844 with two platforms, and the only trips that call
+    # there are bus 82; Musee d'Orsay, Pont de l'Alma and Boulevard Victor exist
+    # only as bus stops of the same name; Saint-Michel Notre-Dame is served by
+    # metro 4 and RER B and nothing else. Verified against the 2026-07-27 zip.
+    #
+    # The consequence is on screen, not hidden: there is no rail station within a
+    # kilometre of the Eiffel Tower, so a wheelchair journey there is routed to
+    # Invalides and the route says the last 1,451 m are on foot. Do not paper over
+    # this by hand-adding hops. If it matters enough to fix, the fix is the PRIM
+    # real-time feed or SNCF's own GTFS, not invented ones.
     #
     # stop_times is grouped by trip in the feed, so this streams in one pass and
     # never holds more than a single trip.
@@ -395,7 +407,9 @@ def main() -> None:
             return None
         return h * 3600 + m * 60 + s2
 
-    def flush(trip: str | None, seq: list[tuple[int, str, int | None, int | None]]) -> None:
+    def flush(
+        trip: str | None, seq: list[tuple[int, str, int | None, int | None]]
+    ) -> None:
         if not trip or not seq:
             return
         rid = trip_route.get(trip)
@@ -497,12 +511,15 @@ def main() -> None:
             )
             if not a or not b or a == b:
                 continue
+            # Not `secs`: that name is the timetable helper `flush` closes over, and
+            # rebinding it here only stays harmless while the stop_times pass runs
+            # first. One reordering and the hops would all lose their ride times.
             try:
-                secs = int(tr.get("min_transfer_time") or 0)
+                wait_s = int(tr.get("min_transfer_time") or 0)
             except ValueError:
-                secs = 0
+                wait_s = 0
             key = (a, b) if a < b else (b, a)
-            keep = max(secs, 0)
+            keep = max(wait_s, 0)
             if key not in transfers or keep < transfers[key]:
                 transfers[key] = keep
     except KeyError:
@@ -514,7 +531,7 @@ def main() -> None:
     platforms = fetch_stop_access()
 
     station_lines = defaultdict(set)
-    for (rid, a, b) in hops:
+    for rid, a, b in hops:
         name = routes[rid]["name"]
         station_lines[a].add(name)
         station_lines[b].add(name)
@@ -670,7 +687,7 @@ def main() -> None:
     # Keep only transfers between stations we kept, and only where a walk is short
     # enough to be a change rather than a separate journey.
     transfer_out = []
-    for (a, b), secs in transfers.items():
+    for (a, b), wait_s in transfers.items():
         if a in station_out and b in station_out:
             d = haversine_m(
                 station_out[a]["lat"],
@@ -679,7 +696,7 @@ def main() -> None:
                 station_out[b]["lng"],
             )
             if d <= 400:
-                transfer_out.append({"a": a, "b": b, "seconds": secs, "metres": d})
+                transfer_out.append({"a": a, "b": b, "seconds": wait_s, "metres": d})
 
     payload = {
         "builtAt": os.environ.get("BUILD_STAMP", ""),

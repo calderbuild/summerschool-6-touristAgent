@@ -68,16 +68,21 @@ function verdictSummary(
   from: string,
   to: string,
   counts: { barriers: number; conditional: number; unknowns: number },
-  finalWalk?: { metres: number; climbM: number | null } | null,
+  finalWalk?: { metres: number; climbM: number | null; minutes: number } | null,
 ) {
   const verdict: string[] = [];
   if (counts.barriers > 0) verdict.push(`${counts.barriers} ${t("verdict_barrier")}`);
   if (counts.conditional > 0) verdict.push(`${counts.conditional} ${t("verdict_conditional")}`);
   if (counts.unknowns > 0) verdict.push(`${counts.unknowns} ${t("verdict_unknown")}`);
-  // A climb is not a station, so the counts above cannot carry it, and it is
-  // often the thing that decides the journey.
+  // Neither a climb nor a long push is a station, so the counts above cannot
+  // carry either, and one of them is often what decides the journey. Ten minutes
+  // is the walking model's own figure for this profile, so a wheelchair reads a
+  // hill as longer than a walker does, which is the point.
   if (finalWalk && finalWalk.climbM !== null && finalWalk.climbM >= 8) {
     verdict.push(`${finalWalk.climbM} ${t("verdict_climb")}`);
+  }
+  if (finalWalk && finalWalk.minutes >= 10) {
+    verdict.push(`${finalWalk.minutes} ${t("verdict_walk")}`);
   }
   return `${from} → ${to}: ${verdict.length ? verdict.join(" · ") : t("verdict_clear")}`;
 }

@@ -644,13 +644,19 @@ export interface PlannedRoute {
   barriers: string[];
   /** Stations where nobody has published enough to say. */
   unknowns: string[];
-  /** The last walk, as two numbers rather than a sentence.
+  /** The last walk, as numbers rather than a sentence.
    *
    *  A summary that counts stations and finds none of them marked inaccessible
    *  reads like a clean bill of health for the journey to Sacre-Coeur, whose real
    *  obstacle is 74 m of hill on the last 1,329 m. The obstacle is not a station,
-   *  so counting stations cannot see it. It belongs on the route. */
-  finalWalk: { metres: number; climbM: number | null } | null;
+   *  so counting stations cannot see it. It belongs on the route.
+   *
+   *  `minutes` is here because distance alone does not decide anything either.
+   *  The open feed has no rail trip within a kilometre of the Eiffel Tower, so a
+   *  wheelchair journey there ends in a 1,451 m push on the flat: no barrier, no
+   *  climb, and 22 minutes that the traveller has to do themselves. It is the
+   *  walking model's own figure for this profile, not a second guess. */
+  finalWalk: { metres: number; climbM: number | null; minutes: number } | null;
 }
 
 /**
@@ -766,7 +772,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
   // The walk from the last station to the place that was actually asked for.
   // Rated `unknown` rather than `ok`, because street-level step-free is a claim
   // no dataset here supports and a kerb is enough to end a journey.
-  let finalWalk: { metres: number; climbM: number | null } | null = null;
+  let finalWalk: { metres: number; climbM: number | null; minutes: number } | null = null;
   if (b.place && b.place.walkM > 60) {
     const placeHeight = NET.placeElevation[b.place.id] ?? null;
     const stationHeight = NET.stations[b.station.id].elevation;
@@ -774,7 +780,11 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
       placeHeight !== null && stationHeight !== null
         ? Math.round(placeHeight - stationHeight)
         : null;
-    finalWalk = { metres: b.place.walkM, climbM: climb };
+    finalWalk = {
+      metres: b.place.walkM,
+      climbM: climb,
+      minutes: Math.round(walkSeconds(b.place.walkM, climb, profile) / 60),
+    };
     shape.push({ lat: b.place.lat, lng: b.place.lng });
     nodes.push({
       name: b.place.name,

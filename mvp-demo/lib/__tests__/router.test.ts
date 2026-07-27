@@ -1,4 +1,7 @@
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { join, resolve } from "node:path";
 import network from "../network.json";
 import { plan, suggest, resolveEndpoint, statusOf, NETWORK_META, COVERAGE } from "../router";
 import { ACCESS_LEVELS } from "../idfm";
@@ -10,6 +13,8 @@ import { ACCESS_LEVELS } from "../idfm";
  */
 
 const stations = (network as { stations: Record<string, unknown> }).stations;
+/** Resolved from this file, so the run is the same from either directory. */
+const APP = resolve(fileURLToPath(import.meta.url), "../../..");
 
 describe("the graph", () => {
   it("covers the network rather than one pattern per line", () => {
@@ -19,6 +24,23 @@ describe("the graph", () => {
     // RER and Transilien; a big drop here means that bug is back.
     expect(NETWORK_META.hops).toBeGreaterThan(2200);
     expect(NETWORK_META.stations).toBeGreaterThan(900);
+  });
+
+  it("pins the one line the open feed truncates, so nobody claims we cover it", () => {
+    // The feed's only route with short name "C" runs 37 stations on the southern
+    // branches and stops at Gare d'Austerlitz. The Paris branch is absent: Champ
+    // de Mars Tour Eiffel is in stops.txt but its only callers are buses. That is
+    // the feed, not this build, and it is why the Eiffel Tower is reached on foot.
+    //
+    // This test is meant to fail the day IDFM publishes those trips. When it does,
+    // rebuild, raise the count here, and take the caveat off /how-it-works.
+    const named = Object.values(stations as Record<string, { name: string; lines: string[] }>);
+    const onC = named.filter((s) => s.lines.includes("C"));
+    expect(onC.length).toBe(37);
+    // Narrow on purpose: "Orsay - Ville" is a real RER B station out in the
+    // suburbs and is present. Only the Paris-branch names belong in this list.
+    const parisBranch = /champ de mars|mus[ée]e d'orsay|pont de l'alma|boulevard victor/i;
+    expect(named.filter((s) => parisBranch.test(s.name))).toEqual([]);
   });
 
   it("never points a hop at a station it does not have", () => {
@@ -97,6 +119,36 @@ describe("planning a journey", () => {
     expect(last.at).toBe("unknown");
     expect(last.into?.status).toBe("unknown");
     expect(last.walkM).toBeGreaterThan(60);
+  });
+
+  it("times the last walk with the traveller's own pace, and shows it to both summaries", () => {
+    // The open feed has no rail trip within a kilometre of the Eiffel Tower, so
+    // this journey ends in a long flat push: no barrier, no climb, and twenty-odd
+    // minutes the traveller does themselves. The verdict counted stations, found
+    // nothing marked inaccessible, and read clean. Distance alone would not fix
+    // it either, which is why the walk carries its own duration.
+    const chair = plan("IDFM:71673", "Eiffel Tower", "wheelchair");
+    expect(chair.ok).toBe(true);
+    if (!chair.ok) return;
+    const walk = chair.route.finalWalk;
+    expect(walk).not.toBeNull();
+    expect(walk!.metres).toBeGreaterThan(1000);
+    expect(walk!.minutes).toBeGreaterThanOrEqual(10);
+    expect(chair.route.barriers).toEqual([]);
+
+    // The duration is the walking model's, not a second guess: flat pace plus the
+    // wheelchair's own 20 s per metre of climb. Pinning the arithmetic is what
+    // stops the figure drifting into a constant that merely looks profile-aware.
+    const expected = Math.round(
+      (walk!.metres / 1.1 + Math.max(0, walk!.climbM ?? 0) * 20) / 60,
+    );
+    expect(walk!.minutes).toBe(expected);
+
+    // Both places that derive a summary must read the duration. A test on the
+    // router alone is what let the card print a clean verdict over 74 m of hill.
+    const card = readFileSync(join(APP, "components", "chat", "ChatRouteCard.tsx"), "utf8");
+    const panel = readFileSync(join(APP, "components", "App.tsx"), "utf8");
+    for (const src of [card, panel]) expect(src).toMatch(/finalWalk\.minutes/);
   });
 
   it("does not put a nearby staircase in the step count for the journey", () => {

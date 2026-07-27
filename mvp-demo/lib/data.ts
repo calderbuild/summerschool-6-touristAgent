@@ -48,9 +48,9 @@ export interface DemoRoute {
    *  route; a route whose nodes are its whole shape can leave it out. */
   shape?: { lat: number; lng: number }[];
   /** The last walk in numbers, present on a computed route. See the comment on
-   *  `PlannedRoute.finalWalk`: a hill is not a station, so a summary that counts
-   *  stations cannot see it. */
-  finalWalk?: { metres: number; climbM: number | null } | null;
+   *  `PlannedRoute.finalWalk`: neither a hill nor twenty minutes of pushing is a
+   *  station, so a summary that counts stations cannot see either. */
+  finalWalk?: { metres: number; climbM: number | null; minutes: number } | null;
 }
 
 const M14 = { label: "M14", color: "#62259D" };
