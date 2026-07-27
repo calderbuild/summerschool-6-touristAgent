@@ -3,6 +3,7 @@
 import { memo, useEffect, useId, useState } from "react";
 import { ROUTES, type DemoRoute, type RouteNode } from "@/lib/data";
 import { useI18n } from "@/lib/i18n";
+import { tally, verdictSummary } from "@/lib/verdict";
 import AccessRibbon from "./AccessRibbon";
 import RouteMap from "../RouteMap";
 import MetroMap, { focusIndex } from "../MetroMap";
@@ -45,46 +46,6 @@ function statusLabel(t: (k: string) => string, n: RouteNode): string {
   const base = t(legendKey[n.at]);
   if (typeof n.steps === "number" && n.steps > 0) return `${base} · ${n.steps} ${t("steps_unit")}`;
   return base;
-}
-
-/**
- * What the route counts as, per node status.
- *
- * `conditional` has to be in here. Without it a journey whose every stop the operator
- * marks "only with a member of staff" was summarised as "step-free the whole way",
- * which is the one sentence this product must never produce.
- */
-function tally(route: DemoRoute) {
-  const barriers = route.nodes.filter(
-    (n) => n.barrier || n.at === "stairs" || n.at === "lift_down",
-  ).length;
-  const conditional = route.nodes.filter((n) => n.at === "conditional").length;
-  const unknowns = route.nodes.filter((n) => n.at === "unknown").length;
-  return { barriers, conditional, unknowns, clear: barriers + conditional + unknowns === 0 };
-}
-
-function verdictSummary(
-  t: (k: string) => string,
-  from: string,
-  to: string,
-  counts: { barriers: number; conditional: number; unknowns: number },
-  finalWalk?: { metres: number; climbM: number | null; minutes: number } | null,
-) {
-  const verdict: string[] = [];
-  if (counts.barriers > 0) verdict.push(`${counts.barriers} ${t("verdict_barrier")}`);
-  if (counts.conditional > 0) verdict.push(`${counts.conditional} ${t("verdict_conditional")}`);
-  if (counts.unknowns > 0) verdict.push(`${counts.unknowns} ${t("verdict_unknown")}`);
-  // Neither a climb nor a long push is a station, so the counts above cannot
-  // carry either, and one of them is often what decides the journey. Ten minutes
-  // is the walking model's own figure for this profile, so a wheelchair reads a
-  // hill as longer than a walker does, which is the point.
-  if (finalWalk && finalWalk.climbM !== null && finalWalk.climbM >= 8) {
-    verdict.push(`${finalWalk.climbM} ${t("verdict_climb")}`);
-  }
-  if (finalWalk && finalWalk.minutes >= 10) {
-    verdict.push(`${finalWalk.minutes} ${t("verdict_walk")}`);
-  }
-  return `${from} → ${to}: ${verdict.length ? verdict.join(" · ") : t("verdict_clear")}`;
 }
 
 /**

@@ -144,11 +144,11 @@ describe("planning a journey", () => {
     );
     expect(walk!.minutes).toBe(expected);
 
-    // Both places that derive a summary must read the duration. A test on the
-    // router alone is what let the card print a clean verdict over 74 m of hill.
-    const card = readFileSync(join(APP, "components", "chat", "ChatRouteCard.tsx"), "utf8");
+    // Both places that derive a summary must read the duration. The chat card's
+    // side is covered properly in verdict.test.ts, which tests the function; the
+    // plan panel renders it inline, so source is the only handle on it here.
     const panel = readFileSync(join(APP, "components", "App.tsx"), "utf8");
-    for (const src of [card, panel]) expect(src).toMatch(/finalWalk\.minutes/);
+    expect(panel).toMatch(/finalWalk\.minutes/);
   });
 
   it("does not put a nearby staircase in the step count for the journey", () => {
