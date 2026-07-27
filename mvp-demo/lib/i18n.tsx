@@ -158,6 +158,29 @@ const DICT: Record<string, Entry> = {
     fr: "station sans information publiée",
     zh: "座车站没有任何公开信息",
   },
+  lift_dark_title: {
+    en: "Live lift state: not available to this app today",
+    fr: "État des ascenseurs en direct : indisponible pour cette application aujourd'hui",
+    zh: "电梯实时状态：本应用目前拿不到",
+  },
+  lift_dark_body: {
+    en: "The operator publishes it for 944 lifts, under a licence that needs a registered token we do not yet hold. So this page says it cannot see the lifts, which is a different sentence from no lift being broken. Everything else on this page needs no registration at all.",
+    fr: "L'exploitant le publie pour 944 ascenseurs, sous une licence qui exige un jeton enregistré que nous n'avons pas encore. Cette page dit donc qu'elle ne voit pas les ascenseurs, ce qui n'est pas la même phrase qu'aucun ascenseur en panne. Tout le reste de cette page ne demande aucune inscription.",
+    zh: "运营方为 944 台电梯公布了这个数据，但它的授权需要一个我们还没申请的注册 token。所以本页说的是「看不到电梯」，这和「没有电梯坏掉」是两句不同的话。本页其余数据全都不需要任何注册。",
+  },
+  lift_live_title: {
+    en: "Live lift state: reading the operator's feed",
+    fr: "État des ascenseurs en direct : lecture du flux de l'exploitant",
+    zh: "电梯实时状态：正在读取运营方数据流",
+  },
+  lift_live_body_1: { en: "Reading", fr: "Lecture de", zh: "已读取" },
+  lift_live_body_2: { en: "lifts, of which", fr: "ascenseurs, dont", zh: "台电梯，其中" },
+  lift_live_body_3: {
+    en: "carry a status value we have confirmed against real records. The rest are shown in the operator's own words rather than guessed at.",
+    fr: "portent une valeur de statut confirmée sur des enregistrements réels. Les autres sont affichés avec les mots de l'exploitant plutôt que devinés.",
+    zh: "台的状态取值经过真实记录核实。其余的按运营方原文显示，不去猜。",
+  },
+  lift_checking: { en: "Checking.", fr: "Vérification.", zh: "正在检查。" },
   plan_climb_1: {
     en: "The last",
     fr: "Les derniers",

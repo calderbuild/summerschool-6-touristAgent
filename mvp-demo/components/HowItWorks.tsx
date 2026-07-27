@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
 import { CHOICES, CRITERIA, GUARDS, LIVE_SOURCES, MEASURED } from "@/lib/howItWorks";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
+import LiftStatusLine from "./LiftStatusLine";
 
 const LAYER_KEY: Record<string, string> = {
   front: "layer_front",
@@ -110,6 +111,9 @@ export default function HowItWorks() {
               </li>
             ))}
           </ul>
+          {/* The gap in this list, reported by asking rather than asserted at
+              build time, so it corrects itself the day the token exists. */}
+          <LiftStatusLine />
         </section>
 
         {/* How we keep it from inventing things. This sits above the tech list on
