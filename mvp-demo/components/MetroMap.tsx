@@ -83,6 +83,25 @@ function segmentColor(node: RouteNode | undefined): string {
   return node?.line?.color ?? "#6b7683"; // walking legs (no line) render neutral
 }
 
+/**
+ * The stop this view opens on.
+ *
+ * Framing the whole route was the mistake: six kilometres of Paris fits only at
+ * about zoom 11, the building data in the tileset starts at 13, so the tilt had
+ * nothing to stand up and the 3D view was an identical flat map with different
+ * labels. The flat map already answers "where does this route go". What it
+ * cannot answer is "what does the place with the stairs actually look like", so
+ * that is the stop this one opens on: the barrier if there is one, otherwise the
+ * first unreported lift, otherwise the destination.
+ */
+export function focusIndex(nodes: RouteNode[]): number {
+  const barrier = nodes.findIndex((n) => n.barrier);
+  if (barrier >= 0) return barrier;
+  const unknown = nodes.findIndex((n) => n.at === "unknown");
+  if (unknown >= 0) return unknown;
+  return nodes.length - 1;
+}
+
 // The tiles come from a free third-party service, so "it never answered" is a
 // real outcome and not a hypothetical one. Long enough that a slow conference
 // network still wins, short enough that nobody stares at an empty box.
@@ -144,24 +163,25 @@ export default function MetroMap({
         const maplibregl = await import("maplibre-gl");
         if (cancelled || !ref.current) return;
 
-        const lats = nodes.map((n) => n.coord.lat);
-        const lngs = nodes.map((n) => n.coord.lng);
-        const bounds: [[number, number], [number, number]] = [
-          [Math.min(...lngs), Math.min(...lats)],
-          [Math.max(...lngs), Math.max(...lats)],
-        ];
+        const focus = nodes[focusIndex(nodes)].coord;
 
         map = new maplibregl.Map({
           container: ref.current,
           style: PARIS_STYLE as never,
-          bounds,
-          fitBoundsOptions: { padding: 64, pitch: 52, bearing: -18, maxZoom: 15 },
-          pitch: 52,
+          center: [focus.lng, focus.lat],
+          // Close enough that the tileset actually has buildings to extrude, which
+          // is the entire reason to show this view rather than the flat one.
+          zoom: 16,
+          pitch: 55,
           bearing: -18,
           attributionControl: { compact: true },
           dragRotate: true,
         });
         map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
+        // A 360px box in a scrolling page is not somewhere you can explore a city.
+        // Page scroll stays with the page, so the honest way to let someone zoom
+        // around is to give them the whole screen.
+        map.addControl(new maplibregl.FullscreenControl(), "top-right");
 
         map.on("load", () => {
           if (!map) return;

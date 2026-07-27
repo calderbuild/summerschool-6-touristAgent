@@ -211,9 +211,13 @@ export default function RouteMap({ route }: { route: DemoRoute }) {
           <Map
             defaultCenter={{ lat: 48.858, lng: 2.34 }}
             defaultZoom={12}
+            // Scrolling the page over a map must scroll the page, so zooming here
+            // is the controls, a pinch, or the fullscreen button. Taking the wheel
+            // ("greedy") traps anyone reading past the map on a phone.
             gestureHandling="cooperative"
             disableDefaultUI
             zoomControl
+            fullscreenControl
             className="h-full w-full"
           >
             <RouteOverlay route={route} />

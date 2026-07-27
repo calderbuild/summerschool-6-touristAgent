@@ -352,6 +352,12 @@ const DICT: Record<string, Entry> = {
     zh: "四条已核对的巴黎路线，逐段标出障碍。",
   },
 
+  map_3d_focus: {
+    en: "Street level around",
+    fr: "Le quartier autour de",
+    zh: "这一站周边的街道：",
+  },
+
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
   disclaimer: {
     en: "Prototype with curated demo data. Live lift status and routing connect to IDFM, RATP, OpenStreetMap and Google Maps.",

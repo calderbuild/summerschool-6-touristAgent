@@ -7,7 +7,7 @@ import { ROUTES, type ProfileId } from "@/lib/data";
 import { statusColorVar } from "@/lib/status";
 import type { Status } from "@/lib/data";
 import AccessibilitySpine from "./AccessibilitySpine";
-import MetroMap from "./MetroMap";
+import MetroMap, { focusIndex } from "./MetroMap";
 import RouteMap from "./RouteMap";
 import WeatherChip from "./WeatherChip";
 import {
@@ -236,6 +236,14 @@ export default function App() {
                   />
                 )}
               </div>
+              {/* The 3D view is not the same picture tilted: it opens on the one
+                  stop that needs looking at, and saying which stop is the
+                  difference between a gimmick and a reason to press the button. */}
+              {mapView === "3d" && !threeDFellBack && (
+                <p className="mt-2 text-[12.5px] leading-snug text-ink-soft">
+                  {t("map_3d_focus")} <span className="font-bold text-ink">{route.nodes[focusIndex(route.nodes)].name}</span>
+                </p>
+              )}
               {threeDFellBack && (
                 <p role="status" className="mt-2 text-[12.5px] leading-snug text-caution-ink">
                   {t("map_3d_fell_back")}
