@@ -47,6 +47,10 @@ export interface DemoRoute {
   /** Every station the journey passes, for the map line. Present on a computed
    *  route; a route whose nodes are its whole shape can leave it out. */
   shape?: { lat: number; lng: number }[];
+  /** The last walk in numbers, present on a computed route. See the comment on
+   *  `PlannedRoute.finalWalk`: a hill is not a station, so a summary that counts
+   *  stations cannot see it. */
+  finalWalk?: { metres: number; climbM: number | null } | null;
 }
 
 const M14 = { label: "M14", color: "#62259D" };

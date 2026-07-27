@@ -158,6 +158,21 @@ const DICT: Record<string, Entry> = {
     fr: "station sans information publiée",
     zh: "座车站没有任何公开信息",
   },
+  plan_climb_1: {
+    en: "The last",
+    fr: "Les derniers",
+    zh: "最后",
+  },
+  plan_climb_2: {
+    en: "m on foot climb about",
+    fr: "m à pied montent d'environ",
+    zh: "米步行需上行约",
+  },
+  plan_climb_3: {
+    en: "m. That gradient is terrain data, not a rated route: nobody publishes the pavement.",
+    fr: "m. Cette pente vient des données de terrain, pas d'un itinéraire évalué : personne ne publie le trottoir.",
+    zh: "米。这个坡度来自地形数据，不是经过评级的路线：人行道数据没人公布。",
+  },
   plan_graph: { en: "Timetable graph built", fr: "Graphe des horaires construit", zh: "时刻表图谱构建于" },
   hiw_criteria_title: {
     en: "The decision, and what it cost",
@@ -250,6 +265,10 @@ const DICT: Record<string, Entry> = {
   verdict_clear: { en: "Step-free the whole way", fr: "Sans marches sur tout le trajet", zh: "全程无楼梯" },
   verdict_barrier: { en: "step barrier", fr: "obstacle", zh: "处台阶障碍" },
   verdict_unknown: { en: "nothing published", fr: "rien de publié", zh: "无公开信息" },
+  // Metres of hill on the final walk. It sits in the verdict beside the station
+  // counts because on the way to Sacré-Cœur it is the journey's real obstacle,
+  // and no count of stations can see it.
+  verdict_climb: { en: "m of climb on foot", fr: "m de montée à pied", zh: "米步行上坡" },
   // A station the operator will only get you through with a member of staff or a
   // booking is not step-free, and calling the trip clear because nothing is
   // literally broken is how a traveller ends up stranded at a gate.

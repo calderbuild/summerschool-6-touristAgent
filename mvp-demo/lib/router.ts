@@ -644,6 +644,13 @@ export interface PlannedRoute {
   barriers: string[];
   /** Stations where nobody has published enough to say. */
   unknowns: string[];
+  /** The last walk, as two numbers rather than a sentence.
+   *
+   *  A summary that counts stations and finds none of them marked inaccessible
+   *  reads like a clean bill of health for the journey to Sacre-Coeur, whose real
+   *  obstacle is 74 m of hill on the last 1,329 m. The obstacle is not a station,
+   *  so counting stations cannot see it. It belongs on the route. */
+  finalWalk: { metres: number; climbM: number | null } | null;
 }
 
 /**
@@ -759,6 +766,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
   // The walk from the last station to the place that was actually asked for.
   // Rated `unknown` rather than `ok`, because street-level step-free is a claim
   // no dataset here supports and a kerb is enough to end a journey.
+  let finalWalk: { metres: number; climbM: number | null } | null = null;
   if (b.place && b.place.walkM > 60) {
     const placeHeight = NET.placeElevation[b.place.id] ?? null;
     const stationHeight = NET.stations[b.station.id].elevation;
@@ -766,6 +774,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
       placeHeight !== null && stationHeight !== null
         ? Math.round(placeHeight - stationHeight)
         : null;
+    finalWalk = { metres: b.place.walkM, climbM: climb };
     shape.push({ lat: b.place.lat, lng: b.place.lng });
     nodes.push({
       name: b.place.name,
@@ -797,6 +806,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
     stops: found.legs.filter((l) => l.edge.line).length,
     barriers,
     unknowns,
+    finalWalk,
   };
   return { ok: true, route };
 }

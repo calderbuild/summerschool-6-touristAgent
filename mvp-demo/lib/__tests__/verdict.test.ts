@@ -26,4 +26,18 @@ describe("the one-line verdict", () => {
     const conditional = result.route.nodes.filter((n) => n.at === "conditional");
     expect(conditional.length).toBeGreaterThan(0);
   });
+
+  it("puts a climb in the verdict, because a hill is not a station", () => {
+    // Every station on the wheelchair route to Sacré-Cœur can be passed, so the
+    // station counts come out clean while the traveller faces 74 m of hill. If
+    // the climb ever drops out of the summary, that route reads as step-free.
+    const result = plan("IDFM:73626", "Sacré-Cœur Basilica", "wheelchair");
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.route.barriers).toEqual([]);
+    expect(result.route.finalWalk?.climbM ?? 0).toBeGreaterThan(20);
+    const source = readFileSync(join(APP, "components", "chat", "ChatRouteCard.tsx"), "utf8");
+    expect(source).toMatch(/verdict_climb/);
+    expect(readFileSync(join(APP, "components", "App.tsx"), "utf8")).toMatch(/plan_climb_1/);
+  });
 });

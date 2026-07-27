@@ -68,11 +68,17 @@ function verdictSummary(
   from: string,
   to: string,
   counts: { barriers: number; conditional: number; unknowns: number },
+  finalWalk?: { metres: number; climbM: number | null } | null,
 ) {
   const verdict: string[] = [];
   if (counts.barriers > 0) verdict.push(`${counts.barriers} ${t("verdict_barrier")}`);
   if (counts.conditional > 0) verdict.push(`${counts.conditional} ${t("verdict_conditional")}`);
   if (counts.unknowns > 0) verdict.push(`${counts.unknowns} ${t("verdict_unknown")}`);
+  // A climb is not a station, so the counts above cannot carry it, and it is
+  // often the thing that decides the journey.
+  if (finalWalk && finalWalk.climbM !== null && finalWalk.climbM >= 8) {
+    verdict.push(`${finalWalk.climbM} ${t("verdict_climb")}`);
+  }
   return `${from} → ${to}: ${verdict.length ? verdict.join(" · ") : t("verdict_clear")}`;
 }
 
@@ -154,7 +160,13 @@ function ChatRouteCard({
   return (
     <div className="my-3">
       <p className="mb-1.5 rounded-lg border border-ink/10 bg-surface-2 px-3 py-2 text-[13px] font-bold leading-snug text-ink">
-        {verdictSummary(t, route.from, route.to, { barriers, conditional, unknowns })}
+        {verdictSummary(
+          t,
+          route.from,
+          route.to,
+          { barriers, conditional, unknowns },
+          route.finalWalk,
+        )}
       </p>
       <div className="overflow-hidden rounded-xl border border-ink/10 bg-surface">
       {/* header: route + who it's for + today's disruption */}

@@ -364,6 +364,15 @@ export default function App({
                         .
                       </>
                     )}
+                    {route.finalWalk &&
+                      route.finalWalk.climbM !== null &&
+                      route.finalWalk.climbM >= 8 && (
+                        <>
+                          {" "}
+                          {t("plan_climb_1")} {route.finalWalk.metres} {t("plan_climb_2")}{" "}
+                          {route.finalWalk.climbM} {t("plan_climb_3")}
+                        </>
+                      )}
                   </span>
                 </p>
                 <div className="mt-3 border-t border-ink/10 pt-3">
