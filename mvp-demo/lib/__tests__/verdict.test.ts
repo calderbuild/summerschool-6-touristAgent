@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { join, resolve } from "node:path";
 import { plan } from "../router";
+
+const APP = resolve(fileURLToPath(import.meta.url), "../../..");
 
 /**
  * The card summarises a route in one line, and that line is the product. This
@@ -9,7 +13,7 @@ import { plan } from "../router";
  */
 describe("the one-line verdict", () => {
   it("counts a staff-assisted stop as not step-free", () => {
-    const source = readFileSync("components/chat/ChatRouteCard.tsx", "utf8");
+    const source = readFileSync(join(APP, "components", "chat", "ChatRouteCard.tsx"), "utf8");
     // The tally must include `assisted`, and "clear" must require it to be zero.
     expect(source).toMatch(/at === "assisted"/);
     expect(source).toMatch(/barriers \+ assisted \+ unknowns === 0/);
