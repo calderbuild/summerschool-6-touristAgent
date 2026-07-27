@@ -25,6 +25,12 @@ export interface DemoRoute {
   from: string;
   to: string;
   title: L;
+  /** Today's disruption, and ONLY from a live feed. It is empty on every route
+   *  because the feed that carries it (IDFM `etat-des-ascenseurs` and the
+   *  real-time disruption endpoints) is published under Licence Mobilité and
+   *  refuses our requests without a PRIM token. Writing a plausible strike here
+   *  by hand is the one thing this field must never hold: a traveller cannot
+   *  tell a fabricated disruption from a real one, and neither can a juror. */
   disruption?: L;
   sources: string[];
   nodes: RouteNode[];
@@ -44,14 +50,9 @@ export const ROUTES: DemoRoute[] = [
       // No profile in the title: the picker directly above already says who is
       // travelling, and two profiles share this route, so naming one of them
       // here made the other traveller read a label that was not about them.
-      en: "Gare de Lyon → Eiffel Tower, on a strike day",
-      fr: "Gare de Lyon → Tour Eiffel, un jour de grève",
-      zh: "里昂车站 → 埃菲尔铁塔，罢工日",
-    },
-    disruption: {
-      en: "Metro strike. Only the automated lines 1, 4 and 14 run near-normal; other lines are heavily reduced.",
-      fr: "Grève dans le métro. Seules les lignes automatiques 1, 4 et 14 circulent presque normalement ; les autres sont très réduites.",
-      zh: "地铁罢工。只有自动运行的 1、4、14 号线接近正常运行，其余线路大幅减少。",
+      en: "Gare de Lyon → Eiffel Tower",
+      fr: "Gare de Lyon → Tour Eiffel",
+      zh: "里昂车站 → 埃菲尔铁塔",
     },
     sources: ["IDFM · État des ascenseurs", "RATP · accessible stations", "OpenStreetMap", "Tour Eiffel access info"],
     nodes: [

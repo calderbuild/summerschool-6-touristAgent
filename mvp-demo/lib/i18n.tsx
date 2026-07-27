@@ -277,9 +277,9 @@ const DICT: Record<string, Entry> = {
     zh: "我们还没有填上的缺口",
   },
   hiw_gap_body: {
-    en: "Lift status is a snapshot, not a live feed. The transit authority publishes real-time lift data behind a free token we have not wired up, so every lift status here is described as of this morning. We would rather name that than let a status look live when it is not.",
-    fr: "L'état des ascenseurs est un instantané, pas un flux en direct. L'autorité de transport publie des données d'ascenseurs en temps réel derrière un jeton gratuit que nous n'avons pas branché : chaque état ici est donc présenté comme celui de ce matin. Nous préférons le dire plutôt que de laisser croire à du temps réel.",
-    zh: "电梯状态是一个快照，不是实时数据。交通管理方通过一个免费 token 提供实时电梯数据，我们还没有接上，所以这里每个电梯状态都标注为今早的情况。我们宁愿说清楚，也不让一个状态看起来像是实时的。",
+    en: "Whether a particular lift is working right now is the one thing this cannot tell you. Île-de-France Mobilités publishes it, 944 lifts each with its own update time, under a licence that requires a registered token: without one the records answer \u201cForbiddenAccess\u201d, and we have not registered. So the station classes on this site are read live from their open register, and every individual lift status is described as of this morning. The gap is named rather than papered over.",
+    fr: "Savoir si un ascenseur précis fonctionne en ce moment est la seule chose que ce site ne peut pas vous dire. Île-de-France Mobilités le publie, 944 ascenseurs avec leur heure de mise à jour, sous une licence exigeant un jeton enregistré : sans jeton, les enregistrements répondent « ForbiddenAccess », et nous ne sommes pas enregistrés. Les classes d'accessibilité des gares sont donc lues en direct dans leur registre ouvert, et chaque état d'ascenseur est présenté comme celui de ce matin. Le manque est nommé, pas masqué.",
+    zh: "某一台电梯此刻是否正常，是本站唯一无法告诉你的事。法兰西岛交通局确实发布了这份数据（944 台电梯，各带更新时间），但它使用需注册 token 的许可协议：没有 token 时接口直接返回 ForbiddenAccess，而我们没有注册。因此站点的车站无障碍等级是从其开放名录实时读取的，而每一台电梯的状态都标注为今早的情况。这个缺口我们直接说明，而不是掩盖。",
   },
   routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },
   browse_routes: {
@@ -356,6 +356,50 @@ const DICT: Record<string, Entry> = {
     en: "Street level around",
     fr: "Le quartier autour de",
     zh: "这一站周边的街道：",
+  },
+
+  // The operator's own record, shown next to ours. Named as theirs on purpose:
+  // when the two disagree, a traveller has to be able to tell whose claim is
+  // whose.
+  official_label: {
+    en: "Operator's record",
+    fr: "Registre de l'exploitant",
+    zh: "运营方记录",
+  },
+  official_source: {
+    en: "Île-de-France Mobilités, read live",
+    fr: "Île-de-France Mobilités, lu en direct",
+    zh: "法兰西岛交通局，实时读取",
+  },
+  official_missing: {
+    en: "Not in the operator's station record, which covers RER and rail stops rather than the métro.",
+    fr: "Absent du registre des gares de l'exploitant, qui couvre le RER et le rail plutôt que le métro.",
+    zh: "运营方车站名录中没有这一站：该名录覆盖 RER 与铁路，不含地铁。",
+  },
+  official_unavailable: {
+    en: "The operator's record could not be reached just now, so only our own checks are shown.",
+    fr: "Le registre de l'exploitant est injoignable pour le moment ; seules nos vérifications sont affichées.",
+    zh: "此刻无法连接运营方记录，页面只显示我们自己核对的内容。",
+  },
+  wc_label: {
+    en: "Accessible toilet in the station",
+    fr: "Toilettes accessibles dans la station",
+    zh: "站内有无障碍厕所",
+  },
+  wc_free: { en: "free", fr: "gratuites", zh: "免费" },
+  wc_paid: { en: "paid", fr: "payantes", zh: "收费" },
+  wc_inside: { en: "inside the gates", fr: "en zone contrôlée", zh: "在闸机内" },
+  wc_outside: { en: "outside the gates", fr: "hors zone contrôlée", zh: "在闸机外" },
+
+  hiw_live_title: {
+    en: "Read from the source while you use it",
+    fr: "Lu à la source pendant que vous l'utilisez",
+    zh: "使用时实时读取来源",
+  },
+  hiw_live_intro: {
+    en: "These two registers are not copied into this project. They are fetched when a page loads, cached for six hours, and if they cannot be reached the page says so instead of showing an old answer.",
+    fr: "Ces deux registres ne sont pas copiés dans ce projet. Ils sont récupérés au chargement d'une page, mis en cache six heures, et s'ils sont injoignables la page le dit au lieu d'afficher une ancienne réponse.",
+    zh: "这两份名录没有被复制进项目。它们在页面加载时获取、缓存六小时；连接不上时页面会直接说明，而不是拿旧答案顶上。",
   },
 
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },

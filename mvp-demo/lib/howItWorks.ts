@@ -227,6 +227,32 @@ export const GUARDS: Guard[] = [
 ];
 
 /** Counted from the cached open data on 2026-07-26, central Paris. */
+/** The two registers the app reads at runtime rather than copying into the repo,
+ *  listed here because "we use open data" means nothing without the dataset id,
+ *  the licence, and what breaks if it is missing. */
+export const LIVE_SOURCES: { name: string; licence: string; url: string; role: Tri }[] = [
+  {
+    name: "IDFM · Accessibilité en gare",
+    licence: "Licence Ouverte v2.0 (Etalab)",
+    url: "https://data.iledefrance-mobilites.fr/explore/dataset/accessibilite-en-gare/",
+    role: {
+      en: "The operator's own accessibility class for 459 stops, shown beside every stop on a route. 213 are simply not accessible, 174 need a booking made in advance, 58 need a member of staff, 14 work on your own.",
+      fr: "La classe d'accessibilité de l'exploitant pour 459 arrêts, affichée à côté de chaque arrêt d'un itinéraire. 213 ne sont pas accessibles, 174 exigent une réservation préalable, 58 l'aide d'un agent, 14 fonctionnent en autonomie.",
+      zh: "运营方对 459 个站点的无障碍等级，显示在路线的每一站旁边。其中 213 站完全不可通行，174 站需提前预约，58 站需站内工作人员协助，14 站可自行通行。",
+    },
+  },
+  {
+    name: "IDFM · Toilettes publiques dans le réseau RATP",
+    licence: "Licence ODbL",
+    url: "https://data.iledefrance-mobilites.fr/explore/dataset/sanitaires-reseau-ratp/",
+    role: {
+      en: "The 43 toilets in the network marked usable by someone with reduced mobility, with whether they are free and whether they sit inside the ticket gates, which decides whether reaching one costs a fare.",
+      fr: "Les 43 toilettes du réseau signalées utilisables par une personne à mobilité réduite, avec la gratuité et la position par rapport aux valideurs, qui décide si y accéder coûte un ticket.",
+      zh: "网络中 43 处标注为行动不便者可用的厕所，并说明是否免费、是否在闸机内（这决定了去一趟是否要额外付费）。",
+    },
+  },
+];
+
 export const MEASURED: { value: string; label: Tri }[] = [
   {
     value: "95.7%",

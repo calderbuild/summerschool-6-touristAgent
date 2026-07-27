@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
-import { CHOICES, GUARDS, MEASURED } from "@/lib/howItWorks";
+import { CHOICES, GUARDS, LIVE_SOURCES, MEASURED } from "@/lib/howItWorks";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 const LAYER_KEY: Record<string, string> = {
@@ -82,6 +82,34 @@ export default function HowItWorks() {
           <p className="mt-2.5 font-mono text-[10.5px] uppercase tracking-wide text-ink-faint">
             {t("hiw_measured_source")}
           </p>
+        </section>
+
+        {/* Read at runtime, not copied in. This section exists because "we use
+            open data" is a claim anyone can make; the dataset id, the licence and
+            what it decides on screen are the parts that can be checked. */}
+        <section aria-labelledby="live" className="mt-10">
+          <h2 id="live" className="font-display text-[17px] font-bold text-ink">
+            {t("hiw_live_title")}
+          </h2>
+          <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-ink-soft">{t("hiw_live_intro")}</p>
+          <ul className="mt-3 grid gap-2.5">
+            {LIVE_SOURCES.map((s) => (
+              <li key={s.name} className="rounded-2xl border border-ink/10 bg-surface p-4">
+                <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                  <a
+                    href={s.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-display text-[14.5px] font-bold text-ink underline decoration-ink/25 underline-offset-2 hover:decoration-ink"
+                  >
+                    {s.name}
+                  </a>
+                  <span className="font-mono text-[10.5px] uppercase tracking-wide text-ink-faint">{s.licence}</span>
+                </div>
+                <p className="mt-1.5 text-[12.5px] leading-snug text-ink-soft">{s.role[lang]}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* How we keep it from inventing things. This sits above the tech list on

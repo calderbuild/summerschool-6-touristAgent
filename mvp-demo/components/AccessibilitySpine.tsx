@@ -3,6 +3,8 @@
 import { useI18n } from "@/lib/i18n";
 import type { DemoRoute, RouteNode, Status } from "@/lib/data";
 import { statusColorVar, isUnknown, lineTextColor } from "@/lib/status";
+import { ACCESS_LEVELS, findStation, toiletsAt } from "@/lib/idfm";
+import { useNetworkFacts } from "@/lib/useNetwork";
 import {
   Check,
   MoveVertical,
@@ -49,6 +51,62 @@ function Connector({ status }: { status?: Status }) {
           : { backgroundColor: statusColorVar(status) }
       }
     />
+  );
+}
+
+/**
+ * What Île-de-France Mobilités says about this stop, next to what we say.
+ *
+ * This is the difference between a project that claims to use open data and one
+ * that shows it: the class comes from the operator's own published register at
+ * page load, in their words, and where they qualify it per line (Châtelet's RER A
+ * and B are staff-assisted while the D is not accessible at all) that sentence
+ * is theirs too. A stop they do not list says so rather than borrowing a
+ * neighbour's class, because their register covers RER and rail, not the métro.
+ */
+function OfficialRecord({ name }: { name: string }) {
+  const { t, lang } = useI18n();
+  const { facts, state } = useNetworkFacts();
+
+  if (state === "loading") return null;
+  if (state === "unavailable") {
+    return <p className="mt-2 text-[12px] leading-snug text-ink-faint">{t("official_unavailable")}</p>;
+  }
+
+  const record = findStation(facts, name);
+  const toilets = toiletsAt(facts, name);
+
+  return (
+    <div className="mt-2.5 border-l-2 border-ink/12 pl-2.5">
+      <p className="font-mono text-[10.5px] uppercase tracking-wide text-ink-faint">
+        {t("official_label")} · {t("official_source")}
+      </p>
+      {record ? (
+        <>
+          <p className="mt-1 text-[13px] leading-snug text-ink">{ACCESS_LEVELS[record.level]?.[lang] ?? record.levelFr}</p>
+          {/* Their French, verbatim, under our gloss: the gloss is a translation
+              and a translation is an interpretation. */}
+          {lang !== "fr" && record.levelFr && (
+            <p className="mt-0.5 text-[12px] italic leading-snug text-ink-soft">{record.levelFr}</p>
+          )}
+          {record.note && <p className="mt-1 text-[12px] leading-snug text-ink-soft">{record.note}</p>}
+        </>
+      ) : (
+        <p className="mt-1 text-[12px] leading-snug text-ink-soft">{t("official_missing")}</p>
+      )}
+      {toilets.map((wc, i) => (
+        <p key={i} className="mt-1.5 flex items-start gap-1.5 text-[12px] leading-snug text-ok-ink">
+          <Accessibility size={13} strokeWidth={2} aria-hidden className="mt-0.5 shrink-0" />
+          <span>
+            {t("wc_label")}
+            {wc.line && ` (${wc.line})`}
+            {wc.free !== null && `, ${wc.free ? t("wc_free") : t("wc_paid")}`}
+            {wc.insideGates !== null && `, ${wc.insideGates ? t("wc_inside") : t("wc_outside")}`}
+            {wc.where && `. ${wc.where}`}
+          </span>
+        </p>
+      ))}
+    </div>
   );
 }
 
@@ -133,6 +191,8 @@ export default function AccessibilitySpine({ route }: { route: DemoRoute }) {
                   </span>
                 )}
               </div>
+
+              <OfficialRecord name={node.name} />
 
               {/* barrier + step-free alternative */}
               {node.barrier && (

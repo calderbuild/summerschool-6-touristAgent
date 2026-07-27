@@ -1,4 +1,5 @@
 import { ROUTES, PROFILES } from "@/lib/data";
+import { ACCESS_LEVELS, findStation, networkFacts, toiletsAt, type NetworkFacts } from "@/lib/idfm";
 import { PLACES, SERVICES } from "@/lib/places";
 
 // DeepSeek key is server-side only; the browser never sees it.
@@ -165,12 +166,50 @@ function serviceCatalogue(): string {
   }).join("\n");
 }
 
-function systemPrompt(profile: string | null, weather: string | null): string {
+
+/**
+ * The operator's own accessibility register for the stops on our routes.
+ *
+ * Read live from Ile-de-France Mobilites at request time, so the assistant can
+ * cite the register rather than our summary of it. The interesting part is where
+ * the two disagree: our note may say a lift exists, and the register may still
+ * class the station as reachable only with a booking made days ahead. Both
+ * belong in the answer.
+ */
+function officialCatalogue(facts: NetworkFacts | null): string {
+  if (!facts) {
+    return "  (the operator's register could not be reached for this reply: say that rather than guessing a station's class)";
+  }
+  const stops = Array.from(new Set(ROUTES.flatMap((r) => r.nodes.map((n) => n.name))));
+  return stops
+    .map((name) => {
+      const record = findStation(facts, name);
+      const wc = toiletsAt(facts, name);
+      const bits: string[] = [];
+      if (record) {
+        bits.push(`official-class:"${ACCESS_LEVELS[record.level]?.en ?? record.levelFr}"`);
+        bits.push(`official-wording-fr:"${record.levelFr}"`);
+        if (record.note) bits.push(`per-line-note:"${record.note}"`);
+      } else {
+        bits.push("official-class:not-listed (their register covers RER and rail, not the metro)");
+      }
+      for (const w of wc) {
+        const where = [w.free === null ? null : w.free ? "free" : "paid", w.insideGates === null ? null : w.insideGates ? "inside the gates" : "outside the gates"]
+          .filter(Boolean)
+          .join(", ");
+        bits.push(`accessible-toilet:"line ${w.line}${where ? ", " + where : ""}${w.where ? ". " + w.where : ""}"`);
+      }
+      return `  - ${name}: ${bits.join(", ")}`;
+    })
+    .join("\n");
+}
+
+function systemPrompt(profile: string | null, weather: string | null, facts: NetworkFacts | null): string {
   return `You are Voie Libre, a Paris step-free travel and sightseeing assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris and plan accessible visits to its main sights.
 
 How Voie Libre works (facts, not rules to recite):
 - Only Metro Line 14 is fully step-free. About 30 of 300+ stations have a working lift.
-- Lift statuses are "as of this morning", a snapshot rather than a live feed.
+- Our own lift notes are "as of this morning", a snapshot rather than a live feed. The one thing Voie Libre cannot tell anyone is whether a specific lift is working right now: that dataset exists but is licensed and needs a token we do not have, and saying so is the honest answer.
 - Unknown accessibility data is shown as "unknown"; an honest gap beats a guessed step count, lift status, or route.
 - When a lift is out of service, the reply gives a step-free alternative: a level-boarding bus, another line, or a different station.
 ${profile ? `\nThe traveller's mobility profile is: ${profile}. Weigh the route against this profile (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance).` : ""}${weather ? `\nCurrent weather you may use for a weather-aware suggestion: ${weather} If it is raining and the traveller's plan is outdoors, you may suggest a step-free indoor option that is on or near the route, but do not invent opening hours or specifics.` : ""}
@@ -185,6 +224,11 @@ When the traveller's need matches one of these routes, put the marker on its own
   )}. If you know the traveller's profile, append it: e.g. [[route:gdl-eiffel:wheelchair]]. The app renders that marker as a visual card with the step-by-step accessibility spine, so you do not need to repeat every leg in prose. Then briefly explain why you chose it and call out the main barrier and the step-free alternative. Keep the prose short.
 
 If the request does not match a prepared route, answer helpfully in the same spirit (step-free thinking, honest about unknowns) without inventing specific station data.
+
+Ile-de-France Mobilites' own accessibility register for the stops above, read live from their open data for this reply:
+${officialCatalogue(facts)}
+
+This is the operator's claim, not ours, and it is worth more than ours when the two differ, so name whose claim it is. "Accessible only with a booking made in advance" is not the same as accessible, and a traveller who is told only the second half plans a trip they cannot take: the booking, or the request to a member of staff, goes in the same sentence as the class. Where the register qualifies a station line by line, that qualification is the useful part. A station missing from the register is not "accessible": their register covers RER and rail rather than the metro, and absence means nobody published a class.
 
 You also have this referenced knowledge base of Paris attractions (verified 2026-07-23; budgets are the adult entry cost in euros; some values are estimates and are marked as such; unknowns are honest):
 ${placeCatalogue()}
@@ -263,9 +307,12 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ error: "no messages" }), { status: 400 });
   }
 
-  const weather = await currentWeather();
+  // Both are fetched in parallel and both fail open: an answer without the
+  // weather or without the operator's register is still a useful answer, and the
+  // prompt says which one is missing rather than filling the hole.
+  const [weather, facts] = await Promise.all([currentWeather(), networkFacts()]);
 
-  const payload = [{ role: "system", content: systemPrompt(profile, weather) }, ...messages];
+  const payload = [{ role: "system", content: systemPrompt(profile, weather, facts) }, ...messages];
 
   // The timeout covers reaching the model, not reading from it. A single signal
   // passed to fetch would stay armed while the answer streams and cut a long one
