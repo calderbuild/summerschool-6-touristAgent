@@ -12,6 +12,12 @@ import { useI18n } from "@/lib/i18n";
  * opening the list, because a picker that refuses to act until you have chosen
  * from its own menu is the friction this app exists to remove. The list is help,
  * not a gate.
+ *
+ * It is still reachable with the arrow keys, and that is not a checkbox exercise:
+ * an app whose subject is people who cannot use the stairs cannot ship a front
+ * door that needs a mouse. Nothing is selected until an arrow key says so, so
+ * Enter on a freshly typed name submits the journey rather than silently choosing
+ * the first suggestion.
  */
 
 interface Suggestion {
@@ -37,6 +43,8 @@ function Field({
   const id = useId();
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Suggestion[]>([]);
+  /** -1 means "nothing chosen", which is what makes Enter submit instead of pick. */
+  const [active, setActive] = useState(-1);
   const box = useRef<HTMLDivElement>(null);
   const typed = useRef(false);
 
@@ -50,6 +58,7 @@ function Field({
         const res = await fetch(`/api/stations?q=${encodeURIComponent(value)}`);
         const data = await res.json();
         setItems(data.results ?? []);
+        setActive(-1);
         setOpen(true);
       } catch {
         setItems([]);
@@ -80,12 +89,40 @@ function Field({
         }}
         onFocus={() => items.length > 0 && setOpen(true)}
         onKeyDown={(e) => {
-          if (e.key === "Escape") setOpen(false);
+          if (e.key === "Escape") {
+            setOpen(false);
+            setActive(-1);
+            return;
+          }
+          if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            if (items.length === 0) return;
+            e.preventDefault();
+            setOpen(true);
+            const step = e.key === "ArrowDown" ? 1 : -1;
+            setActive((i) => {
+              const next = i + step;
+              if (next < 0) return items.length - 1;
+              if (next >= items.length) return 0;
+              return next;
+            });
+            return;
+          }
+          if (e.key === "Enter" && open && active >= 0 && items[active]) {
+            // Only when an arrow key put something under the cursor. Otherwise the
+            // form submits what was typed, which is the whole point of the comment
+            // at the top of this file.
+            e.preventDefault();
+            onPick(items[active]);
+            setOpen(false);
+            setActive(-1);
+          }
         }}
         placeholder={placeholder}
         autoComplete="off"
         role="combobox"
         aria-expanded={open}
+        aria-autocomplete="list"
+        aria-activedescendant={open && active >= 0 ? `${id}-opt-${active}` : undefined}
         aria-controls={`${id}-list`}
         className="mt-1 min-h-11 w-full rounded-xl border border-ink/20 bg-canvas px-3 text-[15px] text-ink placeholder:text-ink-faint focus:border-signal focus:outline-none"
       />
@@ -95,18 +132,27 @@ function Field({
           role="listbox"
           className="absolute left-0 right-0 top-full z-30 mt-1 max-h-64 overflow-y-auto rounded-xl border border-ink/15 bg-surface py-1 shadow-lg shadow-ink/10"
         >
-          {items.map((s) => {
+          {items.map((s, i) => {
             const Icon = s.kind === "place" ? MapPin : Train;
             return (
-              <li key={`${s.kind}-${s.value}`} role="option" aria-selected={false}>
+              <li
+                key={`${s.kind}-${s.value}`}
+                id={`${id}-opt-${i}`}
+                role="option"
+                aria-selected={i === active}
+              >
                 <button
                   type="button"
+                  tabIndex={-1}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
                     onPick(s);
                     setOpen(false);
+                    setActive(-1);
                   }}
-                  className="flex w-full items-start gap-2 px-3 py-2 text-left hover:bg-signal/10"
+                  className={`flex w-full items-start gap-2 px-3 py-2 text-left hover:bg-signal/10 ${
+                    i === active ? "bg-signal/12" : ""
+                  }`}
                 >
                   <Icon size={15} strokeWidth={2.2} aria-hidden className="mt-0.5 shrink-0 text-ink-faint" />
                   <span className="min-w-0">

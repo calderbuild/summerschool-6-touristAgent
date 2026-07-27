@@ -12,18 +12,18 @@ const APP = resolve(fileURLToPath(import.meta.url), "../../..");
  * marks "only with a member of staff" was summarised "step-free the whole way".
  */
 describe("the one-line verdict", () => {
-  it("counts a staff-assisted stop as not step-free", () => {
+  it("counts a staff-conditional stop as not step-free", () => {
     const source = readFileSync(join(APP, "components", "chat", "ChatRouteCard.tsx"), "utf8");
-    // The tally must include `assisted`, and "clear" must require it to be zero.
-    expect(source).toMatch(/at === "assisted"/);
-    expect(source).toMatch(/barriers \+ assisted \+ unknowns === 0/);
+    // The tally must include `conditional`, and "clear" must require it to be zero.
+    expect(source).toMatch(/at === "conditional"/);
+    expect(source).toMatch(/barriers \+ conditional \+ unknowns === 0/);
   });
 
-  it("has real routes whose stops are staff-assisted, so the rule matters", () => {
+  it("has real routes whose stops are staff-conditional, so the rule matters", () => {
     const result = plan("IDFM:71673", "IDFM:73626", "wheelchair");
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    const assisted = result.route.nodes.filter((n) => n.at === "assisted");
-    expect(assisted.length).toBeGreaterThan(0);
+    const conditional = result.route.nodes.filter((n) => n.at === "conditional");
+    expect(conditional.length).toBeGreaterThan(0);
   });
 });

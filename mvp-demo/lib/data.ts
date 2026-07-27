@@ -3,14 +3,18 @@ import type { Lang } from "./i18n";
 export type L = Record<Lang, string>;
 
 // ok = step-free · lift = working lift · lift_down = lift out of service
-// assisted = there is a way through, but only with staff or a booking
+// conditional = there is a way through, but it has a condition on it: a booking,
+//   a member of staff, or only some of the platforms
 // stairs = steps required · unknown = we honestly do not know
 //
-// `assisted` exists because the operator's own register puts 213 of the 745
-// stations in that state and none of the other four statuses says it. Calling them "working lift" would be
+// `conditional` exists because it is the commonest real answer and none of the
+// other statuses can say it: 216 of the 945 stations are staff-or-booking in the
+// operator's station register, and another 473 have some accessible platforms and
+// some not in their stop register. "Working lift" would be a promise we cannot
+// keep and "unknown" would throw away the part the traveller needs. Calling them "working lift" would be
 // a promise we cannot keep, and calling them "unknown" would throw away a fact
 // the traveller needs: there is a route, and it costs you a conversation.
-export type Status = "ok" | "lift" | "assisted" | "lift_down" | "stairs" | "unknown";
+export type Status = "ok" | "lift" | "conditional" | "lift_down" | "stairs" | "unknown";
 
 export interface RouteNode {
   name: string; // proper noun, not translated

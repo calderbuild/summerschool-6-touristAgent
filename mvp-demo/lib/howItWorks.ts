@@ -192,9 +192,9 @@ export const CRITERIA: Criterion[] = [
   {
     name: { en: "Performance", fr: "Performance", zh: "性能" },
     answer: {
-      en: "A search over 745 stations and 2,000 hops runs in memory, so the route on this page was computed on the server before the page was sent. Nothing spins, and the first thing you see is an answer rather than a frame.",
-      fr: "Une recherche sur 745 gares et 2 000 tronçons se fait en mémoire : l'itinéraire de cette page a été calculé sur le serveur avant l'envoi de la page. Rien ne tourne, et la première chose visible est une réponse, pas un cadre.",
-      zh: "对 745 座车站、2,000 段区间的搜索在内存中完成，所以这个页面上的路线是在服务端、页面发出之前就算好的。没有转圈，你看到的第一样东西就是答案。",
+      en: "A search over 945 stations and 2,488 hops runs in memory, so the route on this page was computed on the server before the page was sent. Nothing spins, and the first thing you see is an answer rather than a frame.",
+      fr: "Une recherche sur 945 gares et 2 488 tronçons se fait en mémoire : l'itinéraire de cette page a été calculé sur le serveur avant l'envoi de la page. Rien ne tourne, et la première chose visible est une réponse, pas un cadre.",
+      zh: "对 945 座车站、2,488 段区间的搜索在内存中完成，所以这个页面上的路线是在服务端、页面发出之前就算好的。没有转圈，你看到的第一样东西就是答案。",
     },
   },
   {
@@ -320,6 +320,26 @@ export const LIVE_SOURCES: { name: string; licence: string; url: string; role: T
       en: "The 43 toilets in the network marked usable by someone with reduced mobility, with whether they are free and whether they sit inside the ticket gates, which decides whether reaching one costs a fare.",
       fr: "Les 43 toilettes du réseau signalées utilisables par une personne à mobilité réduite, avec la gratuité et la position par rapport aux valideurs, qui décide si y accéder coûte un ticket.",
       zh: "网络中 43 处标注为行动不便者可用的厕所，并说明是否免费、是否在闸机内（这决定了去一趟是否要额外付费）。",
+    },
+  },
+  {
+    name: "IDFM · Arrêts",
+    licence: "Licence Ouverte v2.0 (Etalab)",
+    url: "https://data.iledefrance-mobilites.fr/explore/dataset/arrets/",
+    role: {
+      en: "The register of 37,963 stops, of which 3,426 metro, tram, RER and Transilien platforms carry an accessibility flag. It is what the router falls back to where a station has no overall class: 205 stations have every platform marked accessible, 473 have some but not all, and only 7 say nothing either way.",
+      fr: "Le registre de 37 963 arrêts, dont 3 426 quais de métro, tram, RER et Transilien portent un indicateur d'accessibilité. C'est le recours du calculateur quand une station n'a pas de classe globale : 205 stations ont tous leurs quais accessibles, 473 en ont certains mais pas tous, et seulement 7 ne disent rien.",
+      zh: "37,963 个站点的登记表，其中 3,426 个地铁、有轨电车、RER 和郊线站台带有无障碍标记。当某座车站没有整体等级时，路线计算就退回读它：205 座车站全部站台可通行，473 座部分可通行，只有 7 座两边都没说。",
+    },
+  },
+  {
+    name: "Open-Meteo · Elevation",
+    licence: "CC-BY 4.0, no key required",
+    url: "https://open-meteo.com/en/docs/elevation-api",
+    role: {
+      en: "The ground height of all 945 stations and every landmark, so the last walk can say whether it climbs. Sacré-Cœur sits 74 m above the nearest stop where a wheelchair user can board unaided, and a route that prints only the distance is hiding that hill.",
+      fr: "L'altitude des 945 stations et de chaque site, pour que la dernière marche à pied puisse dire si elle monte. Le Sacré-Cœur est 74 m au-dessus de l'arrêt accessible en autonomie le plus proche, et un itinéraire qui n'affiche que la distance cache cette côte.",
+      zh: "945 座车站与每个景点的地面海拔，让最后一段步行能说明是否上坡。圣心堂比最近的「可自行上车」站点高 74 米，只报距离的路线等于把这座山藏了起来。",
     },
   },
 ];

@@ -44,6 +44,8 @@ import csv
 import gzip
 import io
 import json
+import re
+import time
 import math
 import os
 import sys
@@ -60,8 +62,16 @@ ACCESS_URL = (
     "&order_by=stop_name"
 )
 
-# GTFS route_type: 1 metro, 2 rail (RER + Transilien), 0 tram.
-KEEP_ROUTE_TYPES = {"1", "2"}
+# GTFS route_type: 0 tram, 1 metro, 2 rail (RER + Transilien).
+#
+# Trams are in because the operator's stop register says most of their platforms
+# are accessible, which makes them the step-free spine of the outer city. They
+# were left out until that register was found: adding a mode whose accessibility
+# we could only assume would have been the same guessing this product refuses.
+# Buses stay out. A bus is step-free for different reasons (a ramp, a kerb, a
+# driver), none of which is in any feed here, and the app says so when it cannot
+# find a route.
+KEEP_ROUTE_TYPES = {"0", "1", "2"}
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "mvp-demo", "lib", "network.json")
 
@@ -165,6 +175,142 @@ def fetch_access_levels() -> dict[str, dict]:
                 "stop": name,
             }
     return levels
+
+
+STOPS_URL = (
+    "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/"
+    "arrets/records?limit=100&offset={offset}"
+    "&select=arrname,arrtype,arraccessibility,arraudiblesignals,arrvisualsigns,arrgeopoint"
+    "&where=arrtype%20in%20(%22metro%22,%22rail%22,%22tram%22)"
+    "&order_by=arrname"
+)
+
+ELEVATION_URL = "https://api.open-meteo.com/v1/elevation?latitude={lat}&longitude={lng}"
+
+
+def get_json(url: str) -> dict:
+    """Every host here gzips whether or not it was asked to, so decide on bytes."""
+    req = urllib.request.Request(
+        url,
+        headers={
+            "Accept-Encoding": "identity",
+            "Accept": "application/json",
+            "User-Agent": "voie-libre-build/1.0",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=40) as res:
+        raw = res.read()
+    if raw[:2] == b"\x1f\x8b":
+        raw = gzip.decompress(raw)
+    return json.loads(raw.decode("utf-8"))
+
+
+def fetch_stop_access() -> list[dict]:
+    """The operator's per-platform accessibility for every rail, metro and tram stop.
+
+    This is the dataset that closes the biggest hole in the product: the station
+    accessibility register covers 459 mostly-rail stops, which left every metro
+    station saying "nobody published anything". This one is 3,426 platforms with a
+    four-value flag, and it is the same operator under the same open licence.
+    """
+    out: list[dict] = []
+    offset = 0
+    while offset < 4000:
+        try:
+            payload = get_json(STOPS_URL.format(offset=offset))
+        except Exception as exc:  # noqa: BLE001
+            print(f"  stop register page {offset} failed: {exc}", flush=True)
+            break
+        rows = payload.get("results", [])
+        if not rows:
+            break
+        for row in rows:
+            point = row.get("arrgeopoint") or {}
+            if point.get("lat") is None or point.get("lon") is None:
+                continue
+            out.append(
+                {
+                    "name": row.get("arrname") or "",
+                    "type": row.get("arrtype") or "",
+                    "access": (row.get("arraccessibility") or "unknown").lower(),
+                    "audible": (row.get("arraudiblesignals") or "unknown").lower(),
+                    "visual": (row.get("arrvisualsigns") or "unknown").lower(),
+                    "lat": float(point["lat"]),
+                    "lng": float(point["lon"]),
+                }
+            )
+        offset += 100
+    print(f"stop-register platforms fetched: {len(out)}", flush=True)
+    return out
+
+
+def fetch_elevations(points: list[tuple[float, float]]) -> list[float | None]:
+    """Ground height per coordinate, 100 at a time, from Open-Meteo (no key).
+
+    It exists for one sentence. The walk from Lamarck - Caulaincourt to
+    Sacre-Coeur was described as a "street-level walk of about 405 m", which reads
+    as flat and is a climb of about 50 m up the Butte. For the person this product
+    is for, that difference decides the trip.
+    """
+    out: list[float | None] = []
+    for i in range(0, len(points), 100):
+        batch = points[i : i + 100]
+        url = ELEVATION_URL.format(
+            lat=",".join(f"{lat:.5f}" for lat, _ in batch),
+            lng=",".join(f"{lng:.5f}" for _, lng in batch),
+        )
+        values: list = []
+        # A free service with no key answers 429 to ten requests in a row, so the
+        # batches are spaced and retried. Half the heights missing would mean half
+        # the walks silently lose their climb, which is the fact worth having.
+        for attempt in range(4):
+            try:
+                values = get_json(url).get("elevation") or []
+                break
+            except Exception as exc:  # noqa: BLE001
+                if attempt == 3:
+                    print(f"  elevation batch {i} failed: {exc}", flush=True)
+                    break
+                # The free tier counts coordinates, not requests, and resets on the
+                # minute, so 600 heights in a row earns a 429 that only waiting
+                # clears. Spacing the batches is not enough on its own.
+                wait = 65 if "429" in str(exc) else 3
+                print(f"  elevation batch {i}: {exc}, waiting {wait}s", flush=True)
+                time.sleep(wait)
+        time.sleep(1.2)
+        for j in range(len(batch)):
+            out.append(float(values[j]) if j < len(values) else None)
+    got = sum(1 for v in out if v is not None)
+    print(f"elevations fetched: {got} of {len(points)}", flush=True)
+    return out
+
+
+PLACE_RE = re.compile(
+    r'id:\s*"(?P<id>[a-z0-9-]+)".*?coord:\s*\{\s*lat:\s*(?P<lat>-?\d+\.?\d*),\s*lng:\s*(?P<lng>-?\d+\.?\d*)\s*\}',
+    re.S,
+)
+
+
+def read_places() -> list[tuple[str, float, float]]:
+    """The knowledge base's places, read out of the TypeScript that owns them.
+
+    Duplicating the coordinates into this script would give the product two
+    answers for where the Louvre is, and the wrong one would be the one nobody
+    looks at.
+    """
+    path = os.path.join(os.path.dirname(__file__), "..", "mvp-demo", "lib", "places.ts")
+    text = open(path, encoding="utf-8").read()
+    found = [
+        (m.group("id"), float(m.group("lat")), float(m.group("lng")))
+        for m in PLACE_RE.finditer(text)
+    ]
+    # Count coordinates that hold numbers: the file also holds SERVICES, which have
+    # an id and no coordinate (you reach them by phone rather than by travelling),
+    # and the interface declaration at the top, whose coord holds `number`.
+    declared = len(re.findall(r"coord:\s*\{\s*lat:\s*-?\d", text))
+    assert len(found) == declared, f"places.ts: matched {len(found)} of {declared}"
+    print(f"places read from places.ts: {len(found)}", flush=True)
+    return found
 
 
 def main() -> None:
@@ -365,6 +511,7 @@ def main() -> None:
     # ---- assemble -----------------------------------------------------------
     access = fetch_access_levels()
     print(f"accessibility classes fetched: {len(access)}", flush=True)
+    platforms = fetch_stop_access()
 
     station_lines = defaultdict(set)
     for (rid, a, b) in hops:
@@ -430,6 +577,32 @@ def main() -> None:
             for slat, slon, count in osm_steps
             if not count and haversine_m(lat, lng, slat, slon) <= 150
         )
+        # The operator's platform flags for THIS stop. Matched on distance and on
+        # the name, because two stops 200 m apart are two different stops and
+        # borrowing the neighbour's platforms would invent an answer.
+        want = norm(info["name"])
+        tally = {"true": 0, "partial": 0, "false": 0, "unknown": 0}
+        signals = {"audible": 0, "visual": 0}
+        for pf in platforms:
+            if haversine_m(lat, lng, pf["lat"], pf["lng"]) > 250:
+                continue
+            k = norm(pf["name"])
+            if not (k == want or k.startswith(f"{want} ") or want.startswith(f"{k} ")):
+                continue
+            tally[pf["access"] if pf["access"] in tally else "unknown"] += 1
+            if pf["audible"] == "true":
+                signals["audible"] += 1
+            if pf["visual"] == "true":
+                signals["visual"] += 1
+        counted = tally["true"] + tally["partial"] + tally["false"]
+        if not counted:
+            boarding = "unknown"
+        elif tally["false"] == 0 and tally["partial"] == 0:
+            boarding = "yes"
+        elif tally["true"] == 0 and tally["partial"] == 0:
+            boarding = "no"
+        else:
+            boarding = "mixed"
         station_out[sta] = {
             "name": info["name"],
             "lat": round(float(info["lat"]), 6),
@@ -441,6 +614,17 @@ def main() -> None:
                 "level": record["level"],
                 "levelFr": record["levelFr"],
                 "note": record["note"],
+            },
+            # The operator's own platform flags. `boarding` is derived here rather
+            # than in the app so the app cannot quietly derive it differently.
+            "platforms": {
+                "boarding": boarding,
+                "accessible": tally["true"],
+                "partial": tally["partial"],
+                "notAccessible": tally["false"],
+                "unknown": tally["unknown"],
+                "audible": signals["audible"],
+                "visual": signals["visual"],
             },
             # Volunteer-mapped, so absence means "nobody mapped it here" and never
             # "there is none". The field names say osm for that reason: the UI has
@@ -454,6 +638,19 @@ def main() -> None:
                 "stairwaysWithoutCount": near_unknown_steps,
             },
         }
+
+    # ---- ground height ------------------------------------------------------
+    station_ids = list(station_out)
+    places = read_places()
+    heights = fetch_elevations(
+        [(station_out[i]["lat"], station_out[i]["lng"]) for i in station_ids]
+        + [(lat, lng) for _, lat, lng in places]
+    )
+    for i, sid_ in enumerate(station_ids):
+        station_out[sid_]["elevation"] = heights[i]
+    place_elevation = {
+        pid: heights[len(station_ids) + i] for i, (pid, _, _) in enumerate(places)
+    }
 
     hop_out = []
     for (rid, a, b), ride in hops.items():
@@ -498,12 +695,23 @@ def main() -> None:
                 "licence": "Licence Ouverte v2.0 (Etalab)",
             },
             {
+                "name": "IDFM Référentiel des arrêts",
+                "url": "https://data.iledefrance-mobilites.fr/explore/dataset/arrets/",
+                "licence": "Licence Ouverte v2.0 (Etalab)",
+            },
+            {
+                "name": "Open-Meteo elevation",
+                "url": "https://open-meteo.com/en/docs/elevation-api",
+                "licence": "CC BY 4.0",
+            },
+            {
                 "name": "OpenStreetMap (lifts and stairways)",
                 "url": "https://overpass-api.de/",
                 "licence": "ODbL, © OpenStreetMap contributors",
             },
         ],
         "pathwayModes": dict(pathway_modes),
+        "placeElevation": place_elevation,
         "lines": lines,
         # The graph the router actually searches. `seconds` is the fastest ride
         # the timetable publishes for that pair, or 0 where the feed left the
@@ -518,6 +726,9 @@ def main() -> None:
         json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
 
     with_access = sum(1 for s in station_out.values() if s["access"])
+    boarding_counts: dict[str, int] = defaultdict(int)
+    for s in station_out.values():
+        boarding_counts[s["platforms"]["boarding"]] += 1
     with_lift = sum(1 for s in station_out.values() if s["osm"]["lifts"])
     with_steps = sum(1 for s in station_out.values() if s["osm"]["maxSteps"])
     print(
@@ -527,6 +738,8 @@ def main() -> None:
         f"  with an operator accessibility class: {with_access}\n"
         f"  with at least one mapped lift: {with_lift}\n"
         f"  with a published stair count: {with_steps}\n"
+        f"  platform boarding flags: {dict(boarding_counts)}\n"
+        f"  with a ground height: {sum(1 for s in station_out.values() if s['elevation'] is not None)}\n"
         f"  hops the router can ride: {len(hop_out)}\n"
         f"  transfers: {len(transfer_out)}",
         flush=True,

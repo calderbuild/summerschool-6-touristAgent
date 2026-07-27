@@ -136,9 +136,9 @@ export const A11Y_CLAIMS: Claim[] = [
       zh: "键盘与屏幕阅读器",
     },
     body: {
-      en: "Every control is reachable by keyboard with a visible focus ring, touch targets are at least 44 pixels, the answer is announced to a screen reader as it arrives, and read-aloud speaks the words of a link rather than spelling out its address. Expanding panels say whether they are open and what they control.",
-      fr: "Chaque commande est accessible au clavier avec un anneau de focus visible, les cibles tactiles font au moins 44 pixels, la réponse est annoncée au lecteur d'écran à mesure qu'elle arrive, et la lecture à voix haute prononce le libellé d'un lien plutôt que son adresse. Les panneaux dépliables indiquent leur état et ce qu'ils contrôlent.",
-      zh: "所有控件都可用键盘操作并有可见焦点环，触摸目标不小于 44 像素，回答在生成过程中会播报给屏幕阅读器，朗读时读的是链接的文字而不是拼读网址。可展开面板会说明自己是否展开、控制的是哪一块。",
+      en: "Every control is reachable by keyboard with a visible focus ring, the suggestion list under each journey field moves with the arrow keys and is chosen with Enter, touch targets are at least 44 pixels, the answer is announced to a screen reader as it arrives, and read-aloud speaks the words of a link rather than spelling out its address. Expanding panels say whether they are open and what they control.",
+      fr: "Chaque commande est accessible au clavier avec un anneau de focus visible, la liste de suggestions sous chaque champ se parcourt aux flèches et se valide avec Entrée, les cibles tactiles font au moins 44 pixels, la réponse est annoncée au lecteur d'écran à mesure qu'elle arrive, et la lecture à voix haute prononce le libellé d'un lien plutôt que son adresse. Les panneaux dépliables indiquent leur état et ce qu'ils contrôlent.",
+      zh: "所有控件都可用键盘操作并有可见焦点环，起终点输入框下方的建议列表可用方向键上下移动、回车选中，触摸目标不小于 44 像素，回答在生成过程中会播报给屏幕阅读器，朗读时读的是链接的文字而不是拼读网址。可展开面板会说明自己是否展开、控制的是哪一块。",
     },
   },
   {

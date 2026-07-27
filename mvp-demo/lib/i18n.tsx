@@ -54,19 +54,24 @@ const DICT: Record<string, Entry> = {
     zh: "这是数出来的，不是估的：在",
   },
   hero_reality_2: {
-    en: "stations Île-de-France Mobilités publishes a timetable for,",
-    fr: "gares dont Île-de-France Mobilités publie les horaires,",
-    zh: "座 Île-de-France Mobilités 公布时刻表的车站中，",
+    en: "stations Île-de-France Mobilités publishes a timetable for, the operator marks every platform accessible at",
+    fr: "stations dont Île-de-France Mobilités publie les horaires, l'exploitant marque tous les quais accessibles dans",
+    zh: "座 Île-de-France Mobilités 公布时刻表的车站中，运营方标记「全部站台可通行」的有",
   },
   hero_reality_3: {
-    en: "carry an official accessibility class, and only",
-    fr: "ont une classe d'accessibilité officielle, et seulement",
-    zh: "座有官方无障碍等级，其中只有",
+    en: "of them, some but not all at",
+    fr: "d'entre elles, certains mais pas tous dans",
+    zh: "座，「部分站台可通行」的有",
   },
   hero_reality_4: {
-    en: "of those say a traveller can board unaided.",
-    fr: "d'entre elles indiquent qu'on peut monter sans aide.",
-    zh: "座表示乘客可以自行上车。",
+    en: "and none at all at",
+    fr: "et aucun dans",
+    zh: "座，「全部不可通行」的有",
+  },
+  hero_reality_5: {
+    en: "Seven stations say nothing either way, and those are the ones this app calls unknown rather than guessing.",
+    fr: "Sept stations ne disent rien, et ce sont celles que cette application appelle inconnues plutôt que de deviner.",
+    zh: "另有 7 座车站两边都没说，这 7 座就是本应用标为「未知」而不去猜的那些。",
   },
 
   profile_q: {
@@ -96,9 +101,9 @@ const DICT: Record<string, Entry> = {
   plan_submit: { en: "Find a step-free route", fr: "Trouver un itinéraire sans marches", zh: "查找无楼梯路线" },
   plan_working: { en: "Searching the network", fr: "Recherche sur le réseau", zh: "正在搜索线网" },
   plan_idle: {
-    en: "Pick a start and a destination. Any of the 745 stations Île-de-France Mobilités publishes a timetable for, or one of the places in the guide.",
-    fr: "Choisissez un départ et une arrivée : l'une des 745 gares dont Île-de-France Mobilités publie les horaires, ou un lieu du guide.",
-    zh: "选择起点和终点：Île-de-France Mobilités 公布时刻表的 745 座车站，或指南中的任一地点。",
+    en: "Pick a start and a destination. Any of the 945 metro, tram, RER and Transilien stations Île-de-France Mobilités publishes a timetable for, or one of the places in the guide.",
+    fr: "Choisissez un départ et une arrivée : l'une des 945 stations de métro, tram, RER et Transilien dont Île-de-France Mobilités publie les horaires, ou un lieu du guide.",
+    zh: "选择起点和终点：Île-de-France Mobilités 公布时刻表的 945 座地铁、电车、RER 与 Transilien 车站，或指南中的任一地点。",
   },
   plan_err_unknown_from: {
     en: "That start is not in the timetable. Try a station name, or a place such as the Louvre.",
@@ -116,9 +121,14 @@ const DICT: Record<string, Entry> = {
     zh: "起点和终点是同一座车站，请修改其中一个。",
   },
   plan_err_no_route: {
-    en: "No metro, RER or Transilien route connects these two in the published timetable. A bus may; this app does not rate buses yet.",
-    fr: "Aucun métro, RER ou Transilien ne relie ces deux points dans les horaires publiés. Un bus le fait peut-être ; cette application n'évalue pas encore les bus.",
-    zh: "已公布的时刻表中没有地铁、RER 或 Transilien 连接这两点。公交车可能可以，但本应用暂不评估公交。",
+    en: "No metro, tram, RER or Transilien route connects these two in the published timetable. A bus may, and this app does not rate buses: a bus is step-free for reasons no feed here carries, a ramp and a kerb and a driver.",
+    fr: "Aucun métro, tram, RER ou Transilien ne relie ces deux points dans les horaires publiés. Un bus le fait peut-être, et cette application n'évalue pas les bus : un bus est accessible pour des raisons qu'aucune donnée ici ne porte, une rampe, une bordure, un conducteur.",
+    zh: "已公布的时刻表中没有地铁、电车、RER 或 Transilien 连接这两点。公交车可能可以，但本应用不评估公交：公交是否无障碍取决于坡板、路缘和司机，这些都不在现有数据里。",
+  },
+  plan_err_missing_endpoints: {
+    en: "Fill in both ends of the journey and the route will follow.",
+    fr: "Renseignez les deux extrémités du trajet et l'itinéraire suivra.",
+    zh: "把起点和终点都填上，路线就会出来。",
   },
   plan_err_offline: {
     en: "The route could not be fetched. Check the connection and press the button again.",
@@ -141,6 +151,11 @@ const DICT: Record<string, Entry> = {
   plan_unknown_count: {
     en: "stations with nothing published either way",
     fr: "stations sans information publiée",
+    zh: "座车站没有任何公开信息",
+  },
+  plan_unknown_count_one: {
+    en: "station with nothing published either way",
+    fr: "station sans information publiée",
     zh: "座车站没有任何公开信息",
   },
   plan_graph: { en: "Timetable graph built", fr: "Graphe des horaires construit", zh: "时刻表图谱构建于" },
@@ -216,10 +231,10 @@ const DICT: Record<string, Entry> = {
 
   legend_ok: { en: "Step-free", fr: "Sans marches", zh: "无楼梯" },
   legend_lift: { en: "Working lift", fr: "Ascenseur en service", zh: "电梯可用" },
-  legend_assisted: {
-    en: "Staff help or a booking",
-    fr: "Avec un agent ou sur réservation",
-    zh: "需工作人员协助或预约",
+  legend_conditional: {
+    en: "Gets you through, with a condition",
+    fr: "Praticable, sous condition",
+    zh: "有条件可通行",
   },
   legend_liftdown: { en: "Lift out of service", fr: "Ascenseur hors service", zh: "电梯故障" },
   legend_stairs: { en: "Stairs", fr: "Escaliers", zh: "台阶" },
@@ -238,7 +253,10 @@ const DICT: Record<string, Entry> = {
   // A station the operator will only get you through with a member of staff or a
   // booking is not step-free, and calling the trip clear because nothing is
   // literally broken is how a traveller ends up stranded at a gate.
-  verdict_assisted: { en: "need staff help or a booking", fr: "avec un agent ou sur réservation", zh: "需协助或预约" },
+  // Deliberately vague in the summary and precise on the stop: the condition is
+  // a booking at one station, a member of staff at another, and the wrong platform
+  // at a third, so the line that counts them cannot name one of the three.
+  verdict_conditional: { en: "with a condition", fr: "sous condition", zh: "有条件"},
   freshness_note: {
     en: "Lift status is as of this morning, not a live feed.",
     fr: "État des ascenseurs de ce matin, pas un flux en direct.",

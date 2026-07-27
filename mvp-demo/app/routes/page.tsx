@@ -9,14 +9,14 @@ import { plan, COVERAGE, NETWORK_META } from "@/lib/router";
 export const metadata: Metadata = {
   title: "Step-free routes across Paris: Voie Libre",
   description:
-    "Plan a step-free journey between any two of 745 Paris stations, stop by stop: the operator's accessibility class at every change, where the stairs are, how far the walk is, and where the status is honestly unknown.",
+    "Plan a step-free journey between any two of 945 Paris stations, stop by stop: the operator's accessibility class and platform flags at every change, where the stairs are, how far the walk is, and where the status is honestly unknown.",
   alternates: { canonical: "/routes" },
   openGraph: {
     type: "website",
     url: "/routes",
     title: "Step-free routes across Paris: Voie Libre",
     description:
-      "Plan a step-free journey between any two of 745 Paris stations, stop by stop: which changes have a lift, where the stairs are, and where the status is honestly unknown.",
+      "Plan a step-free journey between any two of 945 Paris stations, stop by stop: which changes you can actually get through, where the stairs are, and where the status is honestly unknown.",
   },
 };
 

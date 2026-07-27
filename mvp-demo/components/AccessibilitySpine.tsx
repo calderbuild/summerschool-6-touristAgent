@@ -19,7 +19,7 @@ function NodeGlyph({ status }: { status: Status }) {
   const p = { size: 15, strokeWidth: 2.4, "aria-hidden": true } as const;
   if (status === "ok") return <Check {...p} />;
   if (status === "lift") return <MoveVertical {...p} />;
-  if (status === "assisted") return <Accessibility {...p} />;
+  if (status === "conditional") return <Accessibility {...p} />;
   if (status === "unknown") return <CircleHelp {...p} />;
   return <TriangleAlert {...p} />;
 }
@@ -61,7 +61,7 @@ function Connector({ status }: { status?: Status }) {
  * This is the difference between a project that claims to use open data and one
  * that shows it: the class comes from the operator's own published register at
  * page load, in their words, and where they qualify it per line (Châtelet's RER A
- * and B are staff-assisted while the D is not accessible at all) that sentence
+ * and B are staff-conditional while the D is not accessible at all) that sentence
  * is theirs too. A stop they do not list says so rather than borrowing a
  * neighbour's class, because their register covers RER and rail, not the métro.
  */

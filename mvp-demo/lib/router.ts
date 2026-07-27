@@ -30,6 +30,18 @@ interface RawStation {
   lng: number;
   lines: string[];
   access: { level: number; levelFr: string; note: string | null } | null;
+  /** The operator's per-platform flags, aggregated at build time. */
+  platforms: {
+    boarding: "yes" | "no" | "mixed" | "unknown";
+    accessible: number;
+    partial: number;
+    notAccessible: number;
+    unknown: number;
+    audible: number;
+    visual: number;
+  };
+  /** Metres above sea level, so a walk can say whether it climbs. */
+  elevation: number | null;
   osm: {
     lifts: number;
     stairways: number;
@@ -59,6 +71,7 @@ interface RawHop {
 
 const NET = raw as unknown as {
   builtAt: string;
+  placeElevation: Record<string, number | null>;
   sources: { name: string; url: string; licence: string }[];
   pathwayModes: Record<string, number>;
   lines: RawLine[];
@@ -91,13 +104,19 @@ export type ProfileId = "wheelchair" | "stroller" | "senior" | "lowenergy";
 export const COVERAGE = (() => {
   const all = Object.values(NET.stations);
   const level = (n: number) => all.filter((s) => s.access?.level === n).length;
+  const boarding = (v: string) => all.filter((s) => s.platforms.boarding === v).length;
   return {
     stations: all.length,
     lines: NET.lines.length,
     withClass: all.filter((s) => s.access).length,
     autonomous: level(6),
-    assisted: level(3) + level(4),
+    conditional: level(3) + level(4),
     notAccessible: level(1),
+    /** Stations the operator says nothing about in either register. */
+    silent: all.filter((s) => !s.access && s.platforms.boarding === "unknown").length,
+    platformsAllAccessible: boarding("yes"),
+    platformsNoneAccessible: boarding("no"),
+    platformsMixed: boarding("mixed"),
   };
 })();
 
@@ -105,24 +124,47 @@ export const COVERAGE = (() => {
 // what a station costs a traveller
 // ---------------------------------------------------------------------------
 
-/** The operator's class, read as a status the UI already knows how to draw.
- *  Class 3 and 4 are deliberately not `lift`: `lift` means "working lift" in
- *  this app's legend and we cannot know that. They are a condition, not a yes. */
+/**
+ * What the operator says about standing here, as a status the UI can draw.
+ *
+ * Two registers, in order of authority. The station register (459 stops, mostly
+ * rail) is a statement about the whole station and wins. Where it is silent, the
+ * stop register's platform flags answer for 933 of the 945 stations, which is what
+ * took "nobody published anything" from 320 stations down to 7.
+ *
+ * Nothing here ever returns `lift`. That means "working lift" in this app's
+ * legend, and no free feed says a lift is working.
+ */
 export function statusOf(s: RawStation): Status {
   const level = s.access?.level;
   if (level === 6) return "ok";
-  if (level === 4 || level === 3) return "assisted";
+  if (level === 4 || level === 3) return "conditional";
   if (level === 1) return "stairs";
-  return "unknown";
+  switch (s.platforms.boarding) {
+    case "yes":
+      return "ok";
+    case "no":
+      return "stairs";
+    case "mixed":
+      // Some platforms yes, some no. Which one you need depends on your line, so
+      // it is a condition rather than a yes and rather than a barrier.
+      return "conditional";
+    default:
+      return "unknown";
+  }
 }
 
-/** Seconds of extra cost for standing at this station as a change or an end. */
+/** Seconds of extra cost for standing at this station as a change or an end.
+ *
+ * `statusOf` already folds both registers together, so the penalty reads the
+ * status rather than the sources: one place decides what a station means, and the
+ * cost function cannot drift away from what the page shows. */
 function stationPenalty(s: RawStation, profile: ProfileId): number {
   const st = statusOf(s);
   if (profile === "wheelchair") {
     if (st === "stairs") return 2400;
     if (st === "unknown") return 900;
-    if (st === "assisted") return 600;
+    if (st === "conditional") return 600;
     return 0;
   }
   // A stroller, a tired traveller or an older traveller can take a few steps.
@@ -132,8 +174,22 @@ function stationPenalty(s: RawStation, profile: ProfileId): number {
   const unknownCost = profile === "senior" ? 240 : 180;
   if (st === "stairs") return steps * perStep;
   if (st === "unknown") return unknownCost + steps * perStep * 0.5;
-  if (st === "assisted") return 120;
+  if (st === "conditional") return 120;
   return 0;
+}
+
+/**
+ * How long a walk costs this traveller, with the hill in it.
+ *
+ * Distance alone made a 1,300 m push up 74 m of Montmartre look cheaper than a
+ * station with stairs, which is true on the clock and false on the ground. Ascent
+ * is weighted hardest for a wheelchair and a tired traveller, because that is who
+ * a gradient stops.
+ */
+function walkSeconds(metres: number, climb: number | null, profile: ProfileId): number {
+  const perMetreUp =
+    profile === "wheelchair" ? 20 : profile === "lowenergy" ? 15 : profile === "senior" ? 12 : 8;
+  return metres / 1.1 + Math.max(0, climb ?? 0) * perMetreUp;
 }
 
 /** Seconds added for changing trains at all, before the station's own cost. */
@@ -268,15 +324,46 @@ export function resolveStation(input: string): StationHit | null {
   return searchStations(input, 1)[0] ?? null;
 }
 
-function nearestStation(lat: number, lng: number): { hit: StationHit; metres: number } {
+/**
+ * The station to use for a place, for this traveller.
+ *
+ * Not simply the nearest one. The nearest station to the Eiffel Tower is
+ * Bir-Hakeim, whose two platforms the operator marks not accessible, so sending a
+ * wheelchair user there and then admitting the barrier is worse than sending them
+ * to a station they can leave and letting them walk further. The comparison is in
+ * seconds: the extra walk against what the station itself would cost them.
+ */
+function nearestStation(
+  lat: number,
+  lng: number,
+  profile: ProfileId,
+  placeHeight: number | null,
+): { hit: StationHit; metres: number } {
   let best = ALL[0];
+  let bestCost = Infinity;
   let bestM = Infinity;
   for (const s of ALL) {
     const st = NET.stations[s.id];
     const m = haversine(lat, lng, st.lat, st.lng);
-    if (m < bestM) {
+    // A kilometre and a half is the outer edge of "walkable instead"; beyond that
+    // the accessible station is a different trip, not a longer walk.
+    if (m > 1500) continue;
+    const climb = placeHeight !== null && st.elevation !== null ? placeHeight - st.elevation : null;
+    const cost = walkSeconds(m, climb, profile) + stationPenalty(st, profile);
+    if (cost < bestCost) {
+      bestCost = cost;
       bestM = m;
       best = s;
+    }
+  }
+  if (bestCost === Infinity) {
+    for (const s of ALL) {
+      const st = NET.stations[s.id];
+      const m = haversine(lat, lng, st.lat, st.lng);
+      if (m < bestM) {
+        bestM = m;
+        best = s;
+      }
     }
   }
   return { hit: best, metres: Math.round(bestM) };
@@ -285,7 +372,7 @@ function nearestStation(lat: number, lng: number): { hit: StationHit; metres: nu
 export interface Endpoint {
   station: StationHit;
   /** Set when the traveller named a place rather than a station. */
-  place?: { name: string; lat: number; lng: number; walkM: number };
+  place?: { id: string; name: string; lat: number; lng: number; walkM: number };
 }
 
 /**
@@ -296,7 +383,7 @@ export interface Endpoint {
  * no RER C service through Champ de Mars at all, so the nearest station the
  * timetable actually runs is the honest answer plus the walk it leaves you.
  */
-export function resolveEndpoint(input: string): Endpoint | null {
+export function resolveEndpoint(input: string, profile: ProfileId = "wheelchair"): Endpoint | null {
   const direct = NET.stations[input] ? resolveStation(input) : null;
   if (direct) return { station: direct };
 
@@ -314,10 +401,16 @@ export function resolveEndpoint(input: string): Endpoint | null {
   if (station && (!place || key(station.name) === k)) return { station };
   if (!place) return station ? { station } : null;
 
-  const near = nearestStation(place.coord.lat, place.coord.lng);
+  const near = nearestStation(
+    place.coord.lat,
+    place.coord.lng,
+    profile,
+    NET.placeElevation[place.id] ?? null,
+  );
   return {
     station: near.hit,
     place: {
+      id: place.id,
       name: place.nameEn,
       lat: place.coord.lat,
       lng: place.coord.lng,
@@ -480,10 +573,44 @@ function osmClause(s: RawStation): L {
   };
 }
 
+function platformClause(s: RawStation): L {
+  const { boarding, accessible, partial, notAccessible } = s.platforms;
+  const total = accessible + partial + notAccessible;
+  if (!total) return { en: "", fr: "", zh: "" };
+  if (boarding === "yes") {
+    return {
+      en: `Operator's stop register: all ${total} platform${total === 1 ? "" : "s"} accessible`,
+      fr: `Registre des arrêts de l'exploitant : ${total} quai${total === 1 ? "" : "s"} accessible${total === 1 ? "" : "s"} sur ${total}`,
+      zh: `运营方站点登记：全部 ${total} 个站台可通行`,
+    };
+  }
+  if (boarding === "no") {
+    return {
+      en: `Operator's stop register: none of the ${total} platform${total === 1 ? "" : "s"} accessible`,
+      fr: `Registre des arrêts de l'exploitant : aucun des ${total} quais accessible`,
+      zh: `运营方站点登记：${total} 个站台均不可通行`,
+    };
+  }
+  const yes = accessible + partial;
+  return {
+    en: `Operator's stop register: ${yes} of ${total} platforms accessible, so it depends which line you need`,
+    fr: `Registre des arrêts de l'exploitant : ${yes} quais accessibles sur ${total}, cela dépend donc de votre ligne`,
+    zh: `运营方站点登记：${total} 个站台中 ${yes} 个可通行，因此取决于你要坐哪条线`,
+  };
+}
+
 function atText(s: RawStation): L {
   const osm = osmClause(s);
   const level = s.access?.level;
   if (level === undefined) {
+    const pf = platformClause(s);
+    if (pf.en) {
+      return {
+        en: pf.en + osm.en,
+        fr: pf.fr + osm.fr,
+        zh: pf.zh + osm.zh,
+      };
+    }
     return {
       en: NO_RECORD.en + osm.en,
       fr: NO_RECORD.fr + osm.fr,
@@ -519,16 +646,29 @@ export interface PlannedRoute {
   unknowns: string[];
 }
 
-const FINAL_WALK: (m: number, name: string) => L = (m, name) => ({
-  en: `Street-level walk of about ${m} m to ${name}`,
-  fr: `Environ ${m} m à pied jusqu'à ${name}`,
-  zh: `步行约 ${m} 米前往${name}`,
-});
+/**
+ * The last leg, with its climb.
+ *
+ * This used to read "street-level walk of about 405 m", which is what the walk
+ * from Lamarck - Caulaincourt to Sacre-Coeur was called. That walk climbs about
+ * 34 m up the Butte Montmartre. For the person this product is for, the gradient
+ * is the whole question, so the height difference between the station and the
+ * place is stated whenever both are known.
+ */
+const FINAL_WALK: (m: number, name: string, climb: number | null) => L = (m, name, climb) => {
+  const up = climb !== null && climb >= 8;
+  const down = climb !== null && climb <= -8;
+  return {
+    en: `Walk of about ${m} m outside the station to ${name}${up ? `, climbing about ${climb} m` : down ? `, descending about ${Math.abs(climb!)} m` : climb === null ? "" : ", level to within 8 m"}`,
+    fr: `Environ ${m} m à pied hors de la gare jusqu'à ${name}${up ? `, avec environ ${climb} m de montée` : down ? `, avec environ ${Math.abs(climb!)} m de descente` : climb === null ? "" : ", à moins de 8 m de dénivelé"}`,
+    zh: `出站后步行约 ${m} 米前往${name}${up ? `，需上行约 ${climb} 米` : down ? `，下行约 ${Math.abs(climb!)} 米` : climb === null ? "" : "，高差在 8 米以内"}`,
+  };
+};
 
 const NO_PAVEMENT_DATA: L = {
-  en: "Nobody publishes kerb or pavement data for this walk, so it is not rated",
-  fr: "Aucune donnée de trottoir n'est publiée pour ce trajet à pied, donc il n'est pas évalué",
-  zh: "这段步行没有路缘或人行道数据，因此未作评级",
+  en: "The height comes from the terrain, not from the pavement: nobody publishes kerbs or crossings for this walk, so it is not rated",
+  fr: "Le dénivelé vient du terrain, pas du trottoir : personne ne publie les bordures ni les traversées de ce trajet, qui n'est donc pas évalué",
+  zh: "高差来自地形数据，不是人行道数据：这段步行的路缘和过街口没人公布，因此未作评级",
 };
 
 export type PlanResult =
@@ -538,8 +678,8 @@ export type PlanResult =
   | { ok: false; reason: "unknown_from" | "unknown_to" | "same_place" | "no_route" };
 
 export function plan(fromInput: string, toInput: string, profile: ProfileId): PlanResult {
-  const a = resolveEndpoint(fromInput);
-  const b = resolveEndpoint(toInput);
+  const a = resolveEndpoint(fromInput, profile);
+  const b = resolveEndpoint(toInput, profile);
   if (!a) return { ok: false, reason: "unknown_from" };
   if (!b) return { ok: false, reason: "unknown_to" };
   if (a.station.id === b.station.id) return { ok: false, reason: "same_place" };
@@ -620,17 +760,23 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
   // Rated `unknown` rather than `ok`, because street-level step-free is a claim
   // no dataset here supports and a kerb is enough to end a journey.
   if (b.place && b.place.walkM > 60) {
+    const placeHeight = NET.placeElevation[b.place.id] ?? null;
+    const stationHeight = NET.stations[b.station.id].elevation;
+    const climb =
+      placeHeight !== null && stationHeight !== null
+        ? Math.round(placeHeight - stationHeight)
+        : null;
     shape.push({ lat: b.place.lat, lng: b.place.lng });
     nodes.push({
       name: b.place.name,
       coord: { lat: b.place.lat, lng: b.place.lng },
-      into: { status: "unknown", text: FINAL_WALK(b.place.walkM, b.place.name) },
+      into: { status: "unknown", text: FINAL_WALK(b.place.walkM, b.place.name, climb) },
       at: "unknown",
       atText: NO_PAVEMENT_DATA,
       walkM: b.place.walkM,
     });
     unknowns.push(b.place.name);
-    seconds += b.place.walkM / 1.1;
+    seconds += walkSeconds(b.place.walkM, climb, profile);
   }
 
   const destination = b.place?.name ?? NET.stations[b.station.id].name;

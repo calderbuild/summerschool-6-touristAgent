@@ -88,7 +88,7 @@ function LangSwitch() {
 const LEGEND: { status: Status; key: string; glyph: LucideIcon }[] = [
   { status: "ok", key: "legend_ok", glyph: Check },
   { status: "lift", key: "legend_lift", glyph: MoveVertical },
-  { status: "assisted", key: "legend_assisted", glyph: AccessibilityIcon },
+  { status: "conditional", key: "legend_conditional", glyph: AccessibilityIcon },
   { status: "lift_down", key: "legend_liftdown", glyph: TriangleAlert },
   { status: "stairs", key: "legend_stairs", glyph: TriangleAlert },
   { status: "unknown", key: "legend_unknown", glyph: CircleHelp },
@@ -133,7 +133,14 @@ export default function App({
   initialTo: string;
   initialRoute: Planned | null;
   graphBuiltAt: string;
-  coverage: { stations: number; lines: number; withClass: number; autonomous: number };
+  coverage: {
+    stations: number;
+    lines: number;
+    platformsAllAccessible: number;
+    platformsMixed: number;
+    platformsNoneAccessible: number;
+    silent: number;
+  };
 }) {
   const { t, lang } = useI18n();
   const [profile, setProfile] = useState<ProfileId>("wheelchair");
@@ -159,12 +166,17 @@ export default function App({
           `/api/plan?from=${encodeURIComponent(a)}&to=${encodeURIComponent(b)}&profile=${who}`,
         );
         const data = await res.json();
-        if (!res.ok || (!data.ok && !data.reason)) {
-          setState({ kind: "error", messageKey: "plan_err_offline" });
+        // A named reason is worth more than the status code: the endpoint sends
+        // one with a 400 as well, and it says more than "offline" would.
+        if (!data.ok) {
+          setState({
+            kind: "error",
+            messageKey: data.reason ? `plan_err_${data.reason}` : "plan_err_offline",
+          });
           return;
         }
-        if (!data.ok) {
-          setState({ kind: "error", messageKey: `plan_err_${data.reason}` });
+        if (!res.ok) {
+          setState({ kind: "error", messageKey: "plan_err_offline" });
           return;
         }
         setState({ kind: "ready", route: data.route, graphBuiltAt: data.graphBuiltAt });
@@ -208,8 +220,9 @@ export default function App({
           </p>
           <p className="mt-4 max-w-xl border-l-2 border-signal/45 pl-3 text-[13px] leading-relaxed text-ink-soft">
             {t("hero_reality_1")} <Count n={coverage.stations} /> {t("hero_reality_2")}{" "}
-            <Count n={coverage.withClass} /> {t("hero_reality_3")} <Count n={coverage.autonomous} />{" "}
-            {t("hero_reality_4")}
+            <Count n={coverage.platformsAllAccessible} /> {t("hero_reality_3")}{" "}
+            <Count n={coverage.platformsMixed} /> {t("hero_reality_4")}{" "}
+            <Count n={coverage.platformsNoneAccessible} />. {t("hero_reality_5")}
           </p>
           <div className="mt-5">
             <WeatherChip />
@@ -342,7 +355,13 @@ export default function App({
                     {route.unknowns.length > 0 && (
                       <>
                         {" "}
-                        {route.unknowns.length} {t("plan_unknown_count")}.
+                        {route.unknowns.length}{" "}
+                        {t(
+                          route.unknowns.length === 1
+                            ? "plan_unknown_count_one"
+                            : "plan_unknown_count",
+                        )}
+                        .
                       </>
                     )}
                   </span>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useI18n, LANGS, type Lang } from "@/lib/i18n";
-import { CHOICES, GUARDS, LIVE_SOURCES, MEASURED } from "@/lib/howItWorks";
+import { CHOICES, CRITERIA, GUARDS, LIVE_SOURCES, MEASURED } from "@/lib/howItWorks";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 const LAYER_KEY: Record<string, string> = {
@@ -179,6 +179,31 @@ export default function HowItWorks() {
               );
             })}
           </div>
+        </section>
+
+        {/* The one decision that shaped everything else, judged on the five
+            criteria an architecture is normally judged on. Each answer names its
+            cost, because a list of only benefits is a sales page. */}
+        <section aria-labelledby="criteria" className="mt-10">
+          <h2 id="criteria" className="font-display text-[17px] font-bold text-ink">
+            {t("hiw_criteria_title")}
+          </h2>
+          <p className="mt-1.5 max-w-2xl text-[13.5px] leading-relaxed text-ink-soft">
+            {t("hiw_criteria_intro")}
+          </p>
+          <dl className="mt-4 space-y-2.5">
+            {CRITERIA.map((c) => (
+              <div
+                key={c.name.en}
+                className="rounded-2xl border border-ink/10 bg-surface p-4 sm:grid sm:grid-cols-[9.5rem_1fr] sm:gap-4 sm:p-5"
+              >
+                <dt className="font-display text-[14px] font-bold text-ink">{c.name[lang]}</dt>
+                <dd className="mt-1 text-[13.5px] leading-relaxed text-ink-soft sm:mt-0">
+                  {c.answer[lang]}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
         <section className="mt-10 rounded-2xl border border-ink/10 bg-surface p-5 sm:p-7">

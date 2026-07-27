@@ -26,7 +26,10 @@ export async function GET(request: Request) {
     : "wheelchair";
 
   if (!from || !to) {
-    return Response.json({ error: "missing_endpoints" }, { status: 400 });
+    // Still a named reason, not a bare 400: whatever asked for this has a screen
+    // to fill, and "something went wrong" is the sentence this app is here to
+    // stop writing.
+    return Response.json({ ok: false, reason: "missing_endpoints" }, { status: 400 });
   }
 
   const result = plan(from, to, profile);

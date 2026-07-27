@@ -50,7 +50,7 @@ function statusLabel(t: (k: string) => string, n: RouteNode): string {
 /**
  * What the route counts as, per node status.
  *
- * `assisted` has to be in here. Without it a journey whose every stop the operator
+ * `conditional` has to be in here. Without it a journey whose every stop the operator
  * marks "only with a member of staff" was summarised as "step-free the whole way",
  * which is the one sentence this product must never produce.
  */
@@ -58,20 +58,20 @@ function tally(route: DemoRoute) {
   const barriers = route.nodes.filter(
     (n) => n.barrier || n.at === "stairs" || n.at === "lift_down",
   ).length;
-  const assisted = route.nodes.filter((n) => n.at === "assisted").length;
+  const conditional = route.nodes.filter((n) => n.at === "conditional").length;
   const unknowns = route.nodes.filter((n) => n.at === "unknown").length;
-  return { barriers, assisted, unknowns, clear: barriers + assisted + unknowns === 0 };
+  return { barriers, conditional, unknowns, clear: barriers + conditional + unknowns === 0 };
 }
 
 function verdictSummary(
   t: (k: string) => string,
   from: string,
   to: string,
-  counts: { barriers: number; assisted: number; unknowns: number },
+  counts: { barriers: number; conditional: number; unknowns: number },
 ) {
   const verdict: string[] = [];
   if (counts.barriers > 0) verdict.push(`${counts.barriers} ${t("verdict_barrier")}`);
-  if (counts.assisted > 0) verdict.push(`${counts.assisted} ${t("verdict_assisted")}`);
+  if (counts.conditional > 0) verdict.push(`${counts.conditional} ${t("verdict_conditional")}`);
   if (counts.unknowns > 0) verdict.push(`${counts.unknowns} ${t("verdict_unknown")}`);
   return `${from} → ${to}: ${verdict.length ? verdict.join(" · ") : t("verdict_clear")}`;
 }
@@ -146,7 +146,7 @@ function ChatRouteCard({
   }
 
   const barrierNode = route.nodes.find((n) => n.barrier);
-  const { barriers, assisted, unknowns, clear } = tally(route);
+  const { barriers, conditional, unknowns, clear } = tally(route);
 
   const ProfileIcon = profile ? PROFILE_ICON[profile] : null;
   const profileLabel = profile ? PROFILE_LABEL[profile] : null;
@@ -154,7 +154,7 @@ function ChatRouteCard({
   return (
     <div className="my-3">
       <p className="mb-1.5 rounded-lg border border-ink/10 bg-surface-2 px-3 py-2 text-[13px] font-bold leading-snug text-ink">
-        {verdictSummary(t, route.from, route.to, { barriers, assisted, unknowns })}
+        {verdictSummary(t, route.from, route.to, { barriers, conditional, unknowns })}
       </p>
       <div className="overflow-hidden rounded-xl border border-ink/10 bg-surface">
       {/* header: route + who it's for + today's disruption */}
@@ -191,10 +191,10 @@ function ChatRouteCard({
                 {barriers} {t("verdict_barrier")}
               </span>
             )}
-            {assisted > 0 && (
+            {conditional > 0 && (
               <span className="inline-flex items-center gap-1 rounded-md bg-caution/12 px-2 py-1 text-[12px] font-bold text-caution-ink">
                 <Accessibility size={13} strokeWidth={2.4} aria-hidden />
-                {assisted} {t("verdict_assisted")}
+                {conditional} {t("verdict_conditional")}
               </span>
             )}
             {unknowns > 0 && (

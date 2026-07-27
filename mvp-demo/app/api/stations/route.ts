@@ -3,7 +3,7 @@ import { suggest } from "@/lib/router";
 /**
  * What the two journey pickers offer while somebody types.
  *
- * It lives on the server for one reason: the graph is 745 stations and the phone
+ * It lives on the server for one reason: the graph is 945 stations and the phone
  * should not download it to autocomplete three letters.
  */
 export async function GET(request: Request) {
