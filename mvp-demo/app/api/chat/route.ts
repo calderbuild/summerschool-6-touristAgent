@@ -1,6 +1,7 @@
 import { ROUTES, PROFILES } from "@/lib/data";
 import { ACCESS_LEVELS, findStation, networkFacts, toiletsAt, type NetworkFacts } from "@/lib/idfm";
 import { PLACES, SERVICES } from "@/lib/places";
+import { cityEvents, joinCounts, rank, type EventFeed } from "@/lib/events";
 import { COVERAGE, mentionedEndpoints, plan, NETWORK_META, type ProfileId } from "@/lib/router";
 
 // DeepSeek key is server-side only; the browser never sees it.
@@ -240,17 +241,55 @@ ${legs}
 Put [[plan:${ends.fromLabel}|${ends.toLabel}]] on its own line first, then describe THIS route: the lines it rides, the change and what the operator says about that station, and the one thing to watch. Every line number, station and figure you state comes from the block above and nowhere else. Do not claim the timetable carries lift data for every station. It does not carry lift status at all, and it carries an accessibility class for ${COVERAGE.withClass} of ${COVERAGE.stations} stations and nothing for the rest, which is why some stops above say unknown.\n`;
 }
 
+/**
+ * What is on in Paris this week, from the city's own feed, with our station.
+ *
+ * Two claims per line and the prompt is told to keep them apart: the city's flag
+ * is about the venue, ours is about the way in. The model is not asked to
+ * reconcile them, because they are not in conflict: a hall with a ramp really can
+ * sit above a station with a staircase, and that pairing is the answer.
+ */
+function eventCatalogue(feed: EventFeed | null): string {
+  if (!feed || feed.events.length === 0) {
+    return "Not available for this reply: the city's events feed did not answer. Say that there is no live listing right now rather than naming an event from memory.";
+  }
+  const j = joinCounts(feed.events);
+  const lines = rank(feed.events)
+    .slice(0, 12)
+    .map((e) => {
+      const city =
+        e.access.wheelchair === "yes"
+          ? "city says wheelchair accessible"
+          : e.access.wheelchair === "no"
+            ? "city says NOT wheelchair accessible"
+            : "city published nothing about wheelchair access";
+      const extra = [
+        e.access.deaf === "yes" ? "deaf access" : null,
+        e.access.blind === "yes" ? "blind access" : null,
+        e.access.signLanguage === "yes" ? "sign language" : null,
+      ].filter(Boolean);
+      return `- ${e.title}${e.venue ? ` (${e.venue})` : ""}: ${e.free === true ? "free" : e.free === false ? "paid" : "price unknown"}, ${city}${
+        extra.length ? `, ${extra.join(", ")}` : ""
+      }. Nearest station for a wheelchair user: ${e.station.name} (line${e.station.lines.length > 1 ? "s" : ""} ${e.station.lines.join(", ")}), ${e.station.metres} m away, which the operator's data makes "${e.station.status}". Official page: ${e.url}`;
+    })
+    .join("\n");
+  return `${feed.totals.onThisWeek} events are on in Paris this week in the city's feed. Of those it marks ${feed.totals.wheelchairYes} wheelchair accessible and ${feed.totals.wheelchairNo} not; the rest say nothing. Of the ${feed.events.length} this app is holding, ${j.cityAccessible} are marked accessible, and joining them to the transport register: ${j.stationStepFree} have a step-free station, ${j.stationConditional} a station that needs a booking or a member of staff, ${j.stationBarrier} a station with stairs.
+
+${lines}`;
+}
+
 function systemPrompt(
   profile: string | null,
   weather: string | null,
   facts: NetworkFacts | null,
+  events: EventFeed | null,
   routeBlock: string,
 ): string {
   return `You are Voie Libre, a Paris step-free travel and sightseeing assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris and plan accessible visits to its main sights.
 
 How Voie Libre works (facts, not rules to recite):
-- Only Metro Line 14 is fully step-free. About 30 of 300+ stations have a working lift.
-- Our own lift notes are "as of this morning", a snapshot rather than a live feed. The one thing Voie Libre cannot tell anyone is whether a specific lift is working right now: that dataset exists but is licensed and needs a token we do not have, and saying so is the honest answer.
+- Only Metro Line 14 is fully step-free. Counted from the operator's own register across the ${COVERAGE.stations} stations in the timetable: ${COVERAGE.autonomous} can be used with no help at all, ${COVERAGE.conditional} only with a booking or a member of staff, ${COVERAGE.notAccessible} are marked not accessible, and ${COVERAGE.silent} have nothing published anywhere.
+- There are two things Voie Libre cannot tell anyone, and both are said plainly rather than filled in. Whether a specific lift is working right now: that dataset exists, 944 lifts, but it is licensed and needs a token we do not have. And RER C through Paris: the open timetable has no trains on that branch at all, so the Eiffel Tower has no step-free station near it that we can see, and a journey there ends in a walk we state in metres and minutes rather than a line drawn to the tower.
 - Unknown accessibility data is shown as "unknown"; an honest gap beats a guessed step count, lift status, or route.
 - When a lift is out of service, the reply gives a step-free alternative: a level-boarding bus, another line, or a different station.
 ${profile ? `\nThe traveller's mobility profile is: ${profile}. Weigh the route against this profile (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance).` : ""}${weather ? `\nCurrent weather you may use for a weather-aware suggestion: ${weather} If it is raining and the traveller's plan is outdoors, you may suggest a step-free indoor option that is on or near the route, but do not invent opening hours or specifics.` : ""}
@@ -282,6 +321,11 @@ You also have this small set of practical services, which are reached by phone o
 ${serviceCatalogue()}
 
 These answer the practical questions around a trip rather than the sightseeing: what to do in an emergency, how to reach the official transport accessibility line, whether a companion gets in free. Two rules when you use them. Always state the caveat in the same breath as the fact, because every one of these has a condition that decides whether it actually applies to a foreign visitor. And for anyone who cannot make a voice call, 114 is the emergency route to give, not 112.
+
+You also have what is actually on in Paris this week, read live from the city's own open data (Que Faire à Paris, Ville de Paris, ODbL) for this reply:
+${eventCatalogue(events)}
+
+Use it whenever somebody asks what to do, what is on, what is worth seeing this week, or asks for something free. Two rules, and they are the whole reason this listing is here. The city's flag describes the venue and ours describes the journey, so they are quoted as two separate claims with the owner named: "the city marks this accessible, and the nearest station is one the operator says needs a member of staff". Never merge them into one verdict. And an event the city says nothing about is offered as exactly that, not as accessible: most of this feed is silent, and silence is the honest answer rather than a reason to leave the event out. Never name an event that is not in this list, and never invent a date, a price or a venue for one that is. The line numbers for a station come from this list too, never from memory. And the distance from the station to the venue is the only thing known about that walk: nobody here has surveyed the pavement or the gradient, so it is given in metres and never described as flat, easy, or a gentle roll.
 
 An entitlement is never quoted without the condition attached to it. Free entry for a disabled visitor and a companion is real at several of these sites, and at every one of them it depends on something: a supporting document at the desk, a timeslot booked in advance, a particular entrance. That condition is stated in the same sentence as the entitlement, because a traveller who is told only the good half gets turned away at the desk.
 
@@ -351,14 +395,19 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ error: "no messages" }), { status: 400 });
   }
 
-  // Both are fetched in parallel and both fail open: an answer without the
-  // weather or without the operator's register is still a useful answer, and the
-  // prompt says which one is missing rather than filling the hole.
-  const [weather, facts] = await Promise.all([currentWeather(), networkFacts()]);
+  // All three are fetched in parallel and all three fail open: an answer without
+  // the weather, without the operator's register or without this week's listing
+  // is still a useful answer, and the prompt says which one is missing rather
+  // than filling the hole.
+  const [weather, facts, events] = await Promise.all([
+    currentWeather(),
+    networkFacts(),
+    cityEvents(),
+  ]);
 
   const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const payload = [
-    { role: "system", content: systemPrompt(profile, weather, facts, computedRoute(lastUser, profile)) },
+    { role: "system", content: systemPrompt(profile, weather, facts, events, computedRoute(lastUser, profile)) },
     ...messages,
   ];
 

@@ -333,6 +333,16 @@ export const LIVE_SOURCES: { name: string; licence: string; url: string; role: T
     },
   },
   {
+    name: "Ville de Paris · Que Faire à Paris",
+    licence: "Licence ODbL",
+    url: "https://opendata.paris.fr/explore/dataset/que-faire-a-paris-/",
+    role: {
+      en: "What is on in the city, with the accessibility flag Paris puts on each event: wheelchair, deaf, blind, sign language. Around 862 events are on in a given week and the city marks roughly 349 of them wheelchair accessible, about 41 not, and says nothing at all about the rest. Joined to the register above it answers a question neither source can: of the events you could get into, which ones can you actually reach.",
+      fr: "Ce qui se passe dans la ville, avec l'indicateur d'accessibilité que Paris attache à chaque événement : fauteuil, surdité, cécité, langue des signes. Environ 862 événements par semaine, dont près de 349 déclarés accessibles en fauteuil, environ 41 non, et rien du tout pour les autres. Croisé avec le registre ci-dessus, il répond à une question qu'aucune des deux sources ne peut traiter seule : parmi les événements où vous pourriez entrer, lesquels pouvez-vous atteindre.",
+      zh: "城里正在办什么，以及巴黎市为每个活动标注的无障碍信息：轮椅、听障、视障、手语。一周大约 862 个活动，其中约 349 个被标为轮椅可达，约 41 个标为不可达，其余完全没写。把它和上面的车站登记表连起来，就能回答任何一边单独都答不了的问题：在你进得去的活动里，哪些是你真能到达的。",
+    },
+  },
+  {
     name: "Open-Meteo · Elevation",
     licence: "CC-BY 4.0, no key required",
     url: "https://open-meteo.com/en/docs/elevation-api",

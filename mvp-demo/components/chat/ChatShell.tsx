@@ -1076,6 +1076,13 @@ function EmptyState({
           <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
         </Link>
         <Link
+          href="/whats-on"
+          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"
+        >
+          {t("whats_on_link")}
+          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
+        </Link>
+        <Link
           href="/how-it-works"
           className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:text-ink"
         >

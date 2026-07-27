@@ -28,14 +28,30 @@ export const metadata: Metadata = {
 // of an empty frame, and the client never runs a search it did not ask for.
 const OPENING = { from: "IDFM:73626", to: "Eiffel Tower" } as const;
 
-export default function RoutesPage() {
-  const first = plan(OPENING.from, OPENING.to, "wheelchair");
+/**
+ * `?to=` lets another page hand a journey over, which is how the week's events
+ * become routes: the listing knows the station, and this page can already plan
+ * one. An unknown value is not an error here, it simply falls back to the
+ * opening journey, because a bad link should still land somebody on a working
+ * page rather than an error state.
+ */
+export default async function RoutesPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const raw = params.to;
+  const asked = (Array.isArray(raw) ? raw[0] : raw)?.slice(0, 80).trim();
+  const to = asked || OPENING.to;
+  const attempt = asked ? plan(OPENING.from, asked, "wheelchair") : null;
+  const first = attempt?.ok ? attempt : plan(OPENING.from, OPENING.to, "wheelchair");
   return (
     <I18nProvider>
       <App
         initialFrom={OPENING.from}
         initialFromLabel="Gare de Lyon"
-        initialTo={OPENING.to}
+        initialTo={attempt?.ok ? to : OPENING.to}
         initialRoute={first.ok ? first.route : null}
         graphBuiltAt={NETWORK_META.builtAt}
         coverage={COVERAGE}

@@ -369,6 +369,27 @@ function nearestStation(
   return { hit: best, metres: Math.round(bestM) };
 }
 
+/**
+ * The station this traveller would use for a point on the map, and how far it
+ * leaves them from it.
+ *
+ * Exported so that anything holding a coordinate (an open-data event, a venue)
+ * answers the "can I get there" question with the *same* choice the router would
+ * make. Two components each finding their own nearest station is how a listing
+ * ends up naming one station and the route another.
+ */
+export function stationForPoint(
+  lat: number,
+  lng: number,
+  profile: ProfileId = "wheelchair",
+): { id: string; name: string; lines: string[]; status: Status; metres: number } {
+  const { hit, metres } = nearestStation(lat, lng, profile, null);
+  // The lines travel with it because the alternative is a model supplying them
+  // from memory. It named Olympiades as line 14 and was right; the next one it
+  // guesses will not be, and a wrong line is the failure this product cannot have.
+  return { id: hit.id, name: hit.name, lines: hit.lines, status: hit.status, metres };
+}
+
 export interface Endpoint {
   station: StationHit;
   /** Set when the traveller named a place rather than a station. */
