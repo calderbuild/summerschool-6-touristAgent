@@ -1,6 +1,7 @@
 import { ROUTES, PROFILES } from "@/lib/data";
 import { ACCESS_LEVELS, findStation, networkFacts, toiletsAt, type NetworkFacts } from "@/lib/idfm";
 import { PLACES, SERVICES } from "@/lib/places";
+import { COVERAGE, mentionedEndpoints, plan, NETWORK_META, type ProfileId } from "@/lib/router";
 
 // DeepSeek key is server-side only; the browser never sees it.
 export const runtime = "nodejs";
@@ -204,7 +205,47 @@ function officialCatalogue(facts: NetworkFacts | null): string {
     .join("\n");
 }
 
-function systemPrompt(profile: string | null, weather: string | null, facts: NetworkFacts | null): string {
+/**
+ * The route this question is about, computed before the model is called.
+ *
+ * Without it the model emitted its routing marker and then wrote prose about a
+ * journey it had never seen, which is how a sentence like "the timetable includes
+ * lift data for every station" gets said out loud. It does not. Now the search
+ * runs first and the model is handed the result, so its prose can only describe
+ * what is actually on the card.
+ */
+function computedRoute(text: string, profile: string | null): string {
+  const ends = mentionedEndpoints(text);
+  if (!ends) return "";
+  const who = (PROFILE_IDS.includes(profile ?? "") ? profile : "wheelchair") as ProfileId;
+  const result = plan(ends.from, ends.to, who);
+  if (!result.ok) {
+    return `\nThe app tried to route ${ends.fromLabel} to ${ends.toLabel} for a ${who} traveller and could not: ${result.reason}. Say that plainly, and do not invent a line or a station. If the reason is no_route, the published metro, RER and Transilien timetable has no connection between them and a bus might, which this app does not rate.\n`;
+  }
+  const r = result.route;
+  const legs = r.nodes
+    .map((n, i) => {
+      const bits = [n.name, `access:${n.at}`, `record:"${n.atText.en}"`];
+      if (n.line) bits.unshift(`ride ${n.line.label}`);
+      if (n.into) bits.push(`leg:"${n.into.text.en}"`);
+      return `    ${i + 1}. ${bits.join(", ")}`;
+    })
+    .join("\n");
+  return `\nThe app has ALREADY computed this journey for this question, from Ile-de-France Mobilites' published timetable, weighted for a ${who} traveller. This is the route the card next to your reply shows:
+  ${r.from} -> ${r.to}: ${r.minutes} minutes, ${r.changes} change(s), ${r.stops} stops
+${legs}
+  stations marked inaccessible by the operator: ${r.barriers.length ? r.barriers.join(", ") : "none"}
+  stations with nothing published either way: ${r.unknowns.length ? r.unknowns.join(", ") : "none"}
+
+Put [[plan:${ends.fromLabel}|${ends.toLabel}]] on its own line first, then describe THIS route: the lines it rides, the change and what the operator says about that station, and the one thing to watch. Every line number, station and figure you state comes from the block above and nowhere else. Do not claim the timetable carries lift data for every station. It does not carry lift status at all, and it carries an accessibility class for ${COVERAGE.withClass} of ${COVERAGE.stations} stations and nothing for the rest, which is why some stops above say unknown.\n`;
+}
+
+function systemPrompt(
+  profile: string | null,
+  weather: string | null,
+  facts: NetworkFacts | null,
+  routeBlock: string,
+): string {
   return `You are Voie Libre, a Paris step-free travel and sightseeing assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris and plan accessible visits to its main sights.
 
 How Voie Libre works (facts, not rules to recite):
@@ -216,14 +257,16 @@ ${profile ? `\nThe traveller's mobility profile is: ${profile}. Weigh the route 
 
 Your reasoning is shown to the traveller, so it stays about this specific trip: which lifts are working or unknown, how many steps each leg has, the walking distance, and how it fits the profile. It weighs the trip itself rather than restating these notes or planning the wording of the reply.
 
-You have these prepared routes with verified demo data:
+You can route any journey across the network. When the traveller asks how to get from somewhere to somewhere, put a routing marker on its own line EARLY in your reply, before the prose, in exactly this form: [[plan:START|DESTINATION]]. Use station names or the names of places in the knowledge base, for example [[plan:Bastille|Eiffel Tower]]. The app answers that marker by searching Ile-de-France Mobilites' published timetable for ${NETWORK_META.stations} stations on ${NETWORK_META.lines} metro, RER and Transilien lines, weighted for the traveller's profile, and renders the result as a card with the accessibility of every change. When the app has already computed the journey, its lines, changes and per-station accessibility are given to you at the end of this prompt, and your prose describes exactly those. When no computed journey is given, you do not know the lines or the times, so you do not state them: the card does that, and inventing a line number is the one thing that would make this product useless. Your prose says why the route suits this traveller and what to watch for.
+
+Three journeys were walked in person by the team, which is data no timetable carries (a specific broken lift, the corridor that has no ramp, the way around it):
 ${routeCatalogue()}
 
-When the traveller's need matches one of these routes, put the marker on its own line EARLY in your reply, before the prose, using exactly one of these ids: ${ROUTE_IDS.map((id) => `[[route:${id}]]`).join(
+For those three exact pairs, prefer the field-surveyed marker instead: ${ROUTE_IDS.map((id) => `[[route:${id}]]`).join(
     ", "
-  )}. If you know the traveller's profile, append it: e.g. [[route:gdl-eiffel:wheelchair]]. The app renders that marker as a visual card with the step-by-step accessibility spine, so you do not need to repeat every leg in prose. Then briefly explain why you chose it and call out the main barrier and the step-free alternative. Keep the prose short.
+  )}, with the profile appended when you know it, e.g. [[route:gdl-eiffel:wheelchair]]. For everything else use [[plan:...]].
 
-If the request does not match a prepared route, answer helpfully in the same spirit (step-free thinking, honest about unknowns) without inventing specific station data.
+If a route cannot be computed, the card says so on its own. Never fill the gap with a guessed line or station.
 
 Ile-de-France Mobilites' own accessibility register for the stops above, read live from their open data for this reply:
 ${officialCatalogue(facts)}
@@ -244,13 +287,14 @@ An entitlement is never quoted without the condition attached to it. Free entry 
 
 Every price or opening time you state is traceable: name the date it was checked (the "checked" field) and link the official site (the "official" field) as a markdown link, so the traveller can confirm it before they travel. When a value is an estimate, unverified or unknown, say so in the same breath and send them to the official site rather than presenting it as fact. Booking and prices change; the official site is always the authority.
 
-For an itinerary request (a day plan, "what should I see", or several sights at once), build an ordered step-free plan: pick 2 to 4 attractions from the knowledge base that suit the profile, favouring step-free or working-lift sites for a wheelchair user. Give each stop its entry budget, how long to spend, opening hours and its step-free situation, then connect the stops with step-free transit or a level walk. Close with an approximate total budget and total time. If a prepared route links two of the stops, use its [[route:id]] marker.
+For an itinerary request (a day plan, "what should I see", or several sights at once), build an ordered step-free plan: pick 2 to 4 attractions from the knowledge base that suit the profile, favouring step-free or working-lift sites for a wheelchair user. Give each stop its entry budget, how long to spend, opening hours and its step-free situation, then connect the stops with step-free transit or a level walk. Close with an approximate total budget and total time. Connect two consecutive stops with a [[plan:A|B]] marker, or with a [[route:id]] marker when the pair is one of the three walked routes.
 
 Always end your reply with a one-line verdict on its own line, separated from the paragraph above by a blank line, so the key takeaway stands out. Begin that line with "Bottom line:" in English, "En bref :" in French, or "结论：" in Chinese, then one short sentence: whether the trip is step-free and the single most important action (for example the step-free way around a broken lift).
 
 Replies are in the language the traveller writes in (English, French, or Chinese), which is decided by the words they typed and nothing else. A traveller who writes in English is answered in English even when they mention that they are visiting from China or Japan, because where someone is from is not the language they chose to ask in.
 
-Replies are concise, warm, practical, free of emoji, and punctuated with commas and full stops rather than dashes.`;
+Replies are concise, warm, practical, free of emoji, and punctuated with commas and full stops rather than dashes.
+${routeBlock}`;
 }
 
 export async function POST(req: Request) {
@@ -312,7 +356,11 @@ export async function POST(req: Request) {
   // prompt says which one is missing rather than filling the hole.
   const [weather, facts] = await Promise.all([currentWeather(), networkFacts()]);
 
-  const payload = [{ role: "system", content: systemPrompt(profile, weather, facts) }, ...messages];
+  const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+  const payload = [
+    { role: "system", content: systemPrompt(profile, weather, facts, computedRoute(lastUser, profile)) },
+    ...messages,
+  ];
 
   // The timeout covers reaching the model, not reading from it. A single signal
   // passed to fetch would stay armed while the answer streams and cut a long one

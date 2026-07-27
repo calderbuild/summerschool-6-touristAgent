@@ -2,6 +2,7 @@ import type { Status } from "./data";
 
 export function statusColorVar(s: Status): string {
   if (s === "ok" || s === "lift") return "var(--color-ok)";
+  if (s === "assisted") return "var(--color-caution)";
   if (s === "lift_down" || s === "stairs") return "var(--color-barrier)";
   return "var(--color-unknown)";
 }
@@ -10,6 +11,7 @@ export function statusColorVar(s: Status): string {
 // which can't read CSS vars). Unknown darkened to #616671 to match --color-unknown.
 export function statusHex(s: Status): string {
   if (s === "ok" || s === "lift") return "#1e8e5a";
+  if (s === "assisted") return "#c77a16";
   if (s === "lift_down" || s === "stairs") return "#c63a2f";
   return "#616671";
 }
@@ -31,6 +33,7 @@ export const isUnknown = (s: Status) => s === "unknown";
 export const legendKey: Record<Status, string> = {
   ok: "legend_ok",
   lift: "legend_lift",
+  assisted: "legend_assisted",
   lift_down: "legend_liftdown",
   stairs: "legend_stairs",
   unknown: "legend_unknown",

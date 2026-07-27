@@ -20,3 +20,11 @@ grok.md
 .env
 .env.*
 
+
+# The raw IDFM GTFS export (112 MB) is an input, not a deliverable: the build
+# script downloads it on demand and commits the small graph it produces.
+data/IDFM-gtfs.zip
+
+# Course slide decks handed out by the instructor. Not ours to redistribute, and
+# the same fork-network reasoning as docs/ applies.
+*.pdf

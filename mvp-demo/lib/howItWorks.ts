@@ -150,6 +150,77 @@ export const CHOICES: Choice[] = [
       zh: "平面地图在任何环境都能渲染，所以是默认。3D 视图能显示一段长距离步行真正要穿过的地形，而平面地图会把它藏起来。两者当天都可能失败，所以各自都会明说，而不是留下一块灰色矩形，且 3D 会退回平面视图。",
     },
   },
+  {
+    layer: "back",
+    name: "Own routing over the operator's timetable",
+    role: {
+      en: "Searches Île-de-France Mobilités' published timetable for a way across Paris, weighted by what each station would cost this traveller rather than by time alone.",
+      fr: "Cherche dans les horaires publiés par Île-de-France Mobilités un chemin à travers Paris, pondéré par ce que chaque gare coûterait à ce voyageur plutôt que par le temps seul.",
+      zh: "在 Île-de-France Mobilités 公布的时刻表里搜索穿越巴黎的路径，权重不是单纯的时间，而是每座车站对这位旅客意味着多少代价。",
+    },
+    because: {
+      en: "A routing API returns the fastest way, and the fastest way through Paris is full of stairs. The cost function here is the product: a wheelchair user pays forty minutes of penalty for changing at a station the operator marks not accessible, so the search goes around it, and the extra ten minutes on the clock is the honest price of a route that exists for them. No API we could call exposes that dial. Before this, the app could answer four journeys, because those four were written by hand.",
+      fr: "Une API d'itinéraires renvoie le chemin le plus rapide, et le plus rapide dans Paris est plein d'escaliers. La fonction de coût est ici le produit : un utilisateur de fauteuil paie quarante minutes de pénalité pour changer dans une gare signalée non accessible, donc la recherche l'évite, et les dix minutes supplémentaires affichées sont le prix honnête d'un itinéraire qui existe pour lui. Aucune API accessible ne propose ce réglage. Avant cela, l'application savait répondre à quatre trajets, parce que ces quatre-là étaient écrits à la main.",
+      zh: "路径规划 API 返回最快的路线，而巴黎最快的路线满是台阶。这里的代价函数就是产品本身：轮椅用户在被运营方标为不可通行的车站换乘要付四十分钟的惩罚值，于是搜索会绕开它，多出来的十分钟正是「一条对他真实存在的路线」的诚实标价。我们能调用的 API 都没有这个旋钮。在此之前，这个应用只能回答四条行程，因为那四条是手写的。",
+    },
+  },
+];
+
+export interface Criterion {
+  name: Tri;
+  /** What we chose, and what it costs, for this one criterion. */
+  answer: Tri;
+}
+
+/**
+ * The five things an architecture decision is judged on, answered for the
+ * decision this product actually made: put the routing in our own code, over a
+ * graph built from the operator's timetable, instead of calling a routing API.
+ *
+ * Every answer names the cost as well as the benefit. An architecture page that
+ * only lists benefits is a sales page.
+ */
+export const CRITERIA: Criterion[] = [
+  {
+    name: { en: "Scalability", fr: "Passage à l'échelle", zh: "可扩展性" },
+    answer: {
+      en: "The graph is a 300 KB file compiled into the deploy, so a request costs no upstream call and a thousand travellers cost the same as one. The limit is the opposite of the usual one: adding buses or trams means rebuilding the file, not paying for more capacity.",
+      fr: "Le graphe est un fichier de 300 Ko compilé dans le déploiement : une requête ne coûte aucun appel externe et mille voyageurs coûtent autant qu'un. La limite est inverse de l'habituelle : ajouter les bus ou les trams demande de reconstruire le fichier, pas d'acheter de la capacité.",
+      zh: "图谱是一个约 300 KB 的文件，编译进部署产物，因此一次请求不产生任何外部调用，一千位旅客的成本和一位相同。限制与常见情况相反：要加公交或有轨电车得重新构建这个文件，而不是买更多算力。",
+    },
+  },
+  {
+    name: { en: "Performance", fr: "Performance", zh: "性能" },
+    answer: {
+      en: "A search over 745 stations and 2,000 hops runs in memory, so the route on this page was computed on the server before the page was sent. Nothing spins, and the first thing you see is an answer rather than a frame.",
+      fr: "Une recherche sur 745 gares et 2 000 tronçons se fait en mémoire : l'itinéraire de cette page a été calculé sur le serveur avant l'envoi de la page. Rien ne tourne, et la première chose visible est une réponse, pas un cadre.",
+      zh: "对 745 座车站、2,000 段区间的搜索在内存中完成，所以这个页面上的路线是在服务端、页面发出之前就算好的。没有转圈，你看到的第一样东西就是答案。",
+    },
+  },
+  {
+    name: { en: "Security and compliance", fr: "Sécurité et conformité", zh: "安全与合规" },
+    answer: {
+      en: "Routing needs no personal data, so none is collected: no account, no location, no cookie banner, nothing stored. The one thing that does leave our servers is the sentence you type, and where it goes is written on its own page rather than buried in a policy.",
+      fr: "Le calcul d'itinéraire n'a besoin d'aucune donnée personnelle, donc rien n'est collecté : pas de compte, pas de localisation, pas de bandeau cookies, rien de stocké. La seule chose qui quitte nos serveurs est la phrase que vous tapez, et sa destination est écrite sur une page dédiée plutôt qu'enterrée dans une politique.",
+      zh: "路线计算不需要任何个人数据，所以什么都不收集：无账号、无定位、无 cookie 横幅、不存储。唯一离开我们服务器的是你输入的那句话，它去了哪里写在一个专门的页面上，而不是埋在条款里。",
+    },
+  },
+  {
+    name: { en: "Cost and time to market", fr: "Coût et délai", zh: "成本与上线速度" },
+    answer: {
+      en: "Every dataset here is free and needs no registration, and the whole thing runs inside one free deployment. What it cost instead was a build script and the day spent finding out that the operator's pathway file, the obvious source for lifts and stairs, is published empty.",
+      fr: "Tous les jeux de données sont gratuits et sans inscription, et l'ensemble tourne dans un seul déploiement gratuit. Le coût réel a été un script de construction et la journée passée à découvrir que le fichier de cheminements de l'exploitant, source évidente pour les ascenseurs et les escaliers, est publié vide.",
+      zh: "这里每一份数据集都免费且无需注册，整套东西跑在一个免费部署里。真正的代价是一个构建脚本，以及花掉的一天才发现：运营方那份本该提供电梯和楼梯的 pathway 文件，发布出来是空的。",
+    },
+  },
+  {
+    name: { en: "Maintainability", fr: "Maintenabilité", zh: "可维护性" },
+    answer: {
+      en: "The routing is one file with no dependency on a vendor's route format, and the honesty rules are tests rather than intentions: a change that lets a station with nothing published be shown as step-free fails the suite. Refreshing the network is one command against the operator's daily export.",
+      fr: "Le calcul d'itinéraire est un seul fichier, sans dépendance au format d'un prestataire, et les règles d'honnêteté sont des tests plutôt que des intentions : une modification qui présenterait comme sans marches une gare sans information publiée fait échouer la suite. Rafraîchir le réseau est une commande sur l'export quotidien de l'exploitant.",
+      zh: "路线计算是一个文件，不依赖任何厂商的路线格式；而诚实规则是测试而不是意愿：任何把「无公开信息」的车站显示成无楼梯的改动都会让测试失败。更新线网只需对运营方的每日导出跑一条命令。",
+    },
+  },
 ];
 
 export interface Guard {

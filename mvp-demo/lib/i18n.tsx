@@ -45,10 +45,28 @@ const DICT: Record<string, Entry> = {
     fr: "Des itinéraires sans marches qui indiquent si l'ascenseur fonctionne, s'il y a des marches, et quand nous ne le savons pas.",
     zh: "无楼梯路线：电梯是否可用、哪里有台阶、以及我们确实不确定的地方，都如实告诉你。",
   },
-  hero_reality: {
-    en: "The honest baseline: only Métro Line 14 is fully step-free, and about 30 of 300+ stations have a working lift.",
-    fr: "Le constat honnête : seule la ligne 14 est entièrement sans marches, et environ 30 stations sur plus de 300 ont un ascenseur en service.",
-    zh: "诚实的现状：只有 14 号线全线无楼梯，300 多座车站中约 30 座有可用电梯。",
+  // Three fragments rather than one sentence, because the numbers between them
+  // are read out of the operator's register at build time. A hardcoded "about 30
+  // of 300+" was the previous version and nobody could check it.
+  hero_reality_1: {
+    en: "Counted, not estimated: of the",
+    fr: "Compté, pas estimé : sur les",
+    zh: "这是数出来的，不是估的：在",
+  },
+  hero_reality_2: {
+    en: "stations Île-de-France Mobilités publishes a timetable for,",
+    fr: "gares dont Île-de-France Mobilités publie les horaires,",
+    zh: "座 Île-de-France Mobilités 公布时刻表的车站中，",
+  },
+  hero_reality_3: {
+    en: "carry an official accessibility class, and only",
+    fr: "ont une classe d'accessibilité officielle, et seulement",
+    zh: "座有官方无障碍等级，其中只有",
+  },
+  hero_reality_4: {
+    en: "of those say a traveller can board unaided.",
+    fr: "d'entre elles indiquent qu'on peut monter sans aide.",
+    zh: "座表示乘客可以自行上车。",
   },
 
   profile_q: {
@@ -68,6 +86,101 @@ const DICT: Record<string, Entry> = {
   for_word: { en: "For", fr: "Pour", zh: "为" },
 
   disruption_today: { en: "Today", fr: "Aujourd'hui", zh: "今日" },
+
+  plan_q: { en: "Where are you going?", fr: "Où allez-vous ?", zh: "你要去哪里？" },
+  plan_from: { en: "From", fr: "Départ", zh: "出发" },
+  plan_to: { en: "To", fr: "Arrivée", zh: "到达" },
+  plan_from_ph: { en: "Station or place", fr: "Station ou lieu", zh: "车站或地点" },
+  plan_to_ph: { en: "Station or place", fr: "Station ou lieu", zh: "车站或地点" },
+  plan_swap: { en: "Swap start and destination", fr: "Inverser départ et arrivée", zh: "交换起点与终点" },
+  plan_submit: { en: "Find a step-free route", fr: "Trouver un itinéraire sans marches", zh: "查找无楼梯路线" },
+  plan_working: { en: "Searching the network", fr: "Recherche sur le réseau", zh: "正在搜索线网" },
+  plan_idle: {
+    en: "Pick a start and a destination. Any of the 745 stations Île-de-France Mobilités publishes a timetable for, or one of the places in the guide.",
+    fr: "Choisissez un départ et une arrivée : l'une des 745 gares dont Île-de-France Mobilités publie les horaires, ou un lieu du guide.",
+    zh: "选择起点和终点：Île-de-France Mobilités 公布时刻表的 745 座车站，或指南中的任一地点。",
+  },
+  plan_err_unknown_from: {
+    en: "That start is not in the timetable. Try a station name, or a place such as the Louvre.",
+    fr: "Ce départ n'est pas dans les horaires. Essayez un nom de station, ou un lieu comme le Louvre.",
+    zh: "时刻表中没有这个起点。试试车站名，或像卢浮宫这样的地点。",
+  },
+  plan_err_unknown_to: {
+    en: "That destination is not in the timetable. Try a station name, or a place such as the Louvre.",
+    fr: "Cette arrivée n'est pas dans les horaires. Essayez un nom de station, ou un lieu comme le Louvre.",
+    zh: "时刻表中没有这个终点。试试车站名，或像卢浮宫这样的地点。",
+  },
+  plan_err_same_place: {
+    en: "Start and destination are the same station. Change one of them.",
+    fr: "Le départ et l'arrivée sont la même station. Changez-en une.",
+    zh: "起点和终点是同一座车站，请修改其中一个。",
+  },
+  plan_err_no_route: {
+    en: "No metro, RER or Transilien route connects these two in the published timetable. A bus may; this app does not rate buses yet.",
+    fr: "Aucun métro, RER ou Transilien ne relie ces deux points dans les horaires publiés. Un bus le fait peut-être ; cette application n'évalue pas encore les bus.",
+    zh: "已公布的时刻表中没有地铁、RER 或 Transilien 连接这两点。公交车可能可以，但本应用暂不评估公交。",
+  },
+  plan_err_offline: {
+    en: "The route could not be fetched. Check the connection and press the button again.",
+    fr: "L'itinéraire n'a pas pu être récupéré. Vérifiez la connexion et appuyez à nouveau.",
+    zh: "未能获取路线。请检查网络后再次点击按钮。",
+  },
+  plan_minutes: { en: "min", fr: "min", zh: "分钟" },
+  plan_changes: { en: "changes", fr: "changements", zh: "换乘" },
+  plan_stops: { en: "stops", fr: "arrêts", zh: "站" },
+  plan_barriers_none: {
+    en: "No station on this route is marked inaccessible by the operator.",
+    fr: "Aucune station de cet itinéraire n'est signalée inaccessible par l'opérateur.",
+    zh: "此路线上没有被运营方标记为不可通行的车站。",
+  },
+  plan_barriers_some: {
+    en: "Marked inaccessible by the operator:",
+    fr: "Signalées inaccessibles par l'opérateur :",
+    zh: "被运营方标记为不可通行：",
+  },
+  plan_unknown_count: {
+    en: "stations with nothing published either way",
+    fr: "stations sans information publiée",
+    zh: "座车站没有任何公开信息",
+  },
+  plan_graph: { en: "Timetable graph built", fr: "Graphe des horaires construit", zh: "时刻表图谱构建于" },
+  hiw_criteria_title: {
+    en: "The decision, and what it cost",
+    fr: "La décision, et ce qu'elle a coûté",
+    zh: "这个决定，以及它的代价",
+  },
+  hiw_criteria_intro: {
+    en: "One choice shaped the rest: routing in our own code over a graph built from the operator's timetable, rather than calling a routing API. Here it is against the five criteria an architecture is judged on.",
+    fr: "Un choix a déterminé le reste : calculer les itinéraires dans notre propre code, sur un graphe construit depuis les horaires de l'exploitant, plutôt que d'appeler une API. Le voici face aux cinq critères qui jugent une architecture.",
+    zh: "一个选择决定了其余部分：在我们自己的代码里、基于运营方时刻表构建的图谱上做路线计算，而不是调用现成的路线 API。下面按评判架构的五个标准逐条摆出来。",
+  },
+
+  legal_eyebrow: { en: "Data and access", fr: "Données et accès", zh: "数据与无障碍" },
+  legal_title: {
+    en: "What we do with what you type, and how far our accessibility goes",
+    fr: "Ce que nous faisons de ce que vous écrivez, et jusqu'où va notre accessibilité",
+    zh: "我们如何处理你输入的内容，以及本站的无障碍做到了哪一步",
+  },
+  legal_intro: {
+    en: "Two questions a product like this owes you an answer to. Both are answered as claims you can check, not as a policy.",
+    fr: "Deux questions auxquelles un produit comme celui-ci vous doit une réponse. Les deux sont formulées comme des affirmations vérifiables, pas comme une politique.",
+    zh: "这类产品有义务回答两个问题。下面的回答都写成可以核对的断言，而不是一份条款。",
+  },
+  legal_data_title: { en: "Your words", fr: "Vos données", zh: "你的数据" },
+  legal_a11y_title: { en: "This site's own accessibility", fr: "L'accessibilité de ce site", zh: "本站自身的无障碍" },
+  legal_check: { en: "Check it", fr: "Vérifier", zh: "如何核对" },
+  legal_updated: {
+    en: "Written 2026-07-27. Changed whenever the answer changes.",
+    fr: "Rédigé le 27/07/2026. Modifié dès que la réponse change.",
+    zh: "撰写于 2026-07-27，答案变化时同步更新。",
+  },
+  legal_link: { en: "Data and accessibility", fr: "Données et accessibilité", zh: "数据与无障碍" },
+
+  plan_computed: {
+    en: "Computed, not written by hand",
+    fr: "Calculé, non rédigé à la main",
+    zh: "计算得出，非人工撰写",
+  },
 
   result_title: { en: "Your step-free route", fr: "Votre itinéraire sans marches", zh: "你的无楼梯路线" },
   map_title: { en: "On the map", fr: "Sur la carte", zh: "地图" },
@@ -103,6 +216,11 @@ const DICT: Record<string, Entry> = {
 
   legend_ok: { en: "Step-free", fr: "Sans marches", zh: "无楼梯" },
   legend_lift: { en: "Working lift", fr: "Ascenseur en service", zh: "电梯可用" },
+  legend_assisted: {
+    en: "Staff help or a booking",
+    fr: "Avec un agent ou sur réservation",
+    zh: "需工作人员协助或预约",
+  },
   legend_liftdown: { en: "Lift out of service", fr: "Ascenseur hors service", zh: "电梯故障" },
   legend_stairs: { en: "Stairs", fr: "Escaliers", zh: "台阶" },
   legend_unknown: { en: "Unknown", fr: "Inconnu", zh: "未知" },
@@ -116,7 +234,11 @@ const DICT: Record<string, Entry> = {
 
   verdict_clear: { en: "Step-free the whole way", fr: "Sans marches sur tout le trajet", zh: "全程无楼梯" },
   verdict_barrier: { en: "step barrier", fr: "obstacle", zh: "处台阶障碍" },
-  verdict_unknown: { en: "lift status unknown", fr: "ascenseur inconnu", zh: "电梯状态未知" },
+  verdict_unknown: { en: "nothing published", fr: "rien de publié", zh: "无公开信息" },
+  // A station the operator will only get you through with a member of staff or a
+  // booking is not step-free, and calling the trip clear because nothing is
+  // literally broken is how a traveller ends up stranded at a gate.
+  verdict_assisted: { en: "need staff help or a booking", fr: "avec un agent ou sur réservation", zh: "需协助或预约" },
   freshness_note: {
     en: "Lift status is as of this morning, not a live feed.",
     fr: "État des ascenseurs de ce matin, pas un flux en direct.",
@@ -283,9 +405,9 @@ const DICT: Record<string, Entry> = {
   },
   routes_link: { en: "Routes", fr: "Itinéraires", zh: "路线一览" },
   browse_routes: {
-    en: "Browse all prepared routes",
-    fr: "Voir tous les itinéraires préparés",
-    zh: "浏览全部预设路线",
+    en: "Plan a journey on the map",
+    fr: "Planifier un trajet sur la carte",
+    zh: "在地图上规划行程",
   },
   back_to_assistant: { en: "Assistant", fr: "Assistant", zh: "返回对话" },
   lang_group: { en: "Language", fr: "Langue", zh: "语言" },
@@ -403,10 +525,13 @@ const DICT: Record<string, Entry> = {
   },
 
   sources_label: { en: "Sources", fr: "Sources", zh: "数据来源" },
+  // This line used to say "prototype with curated demo data", which stopped being
+  // true when routing moved onto the operator's own timetable. What is still
+  // missing is named instead of glossed over.
   disclaimer: {
-    en: "Prototype with curated demo data. Live lift status and routing connect to IDFM, RATP, OpenStreetMap and Google Maps.",
-    fr: "Prototype avec données de démonstration. L'état des ascenseurs et le calcul d'itinéraire se connectent à IDFM, RATP, OpenStreetMap et Google Maps.",
-    zh: "原型，使用精选演示数据。实时电梯状态与路线计算将接入 IDFM、RATP、OpenStreetMap 与 Google Maps。",
+    en: "Routes are computed from Île-de-France Mobilités' published timetable and their accessibility register, with lifts and stairways from OpenStreetMap. Whether a specific lift is working right now is the one thing this cannot tell you: that feed is licensed and needs a token we do not have.",
+    fr: "Les itinéraires sont calculés à partir des horaires publiés par Île-de-France Mobilités et de leur registre d'accessibilité, les ascenseurs et escaliers venant d'OpenStreetMap. La seule chose que nous ne pouvons pas dire : si un ascenseur précis fonctionne en ce moment. Ce flux est sous licence et exige un jeton que nous n'avons pas.",
+    zh: "路线由 Île-de-France Mobilités 公布的时刻表与无障碍登记计算得出，电梯与楼梯数据来自 OpenStreetMap。唯一无法告诉你的是某台电梯此刻是否运行：那个数据源有许可限制，需要我们尚未取得的 token。",
   },
 };
 

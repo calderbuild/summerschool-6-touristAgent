@@ -1,10 +1,11 @@
 "use client";
 
-import { memo, useId, useState } from "react";
-import { ROUTES, type RouteNode } from "@/lib/data";
+import { memo, useEffect, useId, useState } from "react";
+import { ROUTES, type DemoRoute, type RouteNode } from "@/lib/data";
 import { useI18n } from "@/lib/i18n";
 import AccessRibbon from "./AccessRibbon";
 import RouteMap from "../RouteMap";
+import MetroMap, { focusIndex } from "../MetroMap";
 import { statusColorVar, legendKey } from "@/lib/status";
 import {
   TriangleAlert,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 
 /**
- * Inline route summary for a chat answer (from a [[route:id]] marker). It leads
+ * Inline route summary for a chat answer. It leads
  * with the accessibility verdict + the barrier and its step-free workaround,
  * the part Google Maps cannot produce, then a compact diagram, then a demoted
  * per-stop list, then the data sources. The full spine lives at /routes.
@@ -46,26 +47,106 @@ function statusLabel(t: (k: string) => string, n: RouteNode): string {
   return base;
 }
 
-function verdictSummary(t: (k: string) => string, from: string, to: string, barriers: number, unknowns: number) {
+/**
+ * What the route counts as, per node status.
+ *
+ * `assisted` has to be in here. Without it a journey whose every stop the operator
+ * marks "only with a member of staff" was summarised as "step-free the whole way",
+ * which is the one sentence this product must never produce.
+ */
+function tally(route: DemoRoute) {
+  const barriers = route.nodes.filter(
+    (n) => n.barrier || n.at === "stairs" || n.at === "lift_down",
+  ).length;
+  const assisted = route.nodes.filter((n) => n.at === "assisted").length;
+  const unknowns = route.nodes.filter((n) => n.at === "unknown").length;
+  return { barriers, assisted, unknowns, clear: barriers + assisted + unknowns === 0 };
+}
+
+function verdictSummary(
+  t: (k: string) => string,
+  from: string,
+  to: string,
+  counts: { barriers: number; assisted: number; unknowns: number },
+) {
   const verdict: string[] = [];
-  if (barriers > 0) verdict.push(`${barriers} ${t("verdict_barrier")}`);
-  if (unknowns > 0) verdict.push(`${unknowns} ${t("verdict_unknown")}`);
+  if (counts.barriers > 0) verdict.push(`${counts.barriers} ${t("verdict_barrier")}`);
+  if (counts.assisted > 0) verdict.push(`${counts.assisted} ${t("verdict_assisted")}`);
+  if (counts.unknowns > 0) verdict.push(`${counts.unknowns} ${t("verdict_unknown")}`);
   return `${from} → ${to}: ${verdict.length ? verdict.join(" · ") : t("verdict_clear")}`;
 }
 
-function ChatRouteCard({ id, profile }: { id: string; profile?: string | null }) {
+/**
+ * A card comes from one of two markers, and the difference is worth keeping:
+ * `[[route:id]]` is one of the three journeys the team walked in person, so it
+ * carries a named barrier and the way around it; `[[plan:A|B]]` is computed from
+ * the operator's timetable for any pair in the network. The card below draws both
+ * the same way, because to the traveller they are the same question.
+ */
+function ChatRouteCard({
+  id,
+  from,
+  to,
+  profile,
+}: {
+  id?: string;
+  from?: string;
+  to?: string;
+  profile?: string | null;
+}) {
   const { t, lang } = useI18n();
   const [showMap, setShowMap] = useState(false);
+  const [mapView, setMapView] = useState<"map" | "3d">("map");
+  // Same contract as the planner page: if the tile service or WebGL is missing,
+  // drop back to the flat map and say so rather than leave a grey rectangle.
+  const [threeDFellBack, setThreeDFellBack] = useState(false);
   // Names the panel the toggle opens, so "expanded" refers to something a screen
   // reader can actually move to.
   const mapPanelId = useId();
-  const route = ROUTES.find((r) => r.id === id);
-  if (!route) return null;
+  const [computed, setComputed] = useState<DemoRoute | null>(null);
+  const [failed, setFailed] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!from || !to) return;
+    let live = true;
+    const who = profile && PROFILE_LABEL[profile] ? profile : "wheelchair";
+    fetch(
+      `/api/plan?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&profile=${who}`,
+    )
+      .then((r) => r.json())
+      .then((d) => {
+        if (!live) return;
+        if (d.ok) setComputed(d.route);
+        else setFailed(`plan_err_${d.reason ?? "offline"}`);
+      })
+      .catch(() => live && setFailed("plan_err_offline"));
+    return () => {
+      live = false;
+    };
+  }, [from, to, profile]);
+
+  const route = id ? ROUTES.find((r) => r.id === id) : computed;
+
+  if (!route) {
+    if (failed) {
+      // The marker asked for a route that does not exist. Saying which pair
+      // failed beats a card that silently never appears.
+      return (
+        <p role="status" className="my-3 rounded-lg border border-ink/15 bg-surface-2 px-3 py-2 text-[12.5px] leading-snug text-ink-soft">
+          {t(failed)}
+        </p>
+      );
+    }
+    if (from && to) {
+      return (
+        <div className="my-3 h-[92px] animate-pulse rounded-xl border border-ink/10 bg-surface-2" aria-hidden />
+      );
+    }
+    return null;
+  }
 
   const barrierNode = route.nodes.find((n) => n.barrier);
-  const barriers = route.nodes.filter((n) => n.barrier).length;
-  const unknowns = route.nodes.filter((n) => n.at === "unknown").length;
-  const clear = barriers === 0 && unknowns === 0;
+  const { barriers, assisted, unknowns, clear } = tally(route);
 
   const ProfileIcon = profile ? PROFILE_ICON[profile] : null;
   const profileLabel = profile ? PROFILE_LABEL[profile] : null;
@@ -73,7 +154,7 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
   return (
     <div className="my-3">
       <p className="mb-1.5 rounded-lg border border-ink/10 bg-surface-2 px-3 py-2 text-[13px] font-bold leading-snug text-ink">
-        {verdictSummary(t, route.from, route.to, barriers, unknowns)}
+        {verdictSummary(t, route.from, route.to, { barriers, assisted, unknowns })}
       </p>
       <div className="overflow-hidden rounded-xl border border-ink/10 bg-surface">
       {/* header: route + who it's for + today's disruption */}
@@ -108,6 +189,12 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
               <span className="inline-flex items-center gap-1 rounded-md bg-barrier/10 px-2 py-1 text-[12px] font-bold text-barrier">
                 <TriangleAlert size={13} strokeWidth={2.4} aria-hidden />
                 {barriers} {t("verdict_barrier")}
+              </span>
+            )}
+            {assisted > 0 && (
+              <span className="inline-flex items-center gap-1 rounded-md bg-caution/12 px-2 py-1 text-[12px] font-bold text-caution-ink">
+                <Accessibility size={13} strokeWidth={2.4} aria-hidden />
+                {assisted} {t("verdict_assisted")}
               </span>
             )}
             {unknowns > 0 && (
@@ -170,8 +257,56 @@ function ChatRouteCard({ id, profile }: { id: string; profile?: string | null })
           />
         </button>
         {showMap && (
-          <div id={mapPanelId} className="mt-2 h-[240px]">
-            <RouteMap route={route} />
+          <div id={mapPanelId} className="mt-2">
+            <div className="mb-1.5 flex items-center justify-end">
+              <div
+                className="flex items-center gap-0.5 rounded-lg bg-ink/[0.06] p-0.5"
+                role="group"
+                aria-label={t("map_view_group")}
+              >
+                {(["map", "3d"] as const).map((v) => (
+                  <button
+                    key={v}
+                    type="button"
+                    onClick={() => {
+                      setMapView(v);
+                      if (v === "3d") setThreeDFellBack(false);
+                    }}
+                    aria-pressed={mapView === v}
+                    className={`grid min-h-8 min-w-10 place-items-center rounded-md px-2.5 text-[11.5px] font-bold transition-colors ${
+                      mapView === v ? "bg-surface text-ink ring-1 ring-ink/10" : "text-ink-soft hover:text-ink"
+                    }`}
+                  >
+                    {v === "map" ? t("map_view_map") : t("map_view_3d")}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="h-[240px]">
+              {mapView === "map" ? (
+                <RouteMap route={route} />
+              ) : (
+                <MetroMap
+                  nodes={route.nodes}
+                  className="h-full w-full rounded-lg"
+                  onUnavailable={() => {
+                    setThreeDFellBack(true);
+                    setMapView("map");
+                  }}
+                />
+              )}
+            </div>
+            {mapView === "3d" && !threeDFellBack && (
+              <p className="mt-1.5 text-[11.5px] leading-snug text-ink-soft">
+                {t("map_3d_focus")}{" "}
+                <span className="font-bold text-ink">{route.nodes[focusIndex(route.nodes)].name}</span>
+              </p>
+            )}
+            {threeDFellBack && (
+              <p role="status" className="mt-1.5 text-[11.5px] leading-snug text-caution-ink">
+                {t("map_3d_fell_back")}
+              </p>
+            )}
           </div>
         )}
       </div>

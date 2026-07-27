@@ -3,8 +3,14 @@ import type { Lang } from "./i18n";
 export type L = Record<Lang, string>;
 
 // ok = step-free · lift = working lift · lift_down = lift out of service
+// assisted = there is a way through, but only with staff or a booking
 // stairs = steps required · unknown = we honestly do not know
-export type Status = "ok" | "lift" | "lift_down" | "stairs" | "unknown";
+//
+// `assisted` exists because the operator's own register puts 213 of the 745
+// stations in that state and none of the other four statuses says it. Calling them "working lift" would be
+// a promise we cannot keep, and calling them "unknown" would throw away a fact
+// the traveller needs: there is a route, and it costs you a conversation.
+export type Status = "ok" | "lift" | "assisted" | "lift_down" | "stairs" | "unknown";
 
 export interface RouteNode {
   name: string; // proper noun, not translated
@@ -34,6 +40,9 @@ export interface DemoRoute {
   disruption?: L;
   sources: string[];
   nodes: RouteNode[];
+  /** Every station the journey passes, for the map line. Present on a computed
+   *  route; a route whose nodes are its whole shape can leave it out. */
+  shape?: { lat: number; lng: number }[];
 }
 
 const M14 = { label: "M14", color: "#62259D" };

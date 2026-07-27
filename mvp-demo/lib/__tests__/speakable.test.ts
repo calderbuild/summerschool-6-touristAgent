@@ -34,6 +34,9 @@ describe("speakable", () => {
 
   it("strips the app's own route markers", () => {
     expect(speakable("[[route:gdl-eiffel:wheelchair]]\n\nTake Line 14.")).toBe("Take Line 14.");
+    // The computed-route marker carries a pipe and spaces, which the earlier
+    // pattern would have read as prose and spoken aloud.
+    expect(speakable("[[plan:Bastille|Eiffel Tower]]\n\nTake Line 1.")).toBe("Take Line 1.");
   });
 
   it("drops list and heading punctuation but keeps the line breaks that pace speech", () => {

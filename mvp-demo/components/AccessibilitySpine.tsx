@@ -19,6 +19,7 @@ function NodeGlyph({ status }: { status: Status }) {
   const p = { size: 15, strokeWidth: 2.4, "aria-hidden": true } as const;
   if (status === "ok") return <Check {...p} />;
   if (status === "lift") return <MoveVertical {...p} />;
+  if (status === "assisted") return <Accessibility {...p} />;
   if (status === "unknown") return <CircleHelp {...p} />;
   return <TriangleAlert {...p} />;
 }

@@ -14,6 +14,39 @@ declare global {
   }
 }
 
+/**
+ * The points to draw for each leg.
+ *
+ * A computed leg can be nineteen stations long, and joining its two ends with a
+ * straight line puts the M1 through the Seine. The shape carries every station
+ * passed, so each leg is the slice of it between the two nodes; a route without a
+ * shape (or a leg whose ends are not in it) falls back to the straight chord,
+ * which is what this map always drew.
+ */
+function legPaths(route: DemoRoute): { lat: number; lng: number }[][] {
+  const nodes = route.nodes;
+  const shape = route.shape;
+  const chord = (i: number) => [nodes[i].coord, nodes[i + 1].coord];
+  if (!shape || shape.length < 2) return nodes.slice(0, -1).map((_, i) => chord(i));
+
+  const at = (from: number, c: { lat: number; lng: number }) =>
+    shape.findIndex((p, idx) => idx >= from && p.lat === c.lat && p.lng === c.lng);
+
+  const paths: { lat: number; lng: number }[][] = [];
+  let cursor = 0;
+  for (let i = 0; i < nodes.length - 1; i++) {
+    const start = at(cursor, nodes[i].coord);
+    const end = at(start < 0 ? cursor : start + 1, nodes[i + 1].coord);
+    if (start < 0 || end < 0 || end <= start) {
+      paths.push(chord(i));
+      continue;
+    }
+    paths.push(shape.slice(start, end + 1));
+    cursor = end;
+  }
+  return paths;
+}
+
 function RouteOverlay({ route }: { route: DemoRoute }) {
   const map = useMap();
 
@@ -31,8 +64,9 @@ function RouteOverlay({ route }: { route: DemoRoute }) {
     // the operator, not by us, and the pale ones (RER C and M1 yellow) vanish on
     // Google's light basemap without it.
     const CASING = "#1a1c22";
+    const paths = legPaths(route);
     for (let i = 0; i < nodes.length - 1; i++) {
-      const leg = [nodes[i].coord, nodes[i + 1].coord];
+      const leg = paths[i];
       const ridden = nodes[i + 1].line;
       const unknown = nodes[i + 1].into?.status === "unknown";
       if (ridden && !unknown) {

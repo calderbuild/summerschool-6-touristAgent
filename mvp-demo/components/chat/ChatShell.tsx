@@ -227,12 +227,26 @@ function LangSwitch() {
   );
 }
 
-/** Splits an answer into text runs and [[route:id(:profile)]] cards. Always hides a
- *  half-streamed trailing marker; an unknown id falls back to visible text. */
+/** Splits an answer into text runs and route cards, from either marker:
+ *  [[route:id(:profile)]] for a walked route, [[plan:A|B]] for a computed one.
+ *  Always hides a half-streamed trailing marker; an unknown id is dropped. */
+const MARKER = /(\[\[route:[\w-]+(?::[\w-]+)?\]\]|\[\[plan:[^|\]]{1,60}\|[^|\]]{1,60}\]\])/g;
+
 function renderAnswer(content: string, streaming: boolean, profile: ProfileId | null) {
   const clean = content.replace(/\[\[[^\]]*$/, "");
-  const parts = clean.split(/(\[\[route:[\w-]+(?::[\w-]+)?\]\])/g);
+  const parts = clean.split(MARKER);
   return parts.map((p, i) => {
+    const planned = p.match(/^\[\[plan:([^|\]]+)\|([^|\]]+)\]\]$/);
+    if (planned) {
+      return (
+        <ChatRouteCard
+          key={i}
+          from={planned[1].trim()}
+          to={planned[2].trim()}
+          profile={profile}
+        />
+      );
+    }
     const m = p.match(/^\[\[route:([\w-]+)(?::([\w-]+))?\]\]$/);
     if (m) {
       // Unknown id (model typo/hallucination): drop it silently rather than echo
@@ -783,9 +797,10 @@ export default function ChatShell() {
               }}
               rows={1}
               aria-label={t("chat_input_label")}
-              // The line under the composer says the data is curated demo data.
-              // That is a caveat about the answers, so it belongs to the box you
-              // type in, not to a paragraph a screen reader may never reach.
+              // The line under the composer names what the answers rest on and
+              // the one thing they cannot tell you. That is a caveat about the
+              // answers, so it belongs to the box you type in, not to a paragraph
+              // a screen reader may never reach.
               aria-describedby="composer-disclaimer"
               placeholder={t("chat_placeholder")}
               className="flex-1 resize-none bg-transparent py-2.5 text-[16px] leading-relaxed text-ink outline-none placeholder:text-ink-soft/70"
@@ -1065,6 +1080,13 @@ function EmptyState({
           className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:text-ink"
         >
           {t("hiw_link")}
+          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
+        </Link>
+        <Link
+          href="/privacy"
+          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:text-ink"
+        >
+          {t("legal_link")}
           <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
         </Link>
       </div>
