@@ -320,6 +320,21 @@ describe("what a hand-written route may claim", () => {
     const prompt = readFileSync(join(APP, "app", "api", "chat", "route.ts"), "utf8");
     expect(prompt).toMatch(/no bus or Montmartrobus data anywhere in this app/);
     expect(prompt).toMatch(/never name a bus route/);
+    // The sanctioned exception has to stay narrow. Production named bus 87, which is
+    // genuinely in the walked-route notes, and then said it "runs from Bastille to
+    // the Louvre area", which no note here says. A permitted noun is not a permitted
+    // sentence about that noun.
+    expect(prompt).toMatch(/only repeat what that note says/);
+    expect(prompt).toMatch(/They do not say where it goes/);
+    for (const r of ROUTES) {
+      for (const node of r.nodes) {
+        const alt = node.alt ? Object.values(node.alt).join(" ") : "";
+        if (!/bus \d/.test(alt)) continue;
+        // If a note ever starts claiming a destination, the prompt rule above becomes
+        // false and this is the thing that says so.
+        expect(alt, `${r.id} / ${node.name} alt`).not.toMatch(/\bto the\b|\bruns to\b|\bgoes to\b/i);
+      }
+    }
     // And it must not go back to asking for the thing it cannot supply.
     expect(prompt).not.toMatch(/alternative: a level-boarding bus/);
   });
