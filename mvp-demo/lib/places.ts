@@ -35,6 +35,32 @@ export interface Place {
   notes: string;
 }
 
+/**
+ * Three buckets, read off the venue's own words rather than asserted by us.
+ *
+ * `wheelchair` is prose written by whoever checked, so this classifies text, which
+ * is only honest if the unknown bucket is genuinely the default: anything that does
+ * not clearly say yes or clearly say no lands in "depends", and nothing here is
+ * called step-free on the strength of a maybe.
+ */
+export type Ease = "yes" | "depends" | "no";
+
+export function ease(p: Place): Ease {
+  const w = p.wheelchair.toLowerCase().trim();
+  // A flat no, and only a flat no. "n/a (closed)" is a statement about the venue
+  // being shut rather than about a doorway, so it is not one of these.
+  if (/^(no\b|inaccessible|not accessible)/.test(w)) return "no";
+  // Any negative clause anywhere demotes the record, and this test runs before the
+  // positive one on purpose. "Yes (cathedral, step-free entrance); No (towers, ~424
+  // steps)" opens with a yes and still contains a staircase, and a badge that read
+  // "can get in" would be telling somebody the true half of a sentence whose other
+  // half is 424 steps.
+  if (/\b(partial|limited|except|only|some)\b|not accessible|\bno\s*\(|;\s*no\b/.test(w)) return "depends";
+  if (/^(yes|fully|step-free|accessible|level)/.test(w)) return "yes";
+  // Anything this cannot read is unknown, and unknown is never "can get in".
+  return "depends";
+}
+
 export const PLACES: Place[] = [
   {
     id: "eiffel-tower",

@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Plus,
   Map as MapIcon,
+  QrCode,
   RotateCcw,
   Mic,
   Volume2,
@@ -1005,6 +1006,18 @@ export default function ChatShell() {
               <MapIcon size={16} strokeWidth={2.2} aria-hidden />
               <span className="hidden sm:inline">{t("routes_link")}</span>
             </Link>
+            {/* The code lives here as well as in the doors below, because the doors
+                are past the fold and this is the one link somebody reaches for while
+                standing in front of a room. Icon only: it is a utility, not a
+                destination, and it should not compete with the map. */}
+            <Link
+              href="/qr"
+              className="grid min-h-11 min-w-11 place-items-center rounded-lg bg-white/10 text-white/80 transition-colors hover:text-white"
+              aria-label={t("qr_link")}
+              title={t("qr_link")}
+            >
+              <QrCode size={16} strokeWidth={2.2} aria-hidden />
+            </Link>
             <LangSwitch />
           </div>
         </div>
@@ -1229,6 +1242,7 @@ function EmptyState({
       <nav aria-label={t("nav_group")} className="mt-3 grid gap-2.5 sm:grid-cols-2">
         {[
           { href: routesHref(lang), label: t("browse_routes"), body: t("door_routes") },
+          { href: "/places", label: t("places_link"), body: t("door_places") },
           { href: "/whats-on", label: t("whats_on_link"), body: t("door_whats_on") },
           { href: "/how-it-works", label: t("hiw_link"), body: t("door_hiw") },
           { href: "/privacy", label: t("legal_link"), body: t("door_legal") },
