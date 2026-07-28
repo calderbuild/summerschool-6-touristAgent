@@ -49,6 +49,58 @@ describe("the privacy and accessibility page", () => {
     expect(new Set(hosts)).toEqual(new Set(["api.deepseek.com", "api.open-meteo.com"]));
   });
 
+  /**
+   * Both directions, because this page has now been wrong in both.
+   *
+   * For most of the week it said "there is no database", which was true and
+   * verified, and stayed on the page for the twenty minutes after one existed.
+   * A guard that only refuses invented storage would have passed that whole time.
+   * So one test refuses the retired sentence and the next refuses the page going
+   * quiet about a database that is really there.
+   */
+  it("no longer says there is no database, in any language", () => {
+    const strings = [...DATA_CLAIMS, ...A11Y_CLAIMS].flatMap((c) => [
+      ...Object.values(c.title),
+      ...Object.values(c.body),
+      ...(c.check ? Object.values(c.check) : []),
+    ]);
+    for (const s of strings) {
+      expect(s, s.slice(0, 60)).not.toMatch(/there is no database|pas de base de données|没有数据库/i);
+      // "stored nowhere" is the same claim wearing a different sentence.
+      expect(s, s.slice(0, 60)).not.toMatch(/nothing is stored anywhere|stored nowhere/i);
+    }
+  });
+
+  it("says a database exists, and says what is in it, while one exists", () => {
+    let sql = "";
+    try {
+      sql = readFileSync(at("supabase", "schema.sql"), "utf8");
+    } catch {
+      sql = ""; // no schema in the tree means no database, so nothing is owed
+    }
+    if (!sql.includes("create table")) return;
+
+    const bodies = DATA_CLAIMS.map((c) => c.body);
+    for (const lang of ["en", "fr", "zh"] as const) {
+      const all = bodies.map((b) => b[lang]).join(" ");
+      expect(all, lang).toMatch(/database|base de données|数据库/i);
+    }
+    // And the disclosure has to be specific about what it holds. A vague "we use a
+    // database" would satisfy the line above while telling the reader nothing.
+    expect(DATA_CLAIMS.map((c) => c.body.en).join(" ")).toMatch(/corrections/i);
+  });
+
+  it("has no traveller sign-in anywhere, which is what the page claims", () => {
+    const files = [...walk(at("app")), ...walk(at("components"))].filter(
+      (f) => !/[/\\]admin[/\\]|[/\\]admin[.]/.test(f),
+    );
+    // Adding traveller accounts means storing that a named person uses a
+    // wheelchair. If that ever ships, the page has to stop saying "no account"
+    // in the same commit, and this is what stops it shipping quietly.
+    const auth = files.filter((f) => /signInWith|signUp\(|auth\.getUser|onAuthStateChange/.test(readFileSync(f, "utf8")));
+    expect(auth).toEqual([]);
+  });
+
   it("still sets the permissions policy the page quotes", () => {
     const config = readFileSync(at("next.config.ts"), "utf8");
     const quoted = DATA_CLAIMS.flatMap((c) => (c.check ? [c.check.en] : [])).find((s) =>

@@ -51,14 +51,14 @@ export const DATA_CLAIMS: Claim[] = [
       zh: "你输入的内容不会存在我们这边",
     },
     body: {
-      en: "There is no database. Your conversation is held in your own browser tab and disappears when you close it. Our server keeps no copy and writes no log line: it forwards your message, streams the answer back, and forgets both. Nobody on the team can read what you asked.",
-      fr: "Il n'y a pas de base de données. Votre conversation reste dans l'onglet de votre navigateur et disparaît à sa fermeture. Notre serveur n'en garde aucune copie et n'écrit aucune ligne de journal : il transmet votre message, renvoie la réponse en flux, puis oublie les deux. Personne dans l'équipe ne peut lire vos questions.",
-      zh: "没有数据库。你的对话保存在你自己的浏览器标签里，关闭即消失。我们的服务器不留副本、不写日志：转发你的消息、把回答流式送回，然后两者都忘掉。团队里没有人能读到你问了什么。",
+      en: "Your conversation is held by your own browser and never reaches our database. There is a database, and what it holds is our own staff's corrections to public information about Paris landmarks, which is the same data this site already shows everybody. Your messages are not in it, cannot be put in it, and there is no table they would fit. Our server forwards your message, streams the answer back, and forgets both: no copy, no log line. Nobody on the team can read what you asked.",
+      fr: "Votre conversation est conservée par votre navigateur et n'atteint jamais notre base de données. Une base existe, et elle ne contient que les corrections apportées par notre équipe à des informations publiques sur les monuments parisiens, les mêmes que ce site affiche déjà à tout le monde. Vos messages n'y sont pas, ne peuvent pas y être mis, et aucune table ne pourrait les accueillir. Notre serveur transmet votre message, renvoie la réponse en flux, puis oublie les deux : aucune copie, aucune ligne de journal. Personne dans l'équipe ne peut lire vos questions.",
+      zh: "你的对话由你自己的浏览器保存，永远不会进入我们的数据库。数据库是有的，里面装的是我们团队对巴黎景点公开信息的校正 —— 也就是本站已经展示给所有人的同一批数据。你的消息不在里面，也放不进去，那里根本没有能装它的表。我们的服务器转发你的消息、把回答流式送回，然后两者都忘掉：不留副本、不写日志。团队里没有人能读到你问了什么。",
     },
     check: {
-      en: "The project contains no logging call at all: grep for console. in app, lib and components comes back empty.",
-      fr: "Le projet ne contient aucun appel de journalisation : un grep de console. dans app, lib et components ne renvoie rien.",
-      zh: "项目里没有任何日志调用：在 app、lib、components 里 grep console. 结果为空。",
+      en: "The project contains no logging call at all: grep for console. in app, lib and components comes back empty. And you can read the database's shape: supabase/schema.sql is in the repository. Two tables are written, place_overrides and the log of who changed it, and their columns are a landmark's wheelchair access, its step-free route from the station, a note, open or closed, and the date somebody checked. Not one column could hold a message.",
+      fr: "Le projet ne contient aucun appel de journalisation : un grep de console. dans app, lib et components ne renvoie rien. Et la forme de la base est lisible : supabase/schema.sql est dans le dépôt. Deux tables sont écrites, place_overrides et le journal de ses modifications, et leurs colonnes sont l'accès en fauteuil d'un monument, son trajet sans marches depuis la gare, une note, ouvert ou fermé, et la date du dernier contrôle. Aucune colonne ne pourrait contenir un message.",
+      zh: "项目里没有任何日志调用：在 app、lib、components 里 grep console. 结果为空。数据库的结构也是可读的：supabase/schema.sql 就在仓库里。被写入的表只有两张 —— place_overrides 和它的修改日志，字段是某个景点的轮椅通行情况、从车站进去的无楼梯路径、一条备注、开放或关闭、以及最后一次核对的日期。没有任何一个字段能装下一条消息。",
     },
   },
   {
@@ -68,9 +68,9 @@ export const DATA_CLAIMS: Claim[] = [
       zh: "无需账号、无追踪、无 cookie 横幅",
     },
     body: {
-      en: "You are not asked to sign in and you are not counted. There is no analytics script, no advertising pixel and no third-party tracker, which is also why there is no consent banner to click away: the only cookie this site can set belongs to the staff console and only exists once somebody logs into it. Your language choice and your conversation are kept in your browser's own storage, not sent anywhere.",
-      fr: "Aucune connexion demandée, aucun comptage. Pas de script d'analyse, pas de pixel publicitaire, pas de traceur tiers, et donc pas de bandeau de consentement à écarter : le seul cookie possible appartient à la console d'équipe et n'existe qu'après une connexion. Votre choix de langue et votre conversation restent dans le stockage de votre navigateur.",
-      zh: "不需要登录，也不会被计数。没有分析脚本、没有广告像素、没有第三方追踪器 —— 所以也没有需要点掉的同意横幅：本站唯一可能设置的 cookie 属于团队后台，且只在有人登录后才存在。语言选择和对话内容都留在你浏览器的本地存储里，不会外发。",
+      en: "You are not asked to sign in and you are not counted. There is deliberately no traveller account, even though the database that would hold one now exists: an account here would mean storing that a named person uses a wheelchair, and cross-device convenience is not worth holding that. There is no analytics script, no advertising pixel and no third-party tracker, which is also why there is no consent banner to click away: the only cookie this site can set belongs to the staff console and only exists once somebody logs into it. Your language choice and your conversation are kept in your browser's own storage, not sent anywhere.",
+      fr: "Aucune connexion demandée, aucun comptage. Il n'y a délibérément aucun compte voyageur, alors que la base qui pourrait en héberger un existe désormais : un compte signifierait conserver qu'une personne nommée utilise un fauteuil roulant, et la commodité multi-appareils ne vaut pas cela. Pas de script d'analyse, pas de pixel publicitaire, pas de traceur tiers, et donc pas de bandeau de consentement à écarter : le seul cookie possible appartient à la console d'équipe et n'existe qu'après une connexion. Votre choix de langue et votre conversation restent dans le stockage de votre navigateur.",
+      zh: "不需要登录，也不会被计数。旅客账号是刻意不做的 —— 即便现在已经有了能装账号的数据库：做账号就意味着要保存「某个具名的人使用轮椅」，跨设备的方便不值这个代价。没有分析脚本、没有广告像素、没有第三方追踪器 —— 所以也没有需要点掉的同意横幅：本站唯一可能设置的 cookie 属于团队后台，且只在有人登录后才存在。语言选择和对话内容都留在你浏览器的本地存储里，不会外发。",
     },
   },
   {
