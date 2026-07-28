@@ -81,7 +81,8 @@ the useful part.
 
 - Next.js 16 (App Router) + React 19 + TypeScript
 - Tailwind CSS v4
-- DeepSeek `deepseek-reasoner` for the conversation, called server-side only
+- DeepSeek `deepseek-v4-pro` for the conversation, called server-side only, with
+  `deepseek-v4-flash` as the fallback when the provider drops a model id
 - Google Maps JavaScript API via `@vis.gl/react-google-maps`
 - Supabase (Postgres) for the correction layer only, with row-level security
 - Deployed on Vercel
