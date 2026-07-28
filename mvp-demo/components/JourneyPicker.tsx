@@ -123,7 +123,9 @@ function Field({
         aria-expanded={open}
         aria-autocomplete="list"
         aria-activedescendant={open && active >= 0 ? `${id}-opt-${active}` : undefined}
-        aria-controls={`${id}-list`}
+        // Only while the list is rendered. Pointing at an id that is not in the
+        // document is a broken reference to anything following it.
+        aria-controls={open && items.length > 0 ? `${id}-list` : undefined}
         className="mt-1 min-h-11 w-full rounded-xl border border-ink/20 bg-canvas px-3 text-[15px] text-ink placeholder:text-ink-faint focus:border-signal focus:outline-none"
       />
       {open && items.length > 0 && (

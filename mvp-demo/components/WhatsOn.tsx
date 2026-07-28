@@ -84,7 +84,7 @@ function EventCard({ e }: { e: CityEvent }) {
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {/* The city's claim, about the room. */}
         <div className="rounded-xl border border-ink/10 bg-canvas p-3">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-faint">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-soft">
             {t("wo_city_label")}
           </p>
           <p className="mt-1.5 flex items-start gap-2 text-[13px] font-semibold leading-snug text-ink">
@@ -113,7 +113,7 @@ function EventCard({ e }: { e: CityEvent }) {
 
         {/* Ours, about the journey. */}
         <div className="rounded-xl border border-ink/10 bg-canvas p-3">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-faint">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-ink-soft">
             {t("wo_station_label")}
           </p>
           <p className="mt-1.5 flex items-start gap-2 text-[13px] font-semibold leading-snug text-ink">
