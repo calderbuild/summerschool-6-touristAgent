@@ -701,6 +701,12 @@ const DICT: Record<string, Entry> = {
     fr: "Planifier un trajet sur la carte",
     zh: "在地图上规划行程",
   },
+  admin_note: {
+    en: "When a fact here turns out to be wrong, the team corrects it in the console rather than waiting for a deploy. Every correction carries the date it was checked.",
+    fr: "Lorsqu'une information se révèle fausse, l'équipe la corrige dans la console plutôt que d'attendre un déploiement. Chaque correction porte sa date de vérification.",
+    zh: "这里的信息如果有错，团队会直接在后台校正，而不是等下一次发布。每条校正都带着核对日期。",
+  },
+  admin_link: { en: "Team console", fr: "Console de l'équipe", zh: "团队后台" },
   places_eyebrow: { en: "The sights", fr: "Les sites", zh: "景点" },
   places_title: {
     en: "Paris sights, and whether you can actually get in",

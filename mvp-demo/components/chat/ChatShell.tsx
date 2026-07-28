@@ -1270,6 +1270,17 @@ function EmptyState({
         ))}
       </nav>
 
+      {/* The staff console, small and last, and explained rather than dangled. It is
+          not a door: a door offers the reader somewhere to go, and this is the team's
+          workbench. It is here because a data-correction surface that nobody can find
+          is a claim about transparency rather than an instance of it. */}
+      <p className="mt-5 text-[11.5px] leading-relaxed text-ink-faint">
+        {t("admin_note")}{" "}
+        <Link href="/admin" className="font-semibold text-ink-soft underline underline-offset-2 hover:text-signal">
+          {t("admin_link")}
+        </Link>
+      </p>
+
       <div className="mt-8">{composerFoot}</div>
     </div>
   );
