@@ -28,3 +28,25 @@ data/IDFM-gtfs.zip
 # Course slide decks handed out by the instructor. Not ours to redistribute, and
 # the same fork-network reasoning as docs/ applies.
 *.pdf
+
+# Product marketing context: positioning and competitive analysis.
+# Same fork-network reasoning as docs/ — never pushed.
+.agents/
+
+# Working notes and scratch that live alongside the repo but are not the project:
+# session scratchpads, pasted research, screenshots, and the course submission
+# answers. Same fork-network reasoning as docs/ — none of it is ours to publish
+# and some of it is positioning.
+canvas.md
+grokbalblacar.md
+uiux.md
+image.png
+intelligent-experience-day2-report.json
+
+# Instructor handouts, in any format. *.pdf above covers the slides; the
+# programme arrives as .docx.
+*.docx
+
+# The demo video project: hundreds of megabytes of captures, renders and
+# node_modules, built from the live site and rebuildable from it.
+videos/
