@@ -7,6 +7,11 @@ ignore: whether you can physically make the journey. It plans routes over the re
 timetable, counts the climb and the final walk, reads the operator's live lift outages,
 and states plainly what the open data does not know.
 
+It is for people with reduced mobility, which the app models as four profiles you can
+hold at once: wheelchair, stroller, older traveller, low energy. Residents as much as
+visitors, because the metro does not ask which you are. The interface is trilingual
+(English, French, Chinese) and answers in the language you wrote in.
+
 **Live:** https://voie-libre.vercel.app
 
 ## The problem
@@ -21,6 +26,16 @@ the timetable we load rather than quoted from anyone: 432 carry an accessibility
 at all. Of those, 14 can be used with no help whatsoever, 216 only with a booking or a
 member of staff, and 202 are marked not accessible. Seven stations have nothing
 published in either register.
+
+This does not get fixed by waiting, and the operator is the one saying so. Île-de-France
+Mobilités' own explainer records that the 2005 equal-rights law gave transport networks ten
+years to become accessible, that underground rail can be excused for proven technical
+impossibility, protection of architectural heritage, or cost out of all proportion to the
+benefit, and that the Paris metro qualifies on all three. The figure put on making the metro
+accessible at the Assises du métro pour tous in October 2024 was more than €20bn across 20
+years. Every inaccessible line must offer an alternative by bus, tram, RER or on-demand PAM,
+and those alternatives are real; finding them is the problem this app exists for.
+([source](https://www.iledefrance-mobilites.fr/en/parisian-metro-complex-accessibility))
 
 RATP publishes Metro Line 14 as step-free end to end. That is their claim, and we
 repeat it as theirs: in the registers we read, 9 of the line's 21 stations have every
