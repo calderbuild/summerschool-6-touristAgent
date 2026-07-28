@@ -1,11 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PLACES, SERVICES } from "@/lib/places";
 import { ROUTES } from "@/lib/data";
-import { ArrowLeft, ExternalLink, Search } from "lucide-react";
+import { ArrowLeft, ExternalLink, History, Pencil, Search } from "lucide-react";
+import PlaceEditor, { type OverrideRow } from "./PlaceEditor";
+import { apply } from "@/lib/overrides";
 
 /**
  * Staff console for the knowledge base the assistant answers from. It is a
@@ -15,6 +17,16 @@ import { ArrowLeft, ExternalLink, Search } from "lucide-react";
  */
 
 const UNKNOWN = /unknown|inconnu|未知/i;
+
+interface LogRow {
+  id: number;
+  place_id: string;
+  field: string;
+  old_value: string | null;
+  new_value: string | null;
+  updated_by: string | null;
+  at: string;
+}
 
 function Stat({ label, value, tone }: { label: string; value: string | number; tone?: "warn" | "bad" }) {
   const valueTone = tone === "bad" ? "text-barrier" : tone === "warn" ? "text-caution-ink" : "text-ink";
@@ -31,6 +43,39 @@ export default function AdminConsole() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [signingOut, setSigningOut] = useState(false);
+  // The corrections already saved, and which record is open for editing.
+  const [rows, setRows] = useState<OverrideRow[]>([]);
+  const [log, setLog] = useState<LogRow[]>([]);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [dbConfigured, setDbConfigured] = useState<boolean | null>(null);
+
+  interface Payload {
+    ok?: boolean;
+    configured?: boolean;
+    rows?: OverrideRow[];
+    log?: LogRow[];
+  }
+
+  const load = useCallback(() => {
+    // The state lands in the promise callback, not in the effect body: this is the
+    // shape `RouteLifts` and `LiveRail` already use, and the one React's rule
+    // against synchronous setState in an effect is asking for.
+    fetch("/api/admin/places")
+      .then((r) => r.json())
+      .then((body: Payload) => {
+        if (!body.ok) return;
+        setDbConfigured(!!body.configured);
+        setRows(body.rows ?? []);
+        setLog(body.log ?? []);
+      })
+      // A console that cannot reach its own endpoint still shows the shipped data,
+      // which is what the assistant is answering from anyway.
+      .catch(() => {});
+  }, []);
+
+  useEffect(load, [load]);
+
+  const byId = useMemo(() => new Map(rows.map((r) => [r.place_id, r])), [rows]);
 
   const categories = useMemo(
     () => ["all", ...Array.from(new Set(PLACES.map((p) => p.category))).sort()],
@@ -183,14 +228,32 @@ export default function AdminConsole() {
                   <th className="px-3 py-2.5 font-bold">Wheelchair</th>
                   <th className="px-3 py-2.5 font-bold">Verified</th>
                   <th className="px-3 py-2.5 font-bold">Source</th>
+                  <th className="px-3 py-2.5 font-bold">Correct</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => (
+                {filtered.map((base) => {
+                  const row = byId.get(base.id);
+                  // The table shows what the assistant is actually answering from,
+                  // not what the file says: a console that displays the shipped
+                  // value after somebody corrected it is showing the wrong data to
+                  // the one person who needs the right data.
+                  const p = apply(base, row);
+                  return (
                   <tr key={p.id} className="border-b border-ink/[0.06] align-top last:border-0">
                     <td className="px-4 py-3">
                       <span className="flex items-center gap-1.5 text-[14px] font-semibold text-ink">
                         {p.nameEn}
+                        {row && (
+                          <span className="rounded bg-signal/12 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase text-signal">
+                            corrected
+                          </span>
+                        )}
+                        {row?.hidden && (
+                          <span className="rounded bg-ink/10 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase text-ink-soft">
+                            hidden
+                          </span>
+                        )}
                         {p.status === "closed" && (
                           <span className="rounded bg-barrier/10 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase text-barrier">
                             closed
@@ -225,11 +288,22 @@ export default function AdminConsole() {
                         <span className="text-ink-faint">unknown</span>
                       )}
                     </td>
+                    <td className="px-3 py-3">
+                      <button
+                        onClick={() => setEditing(editing === p.id ? null : p.id)}
+                        aria-expanded={editing === p.id}
+                        className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-ink/15 bg-surface px-2.5 text-[12.5px] font-semibold text-ink-soft transition-colors hover:border-signal/50 hover:text-ink"
+                      >
+                        <Pencil size={13} strokeWidth={2.3} aria-hidden />
+                        {editing === p.id ? "Close" : "Correct"}
+                      </button>
+                    </td>
                   </tr>
-                ))}
+                  );
+                })}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="px-4 py-10 text-center text-[14px] text-ink-soft">
+                    <td colSpan={8} className="px-4 py-10 text-center text-[14px] text-ink-soft">
                       No place matches &quot;{query}&quot;. Clear the search or pick another category.
                     </td>
                   </tr>
@@ -237,6 +311,53 @@ export default function AdminConsole() {
               </tbody>
             </table>
           </div>
+
+          {editing && (() => {
+            const base = PLACES.find((p) => p.id === editing);
+            if (!base) return null;
+            return (
+              <PlaceEditor
+                key={base.id}
+                place={base}
+                row={byId.get(base.id)}
+                onClose={() => setEditing(null)}
+                onSaved={load}
+              />
+            );
+          })()}
+
+          {dbConfigured === false && (
+            <p className="mt-3 rounded-xl border border-caution/40 bg-caution/10 px-4 py-3 text-[13px] leading-relaxed text-caution-ink">
+              This build has no database configured, so the console is read-only here. The
+              assistant is answering from the committed knowledge base, which is the same data
+              shown above.
+            </p>
+          )}
+
+          {log.length > 0 && (
+            <div className="mt-5">
+              <h3 className="flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+                <History size={13} strokeWidth={2.3} aria-hidden />
+                Last corrections
+              </h3>
+              <ul className="mt-2.5 divide-y divide-ink/[0.08] overflow-hidden rounded-2xl border border-ink/10 bg-surface">
+                {log.map((l) => (
+                  <li key={l.id} className="px-4 py-2.5 text-[12.5px] leading-relaxed text-ink-soft">
+                    <span className="font-semibold text-ink">{l.place_id}</span>
+                    <span className="font-mono text-[11.5px]"> · {l.field}</span>
+                    {" "}
+                    {l.old_value ? <s className="text-ink-faint">{l.old_value.slice(0, 60)}</s> : <span className="text-ink-faint">nothing</span>}
+                    {" -> "}
+                    {l.new_value ? l.new_value.slice(0, 80) : <span className="text-ink-faint">cleared</span>}
+                    <span className="block text-[11.5px] text-ink-faint">
+                      {l.updated_by ? `${l.updated_by}, ` : ""}
+                      {l.at.slice(0, 16).replace("T", " ")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
         {/* Practical services. Listed separately from places because a phone
