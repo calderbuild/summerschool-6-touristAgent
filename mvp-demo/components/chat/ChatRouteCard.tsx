@@ -61,15 +61,36 @@ function ChatRouteCard({
   from,
   to,
   profile,
+  latest = true,
 }: {
   id?: string;
   from?: string;
   to?: string;
   /** One constraint or several; the strictest decides the journey. */
   profile?: string | string[] | null;
+  /** Whether this card belongs to the newest answer on screen. */
+  latest?: boolean;
 }) {
   const { t, lang } = useI18n();
-  const [showMap, setShowMap] = useState(false);
+  /**
+   * The map is open on the newest answer and closed on the ones scrolled above it,
+   * and that is derived rather than stored.
+   *
+   * It used to be closed until clicked, for a real reason: a transcript of several
+   * journeys would otherwise hold several live maps. But a map behind a click is a
+   * map almost nobody sees, and "where in Paris is this" is half of what a traveller
+   * came for. Deriving it from `latest` gets both: one map at a time, on the answer
+   * being read, with no click.
+   *
+   * `null` means the reader has not expressed a preference yet. Once they do, their
+   * choice wins for this card and survives a newer answer arriving, which is why
+   * this is a nullable override and not a boolean initialised from a prop: state
+   * initialised at mount would never release the map when the card stopped being
+   * the newest one, and syncing it in an effect is exactly the setState-in-effect
+   * React 19 refuses.
+   */
+  const [mapOverride, setMapOverride] = useState<boolean | null>(null);
+  const showMap = mapOverride ?? latest;
   const [mapView, setMapView] = useState<"map" | "3d">("map");
   // Same contract as the planner page: if the tile service or WebGL is missing,
   // drop back to the flat map and say so rather than leave a grey rectangle.
@@ -227,13 +248,14 @@ function ChatRouteCard({
         <p className="mt-1.5 px-0.5 text-[10.5px] text-ink-soft">{t("map_legend_lines")}</p>
       </div>
 
-      {/* Real map, opened on demand. The schematic above carries the accessibility
-          story; the map answers "where in Paris". It mounts only when opened, so a
-          transcript of many cards never spins up many WebGL maps at once. */}
+      {/* The real map. The schematic above carries the accessibility story; this
+          answers "where in Paris". It still mounts only while shown, so a transcript
+          of many journeys never holds many WebGL maps at once, but it is shown by
+          default on the newest answer rather than waiting to be asked for. */}
       <div className="px-3.5 pt-2.5">
         <button
           type="button"
-          onClick={() => setShowMap((v) => !v)}
+          onClick={() => setMapOverride(!showMap)}
           aria-expanded={showMap}
           // Only while the map is mounted. It is deliberately not rendered until
           // opened, so claiming to control it while it is closed would point at

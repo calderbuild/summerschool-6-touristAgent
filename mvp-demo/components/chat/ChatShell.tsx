@@ -339,7 +339,9 @@ function LangSwitch() {
  *  Always hides a half-streamed trailing marker; an unknown id is dropped. */
 const MARKER = /(\[\[route:[\w-]+(?::[\w-]+)?\]\]|\[\[plan:[^|\]]{1,60}\|[^|\]]{1,60}\]\])/g;
 
-function renderAnswer(content: string, profiles: ProfileId[]) {
+/** `latest` reaches the route cards so the newest answer shows its map without a
+ *  click while the ones scrolled above it release theirs. */
+function renderAnswer(content: string, profiles: ProfileId[], latest: boolean) {
   const clean = content.replace(/\[\[[^\]]*$/, "");
   const parts = clean.split(MARKER);
   return parts.map((p, i) => {
@@ -351,6 +353,7 @@ function renderAnswer(content: string, profiles: ProfileId[]) {
           from={planned[1].trim()}
           to={planned[2].trim()}
           profile={profiles}
+          latest={latest}
         />
       );
     }
@@ -359,7 +362,7 @@ function renderAnswer(content: string, profiles: ProfileId[]) {
       // Unknown id (model typo/hallucination): drop it silently rather than echo
       // the raw [[route:...]] protocol syntax into the demo. Prose still renders.
       if (ROUTE_ID_SET.has(m[1])) {
-        return <ChatRouteCard key={i} id={m[1]} profile={m[2] ? [m[2]] : profiles} />;
+        return <ChatRouteCard key={i} id={m[1]} profile={m[2] ? [m[2]] : profiles} latest={latest} />;
       }
       return null;
     }
@@ -506,7 +509,7 @@ const MessageItem = memo(function MessageItem({
       {message.content ? (
         <>
           <div className="text-[15px] leading-relaxed text-ink">
-            {renderAnswer(message.content, profiles)}
+            {renderAnswer(message.content, profiles, isLast)}
           </div>
           {speechSupported && !streaming && (
             <button

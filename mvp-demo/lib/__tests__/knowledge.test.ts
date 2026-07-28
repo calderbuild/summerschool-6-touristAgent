@@ -310,6 +310,29 @@ describe("what a hand-written route may claim", () => {
     expect(route).toMatch(/That assumption is the app's, not theirs/);
   });
 
+  /**
+   * Being useless is also a failure.
+   *
+   * Asked to recommend Chinese food, production answered "I don't have any data on
+   * Chinese restaurants" and stopped. Every rule in this prompt was pointed at not
+   * inventing things, and none of them said what to do when the honest answer is
+   * "not our data, but here is what is generally true, and here is the part we can
+   * actually check for you". A travel assistant that refuses ordinary travel
+   * questions has protected its own accuracy at the traveller's expense.
+   */
+  it("answers general questions, without lending them our accessibility claims", () => {
+    const prompt = readFileSync(join(APP, "app", "api", "chat", "route.ts"), "utf8");
+    expect(prompt).toMatch(/Questions this app has no data for are still worth answering/);
+    // The three conditions are the whole point: without them this is just a licence
+    // to make things up in a friendlier tone.
+    expect(prompt).toMatch(/general knowledge rather than something this app has checked/);
+    // And it has to say the thing could be wrong. "Not from our data" is a statement
+    // about provenance; a traveller also needs to hear that it may be out of date.
+    expect(prompt).toMatch(/may be out of date or simply wrong/);
+    expect(prompt).toMatch(/Attach no accessibility claim to it at all/);
+    expect(prompt).toMatch(/plan the step-free journey once they name a place or an area/);
+  });
+
   it("has no bus data, and a prompt that says so", () => {
     const net = JSON.parse(readFileSync(join(APP, "lib", "network.json"), "utf8")) as {
       lines: { mode?: string }[];
