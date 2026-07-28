@@ -701,6 +701,23 @@ const DICT: Record<string, Entry> = {
     fr: "Planifier un trajet sur la carte",
     zh: "在地图上规划行程",
   },
+  // The projected page. No "scan the code" anywhere: the instruction a QR does not
+  // need is the kind of caption that papers over a layout mistake.
+  qr_title: {
+    en: "Open it on your own phone",
+    fr: "Ouvrez-le sur votre téléphone",
+    zh: "用你自己的手机打开",
+  },
+  qr_alt: {
+    en: "QR code for voie-libre.vercel.app",
+    fr: "QR code vers voie-libre.vercel.app",
+    zh: "voie-libre.vercel.app 的二维码",
+  },
+  qr_promise: {
+    en: "No sign-in, and nothing you type is stored on our side.",
+    fr: "Aucune connexion, et rien de ce que vous tapez n'est conservé chez nous.",
+    zh: "无需登录，你输入的内容也不会存在我们这边。",
+  },
   back_to_assistant: { en: "Assistant", fr: "Assistant", zh: "返回对话" },
   lang_group: { en: "Language", fr: "Langue", zh: "语言" },
 
