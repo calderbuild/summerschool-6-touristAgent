@@ -285,6 +285,31 @@ describe("what a hand-written route may claim", () => {
    * Both directions, because the rule is only honest while the gap is real: if the
    * graph ever gains a bus, this fails and the prompt has to be revisited.
    */
+  /**
+   * The route and the prompt have to mean the same traveller.
+   *
+   * When nobody picked a profile, `computedRoute` was called with ["wheelchair"] and
+   * `systemPrompt` was handed the empty array, so the model described the strictest
+   * journey in Paris as though it were the ordinary one. A stroller user who picked
+   * nothing got a longer route through different stations and no sentence explaining
+   * why. Nothing was broken and every test passed: two call sites simply answered
+   * the same question differently, which is the shape of entries 5 and 12.
+   */
+  it("plans and describes the same traveller, and says when it assumed one", () => {
+    const route = readFileSync(join(APP, "app", "api", "chat", "route.ts"), "utf8");
+
+    // Resolved once, then both consumers get the same value.
+    expect(route).toMatch(/const stated = profiles\.length > 0 \? profiles : null;/);
+    expect(route).toMatch(/const planned: ProfileId\[\] = stated \?\? \["wheelchair"\];/);
+    expect(route).toMatch(/computedRoute\(lastUser, planned, lifts\)/);
+    // The defect itself: defaulting inline at one call site only.
+    expect(route).not.toMatch(/computedRoute\([^)]*profiles\.length \?/);
+
+    // And an assumed constraint has to be disclosed, not worn silently.
+    expect(route).toMatch(/has not said how they travel/);
+    expect(route).toMatch(/That assumption is the app's, not theirs/);
+  });
+
   it("has no bus data, and a prompt that says so", () => {
     const net = JSON.parse(readFileSync(join(APP, "lib", "network.json"), "utf8")) as {
       lines: { mode?: string }[];

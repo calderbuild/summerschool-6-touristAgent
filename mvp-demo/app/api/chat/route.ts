@@ -327,7 +327,10 @@ ${lines || "- none: the feed currently reports no lift out of service"}`;
 }
 
 function systemPrompt(
-  profiles: ProfileId[],
+  /** What the traveller actually chose, or null when they chose nothing. The
+   *  difference matters: the route is planned either way, and only one of the two
+   *  is something the reply may state as theirs. */
+  stated: ProfileId[] | null,
   weather: string | null,
   facts: NetworkFacts | null,
   events: EventFeed | null,
@@ -348,9 +351,9 @@ How Voie Libre works (facts, not rules to recite):
 - When a lift is out of service, the reply gives a step-free alternative, and it comes from the data in this prompt: another entrance, another line in the computed journey, or a different station.
 - There is no bus or Montmartrobus data anywhere in this app. The graph is metro, RER, Transilien, tram and TER only. So never name a bus route, never say a bus is level-boarding, and never say where a bus stops: not one of those is a fact this app holds, and a route number recalled from memory is invented even when it turns out to exist. If a bus is genuinely the answer, say that a bus may serve the gap and that the traveller should check the route and its access on the operator's own app, without naming it. The exception is a bus already named in the walked-route data below, which the team checked on foot.
 ${
-    profiles.length
-      ? `\nThe traveller's mobility profile is: ${profiles.join(" and ")}. Weigh the route against ${profiles.length > 1 ? "all of these at once, taking the strictest requirement wherever they differ" : "this profile"} (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance and any climb; an older traveller cares about the number of changes and about stations whose accessibility nobody has published).`
-      : ""
+    stated
+      ? `\nThe traveller's mobility profile is: ${stated.join(" and ")}. Weigh the route against ${stated.length > 1 ? "all of these at once, taking the strictest requirement wherever they differ" : "this profile"} (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance and any climb; an older traveller cares about the number of changes and about stations whose accessibility nobody has published).`
+      : `\nThe traveller has not said how they travel, and the journey below was planned for the strictest case, a wheelchair user, because a route that works for a wheelchair works for the others. That assumption is the app's, not theirs, so say so in one short sentence and invite them to tell you if they travel differently, because a stroller or walking route can be shorter and can use stations this one avoided. Do not describe the route as if they had told you.`
   }${weather ? `\nCurrent weather you may use for a weather-aware suggestion: ${weather} If it is raining and the traveller's plan is outdoors, you may suggest a step-free indoor option that is on or near the route, but do not invent opening hours or specifics.` : ""}
 
 Your reasoning is shown to the traveller, so it stays about this specific trip: which lifts are working or unknown, how many steps each leg has, the walking distance, and how it fits the profile. It weighs the trip itself rather than restating these notes or planning the wording of the reply.
@@ -480,17 +483,23 @@ export async function POST(req: Request) {
   ]);
 
   const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+  // Resolved once. Two call sites used to answer this separately: the route was
+  // computed for a wheelchair user while the prompt was told nothing, so the model
+  // described the strictest possible journey as though it were the generic one and
+  // a stroller user got a longer route with no reason given for it.
+  const stated = profiles.length > 0 ? profiles : null;
+  const planned: ProfileId[] = stated ?? ["wheelchair"];
   const payload = [
     {
       role: "system",
       content: systemPrompt(
-        profiles,
+        stated,
         weather,
         facts,
         events,
         lifts,
         places,
-        computedRoute(lastUser, profiles.length ? profiles : ["wheelchair"], lifts),
+        computedRoute(lastUser, planned, lifts),
       ),
     },
     ...messages,
