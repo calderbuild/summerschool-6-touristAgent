@@ -1,24 +1,29 @@
 import { stationKey } from "./idfm";
 
 /**
- * Live lift state, the one thing this product has never been able to tell you.
+ * Live lift state: which lifts Île-de-France Mobilités says are broken right now.
  *
- * `etat-des-ascenseurs` on Île-de-France Mobilités' open-data platform holds 944
- * lifts with a per-lift status and the timestamp it was last updated. Its records
- * answer `403 ForbiddenAccess` unauthenticated because the dataset is published
- * under Licence Mobilité rather than Licence Ouverte, so it needs a token that is
- * free but has to be registered for by a person.
+ * `etat-des-ascenseurs` holds 944 lifts, each with a status, a reason, where in
+ * the station it sits, and the minute the operator last touched it. It is
+ * published under Licence Mobilité rather than Licence Ouverte, so unauthenticated
+ * requests answer `403 ForbiddenAccess`. That was this project's one real hole for
+ * most of the week and the interface said so out loud; it is now read for real.
  *
- * Two things about this file are deliberate.
+ * Three things about this file are deliberate.
  *
- * **It does not know what a status means.** The field list is public even without
- * a token (`liftstatus`, `liftreason`, `liftstateupdate`, `zdcname`,
- * `centroidzdc`), but the *values* `liftstatus` takes are not, and inventing an
- * enum from a plausible-looking English word is exactly how a product ends up
- * telling a wheelchair user a lift works when the feed said something else. So
- * `VERIFIED_STATUSES` starts almost empty, every unrecognised value is shown to
- * the traveller verbatim as the operator's own words with our status left
- * `unknown`, and the map only grows once somebody has read real records.
+ * **The token is the DATASET one, not the API one.** PRIM issues two, on two tabs
+ * of the same page, and they are not interchangeable. The API token is for the
+ * marketplace webservices and sends `apiKey` as a header; against this endpoint it
+ * answers 403. The dataset token is the one that reads restricted datasets, and it
+ * goes in `Authorization: Apikey <token>`. Both were tried against a real request
+ * before this line was written, because guessing which of two credentials a
+ * 403/401 refers to is how a working integration gets called broken.
+ *
+ * **The status map holds only values seen in real records.** Inventing an enum
+ * from a plausible-looking English word is how a product ends up telling a
+ * wheelchair user a lift works when the feed said something else. Every value in
+ * `VERIFIED_STATUSES` was counted in a live response, with the date; anything else
+ * stays `unknown` and the operator's own wording is carried through verbatim.
  *
  * **It joins on geography, not on ids.** `zdcid` is a zone-de-correspondance id
  * and does not match a GTFS station id, and matching French stop names by
@@ -26,24 +31,22 @@ import { stationKey } from "./idfm";
  * register hit; same fix: distance plus a normalised name.
  */
 
-const RECORDS =
-  "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/etat-des-ascenseurs/records";
+/** One call returns all 944 rows, where `/records` caps at 100 and would need ten.
+ *  Fewer calls is the whole reason to prefer it: this endpoint's quota is not
+ *  documented anywhere we have read, so the safe move is to need it once. */
+const EXPORT =
+  "https://data.iledefrance-mobilites.fr/api/explore/v2.1/catalog/datasets/etat-des-ascenseurs/exports/json";
 
-/** Server-side only. The platform's own OpenAPI spec declares its key as a query
- *  parameter (`apikey`, in: query), not a header, so it necessarily appears in
- *  the request URL. That is the operator's design, and it is survivable only
- *  because this module runs on the server: the token is never sent to a browser,
- *  never logged, and never included in anything returned to a caller. */
-const TOKEN = process.env.IDFM_PRIM_TOKEN ?? "";
+/** Server-side only, and sent as a header, so the token never appears in a URL,
+ *  a log line, or anything returned to a caller. */
+const TOKEN = process.env.IDFM_DATASET_TOKEN ?? "";
 
-/** A lift moves in minutes, unlike an accessibility class, so the cache is short.
- *  The quota is the constraint: a PRIM token allows 5 requests a second and
- *  1,000 a day, and one page of this dataset is 100 rows, so a full refresh costs
- *  10 calls. Every four minutes is 3,600 calls a day, which would blow the quota;
- *  every fifteen minutes is 960 and fits with room for the rest of the app. */
-const CACHE_MS = 15 * 60 * 1000;
-const PAGE = 100;
-const TOTAL_HINT = 944;
+/** A lift moves in minutes, not days. The operator's own metadata claims a daily
+ *  update and its own `liftstateupdate` stamps disagree with it: on a single
+ *  response they ranged over the same evening, many within the last few minutes.
+ *  Ten minutes follows the data rather than the metadata, and one refresh is one
+ *  upstream call. */
+const CACHE_MS = 10 * 60 * 1000;
 
 export interface LiftState {
   /** The operator's own station name for the zone this lift sits in. */
@@ -55,10 +58,19 @@ export interface LiftState {
   statusRaw: string;
   /** Only ever set from a value somebody has seen in real records. */
   status: "working" | "out" | "unknown";
-  /** Why, when the feed says. */
+  /** Why, when the feed says. Real values seen: `liftFailure`,
+   *  `undefinedEquipmentProblem`. The feed also uses the literal string "/" for
+   *  "no reason given", which is normalised away here rather than shown to a
+   *  traveller as a reason. */
   reason: string | null;
-  /** Where in the station, when the feed says. */
+  /** Where in the station, when the feed says, in the operator's own French:
+   *  "Salle d'accès <> Quai", "Passerelle <> Quais C / D". Not translated, because
+   *  it is the wording on the signs. */
   situation: string | null;
+  /** Which way it runs, when the feed says ("Sortie Uniquement", "Montée et descente"). */
+  direction: string | null;
+  /** The mode of the station this lift serves: Metro, RapidTransit, LocalTrain, Tram. */
+  mode: string | null;
   /** The operator's own last-updated stamp for this lift. */
   updatedAt: string | null;
 }
@@ -77,19 +89,27 @@ export interface LiftFeed {
 /**
  * Status values confirmed against real records.
  *
- * EMPTY ON PURPOSE. Nobody on this team has yet held a token and read a row, so
- * there is nothing here that could be verified, and a guess would be worse than
- * an admission. The moment a token exists, `GET /api/lifts` reports
- * `seenStatuses`; put the real values in here, with the date they were observed,
- * and only then will the app call a lift working or out.
+ * Counted on 2026-07-27 by grouping the live feed on `liftstatus`, not read off a
+ * documentation page: 734 `available`, 64 `notavailable`, 136 `unknown`, and 10
+ * rows where the field is null. The operator's own third value is `unknown`, which
+ * is why it is absent from this map rather than mapped to anything: when the feed
+ * says it does not know, we say we do not know, and 136 of 944 lifts are in that
+ * state right now.
  */
 const VERIFIED_STATUSES: Record<string, "working" | "out"> = {
-  // e.g. "Disponible": "working",   // observed YYYY-MM-DD in N records
+  available: "working", // observed 2026-07-27 in 734 records
+  notavailable: "out", // observed 2026-07-27 in 64 records
 };
 
 function classify(raw: string): "working" | "out" | "unknown" {
-  const hit = VERIFIED_STATUSES[raw.trim()];
+  const hit = VERIFIED_STATUSES[raw.trim().toLowerCase()];
   return hit ?? "unknown";
+}
+
+/** The feed writes "/" where there is no reason, which is not a reason. */
+function reasonOf(v: unknown): string | null {
+  const s = typeof v === "string" ? v.trim() : "";
+  return s && s !== "/" ? s : null;
 }
 
 let cache: { at: number; feed: LiftFeed } | null = null;
@@ -100,27 +120,25 @@ export function liftsConfigured(): boolean {
   return TOKEN.length > 0;
 }
 
-async function page(offset: number): Promise<Record<string, unknown>[]> {
-  const url = new URL(RECORDS);
-  url.searchParams.set("limit", String(PAGE));
-  url.searchParams.set("offset", String(offset));
+async function fetchAll(): Promise<Record<string, unknown>[]> {
+  const url = new URL(EXPORT);
   url.searchParams.set(
     "select",
-    "zdcid,zdcname,centroidzdc,liftid,liftstatus,liftreason,liftsituation,liftstateupdate",
+    "zdcid,zdcname,centroidzdc,liftid,liftstatus,liftreason,liftsituation,liftdirection,liftmode,liftstateupdate",
   );
-  url.searchParams.set("apikey", TOKEN);
 
   const res = await fetch(url, {
-    headers: { Accept: "application/json" },
-    signal: AbortSignal.timeout(12_000),
+    headers: { Accept: "application/json", Authorization: `Apikey ${TOKEN}` },
+    signal: AbortSignal.timeout(15_000),
     cache: "no-store",
   });
-  if (!res.ok) {
-    // Deliberately not including the URL: it carries the token.
-    throw new Error(`etat-des-ascenseurs returned ${res.status}`);
-  }
-  const body = (await res.json()) as { results?: unknown[] };
-  return (body.results ?? []) as Record<string, unknown>[];
+  if (!res.ok) throw new Error(`etat-des-ascenseurs returned ${res.status}`);
+  // `/exports/json` returns the array itself, where `/records` wraps it in
+  // `{ results }`. Both shapes are accepted so a change upstream degrades to an
+  // empty feed rather than a crash.
+  const body = (await res.json()) as unknown;
+  const rows = Array.isArray(body) ? body : ((body as { results?: unknown[] }).results ?? []);
+  return rows as Record<string, unknown>[];
 }
 
 function str(v: unknown): string | null {
@@ -144,10 +162,7 @@ export async function liftFeed(): Promise<LiftFeed> {
   }
 
   try {
-    // One page past the known count, so a lift added tomorrow is not silently lost.
-    const offsets = Array.from({ length: Math.ceil(TOTAL_HINT / PAGE) + 1 }, (_, i) => i * PAGE);
-    const pages = await Promise.all(offsets.map(page));
-    const rows = pages.flat();
+    const rows = await fetchAll();
 
     const lifts: LiftState[] = [];
     const seenStatuses: Record<string, number> = {};
@@ -166,8 +181,10 @@ export async function liftFeed(): Promise<LiftFeed> {
         liftId,
         statusRaw,
         status: classify(statusRaw),
-        reason: str(row.liftreason),
+        reason: reasonOf(row.liftreason),
         situation: str(row.liftsituation),
+        direction: str(row.liftdirection),
+        mode: str(row.liftmode),
         updatedAt: str(row.liftstateupdate),
       });
     }
@@ -181,6 +198,39 @@ export async function liftFeed(): Promise<LiftFeed> {
     // Fail open, and keep saying what we last actually knew.
     return cache?.feed ?? { fetchedAt: new Date().toISOString(), live: false, lifts: [], seenStatuses: {} };
   }
+}
+
+/**
+ * The counts, computed once so that the endpoint, the page and the model's prompt
+ * all quote the same four numbers.
+ *
+ * `out` is the number worth saying out loud: it is a live count of lifts the
+ * operator itself reports broken, and it is the one thing on this site that could
+ * be different in ten minutes.
+ */
+export function liftCounts(feed: LiftFeed): {
+  total: number;
+  working: number;
+  out: number;
+  unknown: number;
+} {
+  let working = 0;
+  let out = 0;
+  let unknown = 0;
+  for (const l of feed.lifts) {
+    if (l.status === "working") working++;
+    else if (l.status === "out") out++;
+    else unknown++;
+  }
+  return { total: feed.lifts.length, working, out, unknown };
+}
+
+/** The broken ones, worst-labelled first and then by station, for a list a human
+ *  reads top-down. */
+export function liftsOut(feed: LiftFeed): LiftState[] {
+  return feed.lifts
+    .filter((l) => l.status === "out")
+    .sort((a, b) => a.station.localeCompare(b.station, "fr") || a.liftId.localeCompare(b.liftId));
 }
 
 const MATCH_M = 250;

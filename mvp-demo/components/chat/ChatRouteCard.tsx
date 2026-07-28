@@ -1,9 +1,10 @@
 "use client";
 
-import { memo, useEffect, useId, useState } from "react";
+import { memo, useEffect, useId, useMemo, useState } from "react";
 import { ROUTES, type DemoRoute, type RouteNode } from "@/lib/data";
 import { useI18n } from "@/lib/i18n";
 import { tally, verdictSummary } from "@/lib/verdict";
+import RouteLifts from "../RouteLifts";
 import AccessRibbon from "./AccessRibbon";
 import RouteMap from "../RouteMap";
 import MetroMap, { focusIndex } from "../MetroMap";
@@ -64,7 +65,8 @@ function ChatRouteCard({
   id?: string;
   from?: string;
   to?: string;
-  profile?: string | null;
+  /** One constraint or several; the strictest decides the journey. */
+  profile?: string | string[] | null;
 }) {
   const { t, lang } = useI18n();
   const [showMap, setShowMap] = useState(false);
@@ -78,12 +80,21 @@ function ChatRouteCard({
   const [computed, setComputed] = useState<DemoRoute | null>(null);
   const [failed, setFailed] = useState<string | null>(null);
 
+  // Only ids the label table knows are kept, so a marker the model typed wrong
+  // cannot become a query string the endpoint has to defend against. Reduced to a
+  // string first because that is what the effect below can depend on: an array
+  // prop is a new value on every render, and depending on it refetches the journey
+  // forever.
+  const who = (Array.isArray(profile) ? profile : profile ? [profile] : [])
+    .filter((p) => !!PROFILE_LABEL[p])
+    .join(",");
+  const askedProfiles = useMemo(() => (who ? who.split(",") : []), [who]);
+
   useEffect(() => {
     if (!from || !to) return;
     let live = true;
-    const who = profile && PROFILE_LABEL[profile] ? profile : "wheelchair";
     fetch(
-      `/api/plan?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&profile=${who}`,
+      `/api/plan?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&profile=${who || "wheelchair"}`,
     )
       .then((r) => r.json())
       .then((d) => {
@@ -95,7 +106,7 @@ function ChatRouteCard({
     return () => {
       live = false;
     };
-  }, [from, to, profile]);
+  }, [from, to, who]);
 
   const route = id ? ROUTES.find((r) => r.id === id) : computed;
 
@@ -120,8 +131,6 @@ function ChatRouteCard({
   const barrierNode = route.nodes.find((n) => n.barrier);
   const { barriers, conditional, unknowns, clear } = tally(route);
 
-  const ProfileIcon = profile ? PROFILE_ICON[profile] : null;
-  const profileLabel = profile ? PROFILE_LABEL[profile] : null;
 
   return (
     <div className="my-3">
@@ -140,10 +149,17 @@ function ChatRouteCard({
         <p className="font-display text-[14px] font-bold text-ink">
           {route.from} <span className="text-ink/45" aria-hidden>→</span> {route.to}
         </p>
-        {ProfileIcon && profileLabel && (
+        {/* Every constraint the journey was planned under, not just the first.
+            A card that says "For wheelchair" when the traveller also said they
+            have little energy left is describing a different search than the one
+            that ran. */}
+        {askedProfiles.length > 0 && (
           <span className="inline-flex items-center gap-1 rounded bg-ink/6 px-1.5 py-0.5 text-[11px] font-semibold text-ink-soft">
-            <ProfileIcon size={12} strokeWidth={2.2} aria-hidden />
-            {t("for_word")} {t(profileLabel)}
+            {askedProfiles.map((p) => {
+              const Icon = PROFILE_ICON[p];
+              return Icon ? <Icon key={p} size={12} strokeWidth={2.2} aria-hidden /> : null;
+            })}
+            {t("for_word")} {askedProfiles.map((p) => t(PROFILE_LABEL[p])).join(" + ")}
           </span>
         )}
         {route.disruption && (
@@ -326,6 +342,15 @@ function ChatRouteCard({
           </li>
         ))}
       </ul>
+
+      {/* Live lift outages on this exact journey. Its own block rather than a
+          clause in the verdict above, because a verdict computed from station
+          statuses cannot see a broken lift and would read as clean anyway. */}
+      <div className="px-3.5">
+        <RouteLifts
+          stops={route.nodes.map((n) => ({ name: n.name, lat: n.coord.lat, lng: n.coord.lng }))}
+        />
+      </div>
 
       {/* provenance + honest freshness */}
       <div className="mt-2 border-t border-ink/10 px-3.5 py-2.5">

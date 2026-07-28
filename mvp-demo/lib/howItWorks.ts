@@ -14,14 +14,15 @@ import type { Lang } from "./i18n";
 export type Tri = Record<Lang, string>;
 
 /**
- * One retired sentence worth remembering, because it survived two honesty passes.
+ * Two retired sentences worth remembering, because each survived an honesty pass.
  *
- * The guard entry below, and the freshness note on every chat route card, used to
- * say "lift status is as of this morning, not a live feed". It reads as careful
- * hedging and it was false: there is no lift status in this product at all, of any
- * age. A stale-but-honest snapshot is a different product from one with no data,
- * and only the second one is ours. `lifts.test.ts` now fails if that sentence
- * comes back in any language.
+ * The first said "lift status is as of this morning, not a live feed". It reads as
+ * careful hedging and it was false: there was no lift status in this product at
+ * all, of any age. The second replaced it and said the lift dataset refuses us
+ * without a registered token, which was true right up until somebody registered on
+ * the evening of 2026-07-27, and then it was a false claim in the other direction.
+ * `lifts.test.ts` fails on both: a sentence that was honest yesterday is not exempt
+ * from being checked today.
  */
 
 export interface Choice {
@@ -219,9 +220,9 @@ export const CRITERIA: Criterion[] = [
   {
     name: { en: "Cost and time to market", fr: "Coût et délai", zh: "成本与上线速度" },
     answer: {
-      en: "Every dataset here is free and needs no registration, and the whole thing runs inside one free deployment. What it cost instead was a build script and the day spent finding out that the operator's pathway file, the obvious source for lifts and stairs, is published empty.",
-      fr: "Tous les jeux de données sont gratuits et sans inscription, et l'ensemble tourne dans un seul déploiement gratuit. Le coût réel a été un script de construction et la journée passée à découvrir que le fichier de cheminements de l'exploitant, source évidente pour les ascenseurs et les escaliers, est publié vide.",
-      zh: "这里每一份数据集都免费且无需注册，整套东西跑在一个免费部署里。真正的代价是一个构建脚本，以及花掉的一天才发现：运营方那份本该提供电梯和楼梯的 pathway 文件，发布出来是空的。",
+      en: "Every dataset here is free, and all but one need no registration: the lift feed is Licence Mobilité and took a free account with the operator, which is a form to fill in rather than a bill. The whole thing runs inside one free deployment. What it cost instead was a build script and the day spent finding out that the operator's pathway file, the obvious source for lifts and stairs, is published empty.",
+      fr: "Tous les jeux de données sont gratuits, et tous sauf un sont sans inscription : le flux ascenseurs est en Licence Mobilité et a demandé un compte gratuit chez l'exploitant, soit un formulaire, pas une facture. L'ensemble tourne dans un seul déploiement gratuit. Le coût réel a été un script de construction et la journée passée à découvrir que le fichier de cheminements de l'exploitant, source évidente pour les ascenseurs et les escaliers, est publié vide.",
+      zh: "这里每一份数据集都免费，除一份之外都不需要注册：电梯数据流走 Licence Mobilité，需要在运营方那边注册一个免费账号，是填表不是付钱。整套东西跑在一个免费部署里。真正的代价是一个构建脚本，以及花掉的一天才发现：运营方那份本该提供电梯和楼梯的 pathway 文件，发布出来是空的。",
     },
   },
   {
@@ -289,9 +290,9 @@ export const GUARDS: Guard[] = [
       zh: "每个回答都带着来源和日期",
     },
     body: {
-      en: "Prices and opening times are given with the date they were checked and a link to the official site, so you can confirm before you travel. Lift status is not described at all, because the dataset that carries it refuses us without a registered token. There is no snapshot of it either, and claiming one would be the most dangerous sentence in the product.",
-      fr: "Les prix et horaires sont donnés avec la date de vérification et un lien vers le site officiel, pour confirmer avant de partir. L'état des ascenseurs n'est pas présenté du tout, car le jeu de données qui le porte nous refuse l'accès sans jeton enregistré. Il n'en existe pas non plus d'instantané, et en revendiquer un serait la phrase la plus dangereuse du produit.",
-      zh: "价格和开放时间都附带核对日期和官方网站链接，方便你出行前确认。电梯状态我们根本不描述，因为承载它的数据集在没有注册 token 时拒绝我们。我们也没有它的任何快照，声称有会是这个产品里最危险的一句话。",
+      en: "Prices and opening times are given with the date they were checked and a link to the official site, so you can confirm before you travel. Lift state carries the operator's own timestamp, to the minute, and where the operator marks a lift unknown that is what you are shown: the most dangerous sentence this product could print is a working lift that is not working.",
+      fr: "Les prix et horaires sont donnés avec la date de vérification et un lien vers le site officiel, pour confirmer avant de partir. L'état d'un ascenseur porte l'horodatage de l'exploitant, à la minute, et là où l'exploitant le marque inconnu c'est ce qui vous est montré : la phrase la plus dangereuse que ce produit puisse afficher, c'est un ascenseur en service qui ne l'est pas.",
+      zh: "价格和开放时间都附带核对日期和官方网站链接，方便你出行前确认。电梯状态带着运营方自己的时间戳，精确到分钟；运营方把某台标为未知的，你看到的就是未知：这个产品能打出的最危险的一句话，就是把一台坏了的电梯说成能用。",
     },
   },
   {
@@ -321,6 +322,16 @@ export const LIVE_SOURCES: { name: string; licence: string; url: string; role: T
       en: "The operator's own accessibility class for 459 stops, shown beside every stop on a route. 213 are simply not accessible, 174 need a booking made in advance, 58 need a member of staff, 14 work on your own.",
       fr: "La classe d'accessibilité de l'exploitant pour 459 arrêts, affichée à côté de chaque arrêt d'un itinéraire. 213 ne sont pas accessibles, 174 exigent une réservation préalable, 58 l'aide d'un agent, 14 fonctionnent en autonomie.",
       zh: "运营方对 459 个站点的无障碍等级，显示在路线的每一站旁边。其中 213 站完全不可通行，174 站需提前预约，58 站需站内工作人员协助，14 站可自行通行。",
+    },
+  },
+  {
+    name: "IDFM · État des ascenseurs",
+    licence: "Licence Mobilité (registered token)",
+    url: "https://prim.iledefrance-mobilites.fr/en/jeux-de-donnees/etat-des-ascenseurs",
+    role: {
+      en: "Which of 944 lifts the operator says are broken right now, each with where in the station it sits, why, and the minute the record was last touched. It is the only source here that needed an account: the other datasets are Licence Ouverte and answer anyone. The count of out-of-service lifts on this page is read from it live, and around 136 lifts the operator marks unknown itself, which is passed through as unknown rather than rounded up.",
+      fr: "Lesquels des 944 ascenseurs l'exploitant déclare en panne en ce moment, avec leur emplacement dans la gare, la raison, et la minute de dernière mise à jour. C'est la seule source ici qui a exigé un compte : les autres sont en Licence Ouverte et répondent à tout le monde. Le nombre d'ascenseurs hors service affiché sur cette page en est lu en direct, et environ 136 ascenseurs que l'exploitant marque lui-même inconnus sont transmis comme inconnus, pas arrondis.",
+      zh: "944 台电梯中，运营方此刻说哪些坏了，并附带它在站内的位置、原因，以及记录最后更新的分钟。这是本页唯一需要注册账号的数据源：其余都是开放许可，谁都能读。本页显示的停用电梯数是从它实时读取的；另有约 136 台运营方自己标为「未知」，我们照原样传成「未知」，不往好的方向凑。",
     },
   },
   {

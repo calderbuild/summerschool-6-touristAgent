@@ -83,10 +83,41 @@ const DICT: Record<string, Entry> = {
   profile_stroller: { en: "With a stroller", fr: "Avec poussette", zh: "推婴儿车" },
   profile_senior: { en: "Older traveller", fr: "Voyageur âgé", zh: "年长者" },
   profile_lowenergy: { en: "Low energy", fr: "Peu d'énergie", zh: "体力有限" },
-  profile_note: {
-    en: "This sets how many stairs and how far a walk the route will accept.",
-    fr: "Cela règle le nombre de marches et la distance de marche acceptés.",
-    zh: "这会设定路线可接受的台阶数与步行距离。",
+  profile_pick_hint: {
+    en: "Pick as many as apply.",
+    fr: "Choisissez-en autant que nécessaire.",
+    zh: "可多选。",
+  },
+  // One clause per constraint, each naming the consequence rather than the
+  // mechanism, and each resting on the weight the search actually uses:
+  // `router.test.ts` fails if the weight a clause calls the heaviest stops being
+  // the heaviest. "This sets how many stairs the route will accept" used to sit
+  // here instead, which described the setting to somebody who wanted to know what
+  // it would do to their journey.
+  profile_fx_wheelchair: {
+    en: "Stairs count as a barrier, and a climb costs more than distance.",
+    fr: "Les marches comptent comme un obstacle, et une montée coûte plus que la distance.",
+    zh: "台阶按障碍处理，爬坡的代价高于距离。",
+  },
+  profile_fx_stroller: {
+    en: "A few steps are acceptable; each one counted is weighed the hardest.",
+    fr: "Quelques marches passent ; chaque marche comptée pèse le plus lourd.",
+    zh: "少量台阶可以接受，但每一级已知台阶的权重最高。",
+  },
+  profile_fx_senior: {
+    en: "A station nobody has published anything about is avoided most strongly.",
+    fr: "Une station sur laquelle personne n'a rien publié est évitée le plus fortement.",
+    zh: "对完全没有公开无障碍信息的车站回避得最强。",
+  },
+  profile_fx_lowenergy: {
+    en: "Long walks and any climb weigh heavily against a longer ride.",
+    fr: "Les longues marches et toute montée pèsent lourd face à un trajet plus long.",
+    zh: "长距离步行和爬坡的权重高于多坐几站。",
+  },
+  profile_fx_strictest: {
+    en: "Where these differ, the stricter one decides the route.",
+    fr: "En cas de divergence, c'est la contrainte la plus stricte qui décide.",
+    zh: "两者不一致时，按更严格的一方规划。",
   },
   for_word: { en: "For", fr: "Pour", zh: "为" },
 
@@ -158,27 +189,115 @@ const DICT: Record<string, Entry> = {
     fr: "station sans information publiée",
     zh: "座车站没有任何公开信息",
   },
+  route_lift_out_one: {
+    en: "lift on this journey is out of service, per the operator",
+    fr: "ascenseur de ce trajet est hors service, selon l'exploitant",
+    zh: "\u53f0\u7535\u68af\u5728\u8fd9\u8d9f\u884c\u7a0b\u4e0a\u6b63\u5728\u505c\u7528\uff08\u8fd0\u8425\u65b9\u53d1\u5e03\uff09",
+  },
+  route_lift_out_many: {
+    en: "lifts on this journey are out of service, per the operator",
+    fr: "ascenseurs de ce trajet sont hors service, selon l'exploitant",
+    zh: "\u53f0\u7535\u68af\u5728\u8fd9\u8d9f\u884c\u7a0b\u4e0a\u6b63\u5728\u505c\u7528\uff08\u8fd0\u8425\u65b9\u53d1\u5e03\uff09",
+  },
+  route_lift_updated: { en: "updated", fr: "mis \u00e0 jour", zh: "\u66f4\u65b0\u4e8e" },
+  route_lift_note: {
+    en: "The location is the operator's own wording for where in the station the lift sits. A stop that is not listed here is one the operator reports no outage at, which is not the same as every lift working.",
+    fr: "L'emplacement reprend les mots de l'exploitant pour situer l'ascenseur dans la gare. Un arr\u00eat absent de cette liste est un arr\u00eat o\u00f9 l'exploitant ne signale aucune panne, ce qui n'\u00e9quivaut pas \u00e0 tous les ascenseurs en service.",
+    zh: "\u4f4d\u7f6e\u63cf\u8ff0\u7528\u7684\u662f\u8fd0\u8425\u65b9\u81ea\u5df1\u7684\u8bf4\u6cd5\uff0c\u6307\u7535\u68af\u5728\u7ad9\u5185\u7684\u54ea\u4e00\u6bb5\u3002\u6ca1\u51fa\u73b0\u5728\u8fd9\u4efd\u5217\u8868\u91cc\u7684\u7ad9\uff0c\u53ea\u662f\u8fd0\u8425\u65b9\u6ca1\u62a5\u544a\u6545\u969c\uff0c\u8ddf\u300c\u6240\u6709\u7535\u68af\u90fd\u597d\u7528\u300d\u4e0d\u662f\u4e00\u56de\u4e8b\u3002",
+  },
+  rail_title: {
+    en: "Paris, right now",
+    fr: "Paris, en ce moment",
+    zh: "\u6b64\u523b\u7684\u5df4\u9ece",
+  },
+  rail_out_label: {
+    en: "lifts the operator reports out of service",
+    fr: "ascenseurs signal\u00e9s hors service par l'exploitant",
+    zh: "\u53f0\u7535\u68af\u88ab\u8fd0\u8425\u65b9\u62a5\u4e3a\u505c\u7528",
+  },
+  rail_link: {
+    en: "Where every figure comes from",
+    fr: "D'o\u00f9 vient chaque chiffre",
+    zh: "\u6bcf\u4e2a\u6570\u5b57\u7684\u6765\u6e90",
+  },
+  rail_more_1: { en: "and", fr: "et", zh: "\u53e6\u6709" },
+  rail_more_2: {
+    en: "more stations",
+    fr: "autres gares",
+    zh: "\u5ea7\u8f66\u7ad9",
+  },
+  voice_err_denied: {
+    en: "Microphone blocked. Allow it for this site in the address bar, then try again.",
+    fr: "Micro bloqu\u00e9. Autorisez-le pour ce site dans la barre d'adresse, puis r\u00e9essayez.",
+    zh: "\u9ea6\u514b\u98ce\u88ab\u963b\u6b62\u3002\u5728\u5730\u5740\u680f\u91cc\u5141\u8bb8\u672c\u7ad9\u4f7f\u7528\uff0c\u7136\u540e\u91cd\u8bd5\u3002",
+  },
+  voice_err_capture: {
+    en: "No microphone the browser can use. Check the input device, then try again.",
+    fr: "Aucun micro utilisable par le navigateur. V\u00e9rifiez le p\u00e9riph\u00e9rique d'entr\u00e9e, puis r\u00e9essayez.",
+    zh: "\u6d4f\u89c8\u5668\u627e\u4e0d\u5230\u53ef\u7528\u7684\u9ea6\u514b\u98ce\u3002\u68c0\u67e5\u8f93\u5165\u8bbe\u5907\u540e\u91cd\u8bd5\u3002",
+  },
+  voice_err_network: {
+    en: "Voice needs the network and the request did not get through. Typing works.",
+    fr: "La voix a besoin du r\u00e9seau et la requ\u00eate n'est pas pass\u00e9e. La saisie fonctionne.",
+    zh: "\u8bed\u97f3\u8bc6\u522b\u9700\u8054\u7f51\uff0c\u8bf7\u6c42\u6ca1\u6210\u529f\u3002\u76f4\u63a5\u6253\u5b57\u53ef\u7528\u3002",
+  },
+  voice_err_other: {
+    en: "Voice input stopped. The browser reported:",
+    fr: "La saisie vocale s'est arr\u00eat\u00e9e. Le navigateur indique :",
+    zh: "\u8bed\u97f3\u8f93\u5165\u5df2\u505c\u6b62\u3002\u6d4f\u89c8\u5668\u62a5\u544a\uff1a",
+  },
+  doors_title: { en: "What else is here", fr: "Ce qu'il y a d'autre ici", zh: "\u8fd8\u6709\u4ec0\u4e48" },
+  door_routes: {
+    en: "The same routing on a map, stop by stop, with a profile picker.",
+    fr: "Le m\u00eame calcul d'itin\u00e9raire sur une carte, arr\u00eat par arr\u00eat, avec choix du profil.",
+    zh: "\u540c\u4e00\u5957\u8def\u7ebf\u8ba1\u7b97\uff0c\u753b\u5728\u5730\u56fe\u4e0a\uff0c\u9010\u7ad9\u5c55\u5f00\uff0c\u5e26\u51fa\u884c\u8005\u9009\u9879\u3002",
+  },
+  door_whats_on: {
+    en: "What is on in Paris this week, each event paired with whether you can reach it.",
+    fr: "Ce qui se passe \u00e0 Paris cette semaine, chaque \u00e9v\u00e9nement avec la question de savoir si vous pouvez y aller.",
+    zh: "\u672c\u5468\u5df4\u9ece\u6709\u4ec0\u4e48\u6d3b\u52a8\uff0c\u6bcf\u4e2a\u90fd\u914d\u4e0a\u300c\u4f60\u80fd\u4e0d\u80fd\u5230\u300d\u3002",
+  },
+  door_hiw: {
+    en: "Every dataset behind these answers, and the one thing we still cannot tell you.",
+    fr: "Toutes les donn\u00e9es derri\u00e8re ces r\u00e9ponses, et la seule chose que nous ne pouvons pas encore dire.",
+    zh: "\u8fd9\u4e9b\u7b54\u6848\u80cc\u540e\u7684\u6bcf\u4e00\u4efd\u6570\u636e\uff0c\u4ee5\u53ca\u6211\u4eec\u4ecd\u7136\u544a\u8bc9\u4e0d\u4e86\u4f60\u7684\u4e8b\u3002",
+  },
+  door_legal: {
+    en: "Licences, what we store, and how this site treats a screen reader.",
+    fr: "Licences, ce que nous conservons, et comment ce site traite un lecteur d'\u00e9cran.",
+    zh: "\u8bb8\u53ef\u534f\u8bae\u3001\u6211\u4eec\u5b58\u4e86\u4ec0\u4e48\uff0c\u4ee5\u53ca\u672c\u7ad9\u5bf9\u5c4f\u5e55\u9605\u8bfb\u5668\u7684\u5904\u7406\u3002",
+  },
+  nav_group: { en: "Sections", fr: "Sections", zh: "\u5bfc\u822a" },
   lift_dark_title: {
-    en: "Live lift state: not available to this app today",
-    fr: "État des ascenseurs en direct : indisponible pour cette application aujourd'hui",
-    zh: "电梯实时状态：本应用目前拿不到",
+    en: "Live lift state: this app is not reading it right now",
+    fr: "État des ascenseurs en direct : non lu en ce moment",
+    zh: "电梯实时状态：此刻没在读",
   },
   lift_dark_body: {
-    en: "The operator publishes it for 944 lifts, under a licence that needs a registered token we do not yet hold. So this page says it cannot see the lifts, which is a different sentence from no lift being broken. Everything else on this page needs no registration at all.",
-    fr: "L'exploitant le publie pour 944 ascenseurs, sous une licence qui exige un jeton enregistré que nous n'avons pas encore. Cette page dit donc qu'elle ne voit pas les ascenseurs, ce qui n'est pas la même phrase qu'aucun ascenseur en panne. Tout le reste de cette page ne demande aucune inscription.",
-    zh: "运营方为 944 台电梯公布了这个数据，但它的授权需要一个我们还没申请的注册 token。所以本页说的是「看不到电梯」，这和「没有电梯坏掉」是两句不同的话。本页其余数据全都不需要任何注册。",
+    en: "The feed is licensed, so it answers only a registered token. When that token is missing or the request fails, this box says so instead of falling back to silence, because silence reads as no lift being broken.",
+    fr: "Le flux est sous licence et ne répond qu'à un jeton enregistré. Si ce jeton manque ou si la requête échoue, cet encadré le dit plutôt que de se taire : le silence se lirait comme aucun ascenseur en panne.",
+    zh: "这份数据流有许可限制，只回应注册过的 token。token 缺失或请求失败时，这里会直说，而不是干脆不提：不提会被读成「没有电梯坏掉」。",
   },
   lift_live_title: {
-    en: "Live lift state: reading the operator's feed",
-    fr: "État des ascenseurs en direct : lecture du flux de l'exploitant",
-    zh: "电梯实时状态：正在读取运营方数据流",
+    en: "Live lift state: read from the operator",
+    fr: "État des ascenseurs en direct : lu chez l'exploitant",
+    zh: "电梯实时状态：已从运营方读取",
   },
-  lift_live_body_1: { en: "Reading", fr: "Lecture de", zh: "已读取" },
-  lift_live_body_2: { en: "lifts, of which", fr: "ascenseurs, dont", zh: "台电梯，其中" },
-  lift_live_body_3: {
-    en: "carry a status value we have confirmed against real records. The rest are shown in the operator's own words rather than guessed at.",
-    fr: "portent une valeur de statut confirmée sur des enregistrements réels. Les autres sont affichés avec les mots de l'exploitant plutôt que devinés.",
-    zh: "台的状态取值经过真实记录核实。其余的按运营方原文显示，不去猜。",
+  lift_live_pre: { en: "", fr: "", zh: "读取到运营方的 " },
+  lift_live_mid_1: {
+    en: "lifts read from the operator.",
+    fr: "ascenseurs lus chez l'exploitant.",
+    zh: " 台电梯，其中 ",
+  },
+  lift_live_mid_2: {
+    en: "are reported out of service right now.",
+    fr: "sont signalés hors service en ce moment.",
+    zh: " 台此刻报修停用，",
+  },
+  lift_live_suffix: {
+    en: "the operator itself does not commit either way, and those are shown in its own words rather than guessed at.",
+    fr: "sur lesquels l'exploitant lui-même ne se prononce pas : ceux-là sont affichés avec ses mots plutôt que devinés.",
+    zh: " 台运营方自己也没给结论，这些按它的原文显示，不去猜。",
   },
   lift_checking: { en: "Checking.", fr: "Vérification.", zh: "正在检查。" },
   plan_climb_1: {
@@ -321,9 +440,9 @@ const DICT: Record<string, Entry> = {
   // station's accessibility class, and saying which of the two you are looking at
   // is the whole point.
   freshness_note: {
-    en: "Station accessibility is read live from the operator. Whether a lift is working is not published to us at all.",
-    fr: "L'accessibilité des gares est lue en direct chez l'exploitant. L'état de marche d'un ascenseur ne nous est pas communiqué.",
-    zh: "车站无障碍等级是实时从运营方读取的。某台电梯此刻是否正常，我们完全拿不到。",
+    en: "Station accessibility and lift state are both read live from the operator. Where the operator says it does not know, so do we.",
+    fr: "L'accessibilité des gares et l'état des ascenseurs sont lus en direct chez l'exploitant. Là où l'exploitant dit ne pas savoir, nous le disons aussi.",
+    zh: "车站无障碍等级和电梯状态都是实时从运营方读取的。运营方说不知道的地方，我们也说不知道。",
   },
 
   honesty_title: { en: "We would rather say “unknown” than guess", fr: "Nous préférons dire « inconnu » plutôt que deviner", zh: "我们宁可说“未知”，也不猜测" },
@@ -378,6 +497,18 @@ const DICT: Record<string, Entry> = {
     fr: "Trop de demandes en ce moment. Patientez un instant, puis réessayez.",
     zh: "当前请求过多。请稍候片刻再试。",
   },
+  // Says what happened rather than only that something did: the answer above is
+  // part of an answer, so the reader knows not to act on it as if it were whole.
+  chat_error_truncated: {
+    en: "The answer stopped before it finished. What is above is incomplete.",
+    fr: "La réponse s'est interrompue avant la fin. Ce qui précède est incomplet.",
+    zh: "回答没有结束就中断了，上面的内容不完整。",
+  },
+  chat_error_cut: {
+    en: "The assistant reached its length limit, so the last sentence is cut. Ask for one leg at a time for a fuller answer.",
+    fr: "L'assistant a atteint sa limite de longueur, la dernière phrase est coupée. Demandez un trajet à la fois pour une réponse complète.",
+    zh: "回答达到长度上限，最后一句被截断。分段提问可以得到完整答案。",
+  },
   chat_suggest_1: {
     en: "I use a wheelchair, Gare de Lyon to the Eiffel Tower today",
     fr: "En fauteuil, de Gare de Lyon à la Tour Eiffel aujourd'hui",
@@ -399,30 +530,9 @@ const DICT: Record<string, Entry> = {
     zh: "一条预设路线：真实台阶数，诚实标注未知。",
   },
   chat_try: {
-    en: "Or start with",
-    fr: "Ou commencez par",
-    zh: "或从这些开始",
-  },
-  hero_line_label: {
-    en: "A diagram of central Paris: the Seine, Line 14 drawn as the one fully step-free line, and every other line hatched because its accessibility cannot be promised.",
-    fr: "Un schéma du centre de Paris : la Seine, la ligne 14 tracée comme la seule ligne entièrement sans marches, et toutes les autres hachurées car leur accessibilité n'est pas garantie.",
-    zh: "巴黎市中心示意图：塞纳河、被画成唯一全程无楼梯的 14 号线，以及以斜纹标出的其他线路，因为它们的无障碍状况无法保证。",
-  },
-  hero_stat_caption: {
-    en: "of stairways in central Paris do not record how many steps they are.",
-    fr: "des escaliers du centre de Paris n'indiquent pas leur nombre de marches.",
-    zh: "的巴黎市中心楼梯没有记录台阶数量。",
-  },
-  hero_stat_source: {
-    en: "1,313 of 3,246 · OpenStreetMap, counted 2026-07-26",
-    fr: "1 313 sur 3 246 · OpenStreetMap, comptés le 26/07/2026",
-    zh: "3,246 处中 1,313 处 · OpenStreetMap，2026-07-26 统计",
-  },
-  legend_m14: { en: "Line 14, step-free", fr: "Ligne 14, sans marches", zh: "14 号线，无楼梯" },
-  legend_interchange_unknown: {
-    en: "Change here, lift unverified",
-    fr: "Changement ici, ascenseur non vérifié",
-    zh: "此处换乘，电梯未核实",
+    en: "Not sure how to ask? Tap one",
+    fr: "Vous ne savez pas comment demander ? Touchez-en un",
+    zh: "不知道怎么问？点一条试试",
   },
   conversation_label: { en: "Conversation", fr: "Conversation", zh: "对话" },
 
@@ -475,19 +585,19 @@ const DICT: Record<string, Entry> = {
   layer_model: { en: "The model", fr: "Le modèle", zh: "模型" },
   layer_data: { en: "Data layer", fr: "Couche de données", zh: "数据层" },
   hiw_gap_title: {
-    en: "The gap we have not closed",
-    fr: "La lacune que nous n'avons pas comblée",
-    zh: "我们还没有填上的缺口",
+    en: "What the operator will, and will not, say about a lift",
+    fr: "Ce que l'exploitant dit, et ne dit pas, d'un ascenseur",
+    zh: "运营方会说、和不会说的电梯状态",
   },
   hiw_gap_body: {
-    en: "Whether a particular lift is working right now is the first of two things this cannot tell you. Île-de-France Mobilités publishes it, 944 lifts each with its own update time, under a licence that requires a registered token: without one the records answer \u201cForbiddenAccess\u201d, and we have not registered. The station classes here are read from their open register instead, no individual lift is called working anywhere on this site, and the line below asks our own endpoint whether we can see the lifts at this moment, so it answers for today rather than for the day the sentence was written.",
-    fr: "Savoir si un ascenseur précis fonctionne en ce moment est la première des deux choses que ce site ne peut pas vous dire. Île-de-France Mobilités le publie, 944 ascenseurs avec leur heure de mise à jour, sous une licence exigeant un jeton enregistré : sans jeton, les enregistrements répondent « ForbiddenAccess », et nous ne sommes pas enregistrés. Les classes d'accessibilité des gares sont donc lues dans leur registre ouvert, aucun ascenseur n'est déclaré en service ici, et la ligne ci-dessous interroge notre propre point d'accès pour savoir si nous voyons les ascenseurs à cet instant : elle répond pour aujourd'hui, pas pour le jour où la phrase a été écrite.",
-    zh: "某一台电梯此刻是否正常，是本站两件无法告诉你的事之一。法兰西岛交通局确实发布了这份数据（944 台电梯，各带更新时间），但它使用需注册 token 的许可协议：没有 token 时接口直接返回 ForbiddenAccess，而我们没有注册。因此站点的车站无障碍等级改从其开放名录读取，站内任何地方都不会说某台电梯正常，而下面这行会去问我们自己的接口：此刻到底能不能看到电梯状态。它回答的是当下，不是写下这句话的那天。",
+    en: "For most of this week the answer was nothing at all. \u00cele-de-France Mobilit\u00e9s publishes 944 lifts under a licence that answers only a registered token, so the box below reported, correctly, that it could not see them. It is registered now and reads the feed for real, which changes what this page may claim and also what it must still refuse to claim: the operator marks a large minority of those lifts unknown itself, and where it does we pass that through rather than round it up. A lift called available is the operator's word with its own timestamp, not our inspection, and it is matched to a station by distance and name together, never by an id, because the zone ids in that feed do not match the timetable's.",
+    fr: "Pendant l'essentiel de cette semaine, la r\u00e9ponse \u00e9tait : rien du tout. \u00cele-de-France Mobilit\u00e9s publie 944 ascenseurs sous une licence qui ne r\u00e9pond qu'\u00e0 un jeton enregistr\u00e9 ; l'encadr\u00e9 ci-dessous indiquait donc, \u00e0 juste titre, qu'il ne les voyait pas. Il est enregistr\u00e9 d\u00e9sormais et lit le flux pour de vrai, ce qui change ce que cette page peut affirmer et aussi ce qu'elle doit continuer de refuser : l'exploitant marque lui-m\u00eame une part importante de ces ascenseurs comme inconnus, et nous transmettons cela tel quel plut\u00f4t que de l'arrondir. Un ascenseur dit disponible, c'est sa parole horodat\u00e9e, pas notre inspection, et il est rattach\u00e9 \u00e0 une gare par la distance et le nom ensemble, jamais par un identifiant : les identifiants de zone de ce flux ne correspondent pas \u00e0 ceux des horaires.",
+    zh: "\u8fd9\u5468\u7684\u5927\u90e8\u5206\u65f6\u95f4\u91cc\uff0c\u7b54\u6848\u662f\u300c\u4ec0\u4e48\u90fd\u62ff\u4e0d\u5230\u300d\u3002\u6cd5\u5170\u897f\u5c9b\u4ea4\u901a\u5c40\u53d1\u5e03\u4e86 944 \u53f0\u7535\u68af\uff0c\u4f46\u8bb8\u53ef\u534f\u8bae\u53ea\u56de\u5e94\u6ce8\u518c\u8fc7\u7684 token\uff0c\u6240\u4ee5\u4e0b\u9762\u90a3\u4e2a\u65b9\u6846\u5982\u5b9e\u62a5\u544a\uff1a\u770b\u4e0d\u5230\u7535\u68af\u3002\u73b0\u5728\u5df2\u7ecf\u6ce8\u518c\uff0c\u771f\u7684\u5728\u8bfb\u8fd9\u4efd\u6570\u636e\u6d41\uff0c\u4e8e\u662f\u8fd9\u4e00\u9875\u80fd\u8bf4\u7684\u8bdd\u53d8\u4e86\uff0c\u5fc5\u987b\u7ee7\u7eed\u62d2\u7edd\u8bf4\u7684\u8bdd\u4e5f\u53d8\u4e86\uff1a\u8fd0\u8425\u65b9\u81ea\u5df1\u5c31\u628a\u5176\u4e2d\u76f8\u5f53\u4e00\u90e8\u5206\u6807\u4e3a\u300c\u672a\u77e5\u300d\uff0c\u51e1\u662f\u8fd9\u79cd\u6211\u4eec\u7167\u6837\u900f\u4f20\uff0c\u4e0d\u5f80\u597d\u7684\u65b9\u5411\u51d1\u3002\u8bf4\u67d0\u53f0\u7535\u68af\u300c\u53ef\u7528\u300d\u662f\u8fd0\u8425\u65b9\u5e26\u65f6\u95f4\u6233\u7684\u8bf4\u6cd5\uff0c\u4e0d\u662f\u6211\u4eec\u7684\u68c0\u67e5\u7ed3\u679c\uff1b\u800c\u5b83\u4e0e\u8f66\u7ad9\u7684\u5bf9\u5e94\u9760\u8ddd\u79bb\u52a0\u540d\u79f0\u4e24\u4e2a\u6761\u4ef6\u540c\u65f6\u6210\u7acb\uff0c\u7edd\u4e0d\u9760 ID\uff0c\u56e0\u4e3a\u8fd9\u4efd\u6570\u636e\u6d41\u91cc\u7684\u6362\u4e58\u533a ID \u548c\u65f6\u523b\u8868\u91cc\u7684\u5bf9\u4e0d\u4e0a\u3002",
   },
   hiw_gap2_title: {
-    en: "The second gap is in the timetable",
-    fr: "La seconde lacune est dans les horaires",
-    zh: "第二个缺口在时刻表里",
+    en: "The gap that is still open, and it is in the timetable",
+    fr: "La lacune encore ouverte, et elle est dans les horaires",
+    zh: "\u8fd8\u6ca1\u586b\u4e0a\u7684\u90a3\u4e2a\u7f3a\u53e3\uff0c\u5728\u65f6\u523b\u8868\u91cc",
   },
   hiw_gap2_body: {
     en: "This graph is metro, tram, RER and Transilien, and the open timetable's RER C stops at Gare d'Austerlitz: its Paris branch, Champ de Mars Tour Eiffel included, has no trains in the file, and buses are not modelled at all. So the Eiffel Tower has no step-free station near it that we can see. A wheelchair journey there is sent to Invalides and told, in the route itself, that the last 1,451 m are on foot and roughly 23 minutes. Another app draws a line to the tower and says nothing. We would rather give you the number and let you decide.",
@@ -711,9 +821,18 @@ const DICT: Record<string, Entry> = {
   // true when routing moved onto the operator's own timetable. What is still
   // missing is named instead of glossed over.
   disclaimer: {
-    en: "Routes are computed from Île-de-France Mobilités' published timetable and their accessibility register, with lifts and stairways from OpenStreetMap. Whether a specific lift is working right now is the one thing this cannot tell you: that feed is licensed and needs a token we do not have.",
-    fr: "Les itinéraires sont calculés à partir des horaires publiés par Île-de-France Mobilités et de leur registre d'accessibilité, les ascenseurs et escaliers venant d'OpenStreetMap. La seule chose que nous ne pouvons pas dire : si un ascenseur précis fonctionne en ce moment. Ce flux est sous licence et exige un jeton que nous n'avons pas.",
-    zh: "路线由 Île-de-France Mobilités 公布的时刻表与无障碍登记计算得出，电梯与楼梯数据来自 OpenStreetMap。唯一无法告诉你的是某台电梯此刻是否运行：那个数据源有许可限制，需要我们尚未取得的 token。",
+    en: "Sources: \u00cele-de-France Mobilit\u00e9s (timetable, accessibility register, live lift outages) and OpenStreetMap (lifts and stairways).",
+    fr: "Sources : \u00cele-de-France Mobilit\u00e9s (horaires, registre d'accessibilit\u00e9, pannes d'ascenseur en direct) et OpenStreetMap (ascenseurs et escaliers).",
+    zh: "\u6570\u636e\u6765\u6e90\uff1a\u00cele-de-France Mobilit\u00e9s\uff08\u65f6\u523b\u8868\u3001\u65e0\u969c\u788d\u767b\u8bb0\u3001\u7535\u68af\u5b9e\u65f6\u6545\u969c\uff09\u4e0e OpenStreetMap\uff08\u7535\u68af\u4e0e\u697c\u68af\u4f4d\u7f6e\uff09\u3002",
+  },
+  // The caveat, split off the line above so a phone is not handed four lines of
+  // fine print at the exact moment it wants to type. It is not dropped: the
+  // composer shows it from sm up and /how-it-works carries it in full at every
+  // width, which is where a gap this consequential belongs anyway.
+  disclaimer_gap: {
+    en: "What is still missing is RER C through Paris: the open timetable runs no trains on that branch.",
+    fr: "Ce qui manque encore : le RER C dans Paris, absent des horaires ouverts.",
+    zh: "\u76ee\u524d\u8fd8\u7f3a\u7684\u662f\u7a7f\u8fc7\u5df4\u9ece\u7684 RER C\uff1a\u5f00\u653e\u65f6\u523b\u8868\u91cc\u90a3\u4e00\u6bb5\u6ca1\u6709\u4efb\u4f55\u5217\u8f66\u3002",
   },
 };
 

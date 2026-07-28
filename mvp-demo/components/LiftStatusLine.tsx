@@ -1,22 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type Lang } from "@/lib/i18n";
 import { CircleDot, CircleSlash } from "lucide-react";
 
 /**
  * Whether this app can currently see lift state, said out loud on the page.
  *
- * The gap it reports is the project's one real hole: `etat-des-ascenseurs` needs
- * a registered token, and without it the honest answer is "we cannot see the
- * lifts", which is a different sentence from "no lift is broken". A page that
- * simply omitted the topic would let a reader assume the better of the two.
+ * It reads the live endpoint rather than a build-time constant, which is why the
+ * line flipped by itself on the evening the dataset token arrived: for most of the
+ * week it said "not available to this app", because that was the true state and a
+ * page which simply omitted the topic would have let a reader assume the better of
+ * the two readings. Not a line of this component changed when the data started
+ * flowing. That is the point of asking instead of asserting.
  *
- * It reads the live endpoint rather than a build-time constant, so the line
- * changes by itself the moment a token is configured. Nothing here is a
- * placeholder waiting to be swapped for real data: the "not available" state IS
- * the real state today, and it is reported by asking.
+ * The number it leads with now is the count of lifts the operator itself reports
+ * out of service, because that is the only figure on this site that can be
+ * different in ten minutes.
  */
+
+/**
+ * A counted sentence, glued the way the language wants.
+ *
+ * The three counts sit between four fragments, and the two scripts space them
+ * differently: French and English want a space between every piece, Chinese
+ * carries its own spacing and punctuation inside the fragments so that a comma
+ * never ends up preceded by a gap.
+ */
+function join(lang: Lang, parts: (string | number)[]): string {
+  const glue = lang === "zh" ? "" : " ";
+  return parts
+    .map(String)
+    .filter((s) => s !== "")
+    .join(glue)
+    .trim();
+}
 
 interface Payload {
   live: boolean;
@@ -27,7 +45,7 @@ interface Payload {
 }
 
 export default function LiftStatusLine() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [data, setData] = useState<Payload | null>(null);
   const [failed, setFailed] = useState(false);
 
@@ -43,10 +61,6 @@ export default function LiftStatusLine() {
   }, []);
 
   if (failed) return null;
-
-  const known = data?.live
-    ? data.classified.working + data.classified.out
-    : 0;
 
   return (
     <div
@@ -66,7 +80,15 @@ export default function LiftStatusLine() {
           {data === null
             ? t("lift_checking")
             : data.live
-              ? `${t("lift_live_body_1")} ${data.count} ${t("lift_live_body_2")} ${known} ${t("lift_live_body_3")}`
+              ? join(lang, [
+                  t("lift_live_pre"),
+                  data.count,
+                  t("lift_live_mid_1"),
+                  data.classified.out,
+                  t("lift_live_mid_2"),
+                  data.classified.unknown,
+                  t("lift_live_suffix"),
+                ])
               : t("lift_dark_body")}
         </p>
       </div>
