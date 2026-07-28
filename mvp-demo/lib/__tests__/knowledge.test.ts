@@ -326,6 +326,10 @@ describe("what a hand-written route may claim", () => {
     // sentence about that noun.
     expect(prompt).toMatch(/only repeat what that note says/);
     expect(prompt).toMatch(/They do not say where it goes/);
+    // The verdict is the sentence somebody acts on. Naming a bus there implies it
+    // reaches the destination even when the body has just said we cannot know that,
+    // which is how the same invented claim survived in a shorter sentence.
+    expect(prompt).toMatch(/verdict line never names a bus at all/);
     for (const r of ROUTES) {
       for (const node of r.nodes) {
         const alt = node.alt ? Object.values(node.alt).join(" ") : "";
