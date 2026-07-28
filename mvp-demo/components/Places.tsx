@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { LANGS, useI18n, type Lang } from "@/lib/i18n";
@@ -55,9 +55,61 @@ function Fact({ label, value }: { label: string; value: string }) {
   );
 }
 
+/**
+ * Mounts its children once the card is near the viewport, and not before.
+ *
+ * The entrance view is shown without being asked for, which is the point: a look at
+ * the door is most of why somebody opens this page, and a button hiding it meant
+ * almost nobody saw it. Seventeen live Street View panoramas on one page is the
+ * other half of that sentence though, so each one waits until its card is close
+ * enough to be about to be read. Scrolling the list costs nothing until you stop.
+ */
+function WhenNear({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || near) return;
+    if (typeof IntersectionObserver === "undefined") {
+      // No observer, so show it rather than never. Deferred by a tick because a
+      // synchronous setState inside an effect is what React 19 refuses, and reading
+      // this at render time instead would differ between the server and the client.
+      const id = setTimeout(() => setNear(true), 0);
+      return () => clearTimeout(id);
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) setNear(true);
+      },
+      // A screen ahead, so it has loaded by the time it is looked at.
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(el);
+
+    // Belt and braces, and it earned its place: an observer that never fires leaves
+    // this page showing seventeen empty boxes and saying nothing about why, which is
+    // the silent degradation this project keeps refusing everywhere else. If nothing
+    // has reported shortly after mount, measure instead. Cards genuinely off-screen
+    // stay lazy, so this costs nothing in the normal case.
+    const fallback = setTimeout(() => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight + 600 && r.bottom > -600) setNear(true);
+    }, 1200);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
+  }, [near]);
+
+  return <div ref={ref}>{near ? children : <div className="h-[260px] sm:h-[320px]" aria-hidden />}</div>;
+}
+
 export default function Places({ places }: { places: Place[] }) {
   const { t, lang } = useI18n();
-  const [openId, setOpenId] = useState<string | null>(null);
+  // Every entrance is shown; this holds only the ones somebody chose to put away.
+  const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
 
   const sorted = useMemo(
     () => [...places].sort((a, b) => ORDER[ease(a)] - ORDER[ease(b)] || a.nameEn.localeCompare(b.nameEn)),
@@ -110,7 +162,7 @@ export default function Places({ places }: { places: Place[] }) {
         <ul className="mt-5 grid gap-2.5">
           {sorted.map((p) => {
             const e = ease(p);
-            const open = openId === p.id;
+            const open = !hidden.has(p.id);
             return (
               <li
                 key={p.id}
@@ -155,7 +207,14 @@ export default function Places({ places }: { places: Place[] }) {
                   </span>
                   <button
                     type="button"
-                    onClick={() => setOpenId(open ? null : p.id)}
+                    onClick={() =>
+                      setHidden((prev) => {
+                        const next = new Set(prev);
+                        if (open) next.add(p.id);
+                        else next.delete(p.id);
+                        return next;
+                      })
+                    }
                     aria-expanded={open}
                     className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-ink/15 bg-surface-2 px-2.5 py-1.5 text-[12.5px] font-semibold text-ink transition-colors hover:border-signal/50"
                   >
@@ -179,12 +238,11 @@ export default function Places({ places }: { places: Place[] }) {
                   </a>
                 </div>
 
-                {/* One panorama at a time, the same discipline the route card uses:
-                    seventeen live Street View instances would be seventeen map loads
-                    nobody asked for. */}
                 {open && (
                   <div className="border-t border-ink/[0.07] px-4 py-3.5">
-                    <StreetLook lat={p.coord.lat} lng={p.coord.lng} label={name(p)} />
+                    <WhenNear>
+                      <StreetLook lat={p.coord.lat} lng={p.coord.lng} label={name(p)} />
+                    </WhenNear>
                   </div>
                 )}
               </li>

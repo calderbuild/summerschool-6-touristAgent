@@ -67,8 +67,25 @@ describe("the 360 view is dated, because a photograph of a door is a claim about
     const src = at("components", "StreetLook.tsx");
     expect(src).toMatch(/ZERO_RESULTS/);
     expect(src).toMatch(/street_none/);
-    // Substituting a nearby panorama would be the same defect as a guessed step count.
+    // The guard is distance, not the source filter. Asking only for OUTDOOR coverage
+    // reported that the Louvre had no imagery when a panorama stands on its exact
+    // coordinates, so it falls back, and then measures.
+    expect(src).toMatch(/StreetViewSource\.DEFAULT/);
+    expect(src).toMatch(/metresBetween\(here, lat, lng\) > MAX_METRES/);
+    // A view of the next street is a picture of a different door.
+    const max = Number(src.match(/const MAX_METRES = (\d+)/)?.[1]);
+    expect(max).toBeLessThanOrEqual(150);
     expect(src).not.toMatch(/radius:\s*(\d{3,})/);
+  });
+
+  it("shows the entrance without being asked, and mounts it only when it is near", () => {
+    const src = at("components", "Places.tsx");
+    // Open unless deliberately put away: a button hiding the main reason to visit
+    // this page meant almost nobody saw it.
+    expect(src).toMatch(/const open = !hidden\.has\(p\.id\)/);
+    // And seventeen live panoramas at once is the other half of that decision.
+    expect(src).toMatch(/IntersectionObserver/);
+    expect(src).toMatch(/<WhenNear>/);
   });
 });
 

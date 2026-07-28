@@ -20,15 +20,35 @@ import { useI18n } from "@/lib/i18n";
  * to avoid. So the date is stamped on the image, and anything older than three years
  * carries a warning in its own right rather than a caveat somewhere below.
  *
- * Not every sight has imagery. The Louvre returns no outdoor panorama at its own
- * coordinates. That is said plainly instead of being filled with a nearby view of
- * somewhere else, which would be worse than showing nothing.
+ * Not every sight has imagery, and the guard against showing the wrong doorway is
+ * distance rather than a source filter. The first version asked only for OUTDOOR
+ * coverage, which is the official car, and reported that the Louvre had nothing:
+ * there is in fact a panorama standing exactly on its coordinates, dated July 2018,
+ * that the filter was hiding. So it asks for the car first, falls back to any
+ * imagery at the same spot, and then measures how far the panorama it got actually
+ * is from the sight. Anything beyond a short walk is discarded and reported as no
+ * imagery, because a view of the next street is a picture of a different door.
  */
 
 const KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 /** Older than this and the doorway may simply have been rebuilt since. */
 const STALE_AFTER_YEARS = 3;
+
+/** How far the panorama may stand from the sight before it is a different place. */
+const MAX_METRES = 120;
+const SEARCH_RADIUS = 90;
+
+/** Metres between two points, so the check does not need the geometry library. */
+function metresBetween(a: google.maps.LatLng, lat: number, lng: number): number {
+  const R = 6371000;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(a.lat() - lat);
+  const dLng = toRad(a.lng() - lng);
+  const h =
+    Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat)) * Math.cos(toRad(a.lat())) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
 
 type State =
   | { kind: "loading" }
@@ -47,10 +67,20 @@ function Panorama({ lat, lng, label }: { lat: number; lng: number; label: string
     let cancelled = false;
     const el = host.current;
 
-    new google.maps.StreetViewService()
-      .getPanorama({ location: { lat, lng }, radius: 90, source: google.maps.StreetViewSource.OUTDOOR })
+    const svc = new google.maps.StreetViewService();
+    const at = { location: { lat, lng }, radius: SEARCH_RADIUS };
+    // The official car first, because its imagery looks along the pavement somebody
+    // will actually arrive on. Anything else at the same spot is better than nothing.
+    svc
+      .getPanorama({ ...at, source: google.maps.StreetViewSource.OUTDOOR })
+      .catch(() => svc.getPanorama({ ...at, source: google.maps.StreetViewSource.DEFAULT }))
       .then(({ data }) => {
         if (cancelled) return;
+        const here = data.location?.latLng;
+        if (here && metresBetween(here, lat, lng) > MAX_METRES) {
+          setState({ kind: "none" });
+          return;
+        }
         new google.maps.StreetViewPanorama(el, {
           pano: data.location?.pano,
           // Pointed at the building rather than down the street, and zoomed out

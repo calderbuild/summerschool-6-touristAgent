@@ -707,6 +707,7 @@ const DICT: Record<string, Entry> = {
     zh: "这里的信息如果有错，团队会直接在后台校正，而不是等下一次发布。每条校正都带着核对日期。",
   },
   admin_link: { en: "Team console", fr: "Console de l'équipe", zh: "团队后台" },
+  places_nav: { en: "The sights", fr: "Les sites", zh: "景点" },
   places_eyebrow: { en: "The sights", fr: "Les sites", zh: "景点" },
   places_title: {
     en: "Paris sights, and whether you can actually get in",

@@ -986,6 +986,7 @@ export default function ChatShell() {
                 width because it is the second surface, not a supporting page. */}
             <nav aria-label={t("nav_group")} className="hidden items-center gap-0.5 lg:flex">
               {[
+                { href: "/places", label: t("places_nav") },
                 { href: "/whats-on", label: t("whats_on_link") },
                 { href: "/how-it-works", label: t("hiw_link") },
               ].map((l) => (
