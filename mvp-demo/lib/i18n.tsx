@@ -701,6 +701,16 @@ const DICT: Record<string, Entry> = {
     fr: "Planifier un trajet sur la carte",
     zh: "在地图上规划行程",
   },
+  qr_link: {
+    en: "Move this to a phone",
+    fr: "Passer sur un téléphone",
+    zh: "换到手机上打开",
+  },
+  door_qr: {
+    en: "A code to scan and the plain address, for reading this on a phone or handing it to somebody else.",
+    fr: "Un code à scanner et l'adresse en clair, pour lire ceci sur un téléphone ou le transmettre à quelqu'un.",
+    zh: "一个可扫的码和明文地址，方便你换到手机上看，或者直接给别人。",
+  },
   // The projected page. No "scan the code" anywhere: the instruction a QR does not
   // need is the kind of caption that papers over a layout mistake.
   qr_title: {

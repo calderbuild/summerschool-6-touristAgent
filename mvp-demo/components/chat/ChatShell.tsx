@@ -1229,6 +1229,10 @@ function EmptyState({
           { href: "/whats-on", label: t("whats_on_link"), body: t("door_whats_on") },
           { href: "/how-it-works", label: t("hiw_link"), body: t("door_hiw") },
           { href: "/privacy", label: t("legal_link"), body: t("door_legal") },
+          // Last, and worded for the only person it helps: somebody reading this on a
+          // laptop who wants it in their hand, or wants to pass it to someone else.
+          // "Open it on your phone" would be a strange thing to offer a phone.
+          { href: "/qr", label: t("qr_link"), body: t("door_qr") },
         ].map((d) => (
           <Link
             key={d.href}
