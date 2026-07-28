@@ -94,6 +94,29 @@ export const NETWORK_META = {
 export type ProfileId = "wheelchair" | "stroller" | "senior" | "lowenergy";
 
 /**
+ * Who is travelling: one constraint or several at once.
+ *
+ * People do not arrive as one profile. A wheelchair user is often also the person
+ * with the least energy left at six in the evening; a parent with a pushchair
+ * travels with a grandparent. Asking them to pick the single label that fits best
+ * makes them do arithmetic the router should be doing, so the picker takes a set.
+ *
+ * Every caller may still pass a single id, and a single id is not a special case
+ * of the code below: it is a one-element set, and the maximum of one number is
+ * that number. So nothing about an existing single-profile journey changes, which
+ * is what makes this safe to do two days before it is demonstrated.
+ */
+export type ProfileSel = ProfileId | ProfileId[];
+
+/** The selection as a set: de-duplicated, and never empty. An empty selection is
+ *  a traveller who told us nothing, and the honest default for a step-free
+ *  product is the strictest profile rather than the loosest. */
+export function asProfiles(sel: ProfileSel): ProfileId[] {
+  const list = (Array.isArray(sel) ? sel : [sel]).filter((p, i, a) => a.indexOf(p) === i);
+  return list.length ? list : ["wheelchair"];
+}
+
+/**
  * The size of the gap, counted rather than described.
  *
  * The page used to open with "about 30 of 300+ stations have a working lift",
@@ -184,7 +207,11 @@ export function statusOf(s: RawStation): Status {
  * `statusOf` already folds both registers together, so the penalty reads the
  * status rather than the sources: one place decides what a station means, and the
  * cost function cannot drift away from what the page shows. */
-function stationPenalty(s: RawStation, profile: ProfileId): number {
+function stationPenalty(s: RawStation, profiles: ProfileId[]): number {
+  return Math.max(...profiles.map((p) => onePenalty(s, p)));
+}
+
+function onePenalty(s: RawStation, profile: ProfileId): number {
   const st = statusOf(s);
   if (profile === "wheelchair") {
     if (st === "stairs") return 2400;
@@ -211,14 +238,24 @@ function stationPenalty(s: RawStation, profile: ProfileId): number {
  * is weighted hardest for a wheelchair and a tired traveller, because that is who
  * a gradient stops.
  */
-function walkSeconds(metres: number, climb: number | null, profile: ProfileId): number {
-  const perMetreUp =
-    profile === "wheelchair" ? 20 : profile === "lowenergy" ? 15 : profile === "senior" ? 12 : 8;
+function walkSeconds(metres: number, climb: number | null, profiles: ProfileId[]): number {
+  const perMetreUp = Math.max(...profiles.map(hillWeight));
   return metres / 1.1 + Math.max(0, climb ?? 0) * perMetreUp;
 }
 
+/** Seconds of cost per metre climbed. Exported so the interface can state what a
+ *  selection changes using the same numbers the routing uses, rather than a
+ *  sentence somebody wrote once and nobody re-checked. */
+export function hillWeight(profile: ProfileId): number {
+  return profile === "wheelchair" ? 20 : profile === "lowenergy" ? 15 : profile === "senior" ? 12 : 8;
+}
+
 /** Seconds added for changing trains at all, before the station's own cost. */
-function interchangeCost(profile: ProfileId): number {
+function interchangeCost(profiles: ProfileId[]): number {
+  return Math.max(...profiles.map(oneInterchange));
+}
+
+export function oneInterchange(profile: ProfileId): number {
   if (profile === "wheelchair") return 420;
   if (profile === "lowenergy" || profile === "senior") return 360;
   return 300;
@@ -361,7 +398,7 @@ export function resolveStation(input: string): StationHit | null {
 function nearestStation(
   lat: number,
   lng: number,
-  profile: ProfileId,
+  profiles: ProfileId[],
   placeHeight: number | null,
 ): { hit: StationHit; metres: number } {
   let best = ALL[0];
@@ -374,7 +411,7 @@ function nearestStation(
     // the accessible station is a different trip, not a longer walk.
     if (m > 1500) continue;
     const climb = placeHeight !== null && st.elevation !== null ? placeHeight - st.elevation : null;
-    const cost = walkSeconds(m, climb, profile) + stationPenalty(st, profile);
+    const cost = walkSeconds(m, climb, profiles) + stationPenalty(st, profiles);
     if (cost < bestCost) {
       bestCost = cost;
       bestM = m;
@@ -406,9 +443,9 @@ function nearestStation(
 export function stationForPoint(
   lat: number,
   lng: number,
-  profile: ProfileId = "wheelchair",
+  sel: ProfileSel = "wheelchair",
 ): { id: string; name: string; lines: string[]; status: Status; metres: number } {
-  const { hit, metres } = nearestStation(lat, lng, profile, null);
+  const { hit, metres } = nearestStation(lat, lng, asProfiles(sel), null);
   // The lines travel with it because the alternative is a model supplying them
   // from memory. It named Olympiades as line 14 and was right; the next one it
   // guesses will not be, and a wrong line is the failure this product cannot have.
@@ -429,7 +466,7 @@ export interface Endpoint {
  * no RER C service through Champ de Mars at all, so the nearest station the
  * timetable actually runs is the honest answer plus the walk it leaves you.
  */
-export function resolveEndpoint(input: string, profile: ProfileId = "wheelchair"): Endpoint | null {
+export function resolveEndpoint(input: string, sel: ProfileSel = "wheelchair"): Endpoint | null {
   const direct = NET.stations[input] ? resolveStation(input) : null;
   if (direct) return { station: direct };
 
@@ -450,7 +487,7 @@ export function resolveEndpoint(input: string, profile: ProfileId = "wheelchair"
   const near = nearestStation(
     place.coord.lat,
     place.coord.lng,
-    profile,
+    asProfiles(sel),
     NET.placeElevation[place.id] ?? null,
   );
   return {
@@ -483,7 +520,7 @@ interface Came {
 
 /** Dijkstra over (station, line) with a binary heap. 570 stations and ~1,500
  *  edges, so the heap is not the interesting part; the cost function is. */
-function search(fromId: string, toId: string, profile: ProfileId) {
+function search(fromId: string, toId: string, profiles: ProfileId[]) {
   const dist = new Map<string, number>();
   const came = new Map<string, Came>();
   const heap: { cost: number; state: State }[] = [];
@@ -536,7 +573,7 @@ function search(fromId: string, toId: string, profile: ProfileId) {
       const here = NET.stations[state.station];
       let step = edge.seconds;
       if (changing || edge.line === null) {
-        step += interchangeCost(profile) + stationPenalty(here, profile);
+        step += interchangeCost(profiles) + stationPenalty(here, profiles);
       }
       const next: State = { station: edge.to, line: lineName };
       const nid = sid(next);
@@ -676,7 +713,8 @@ export interface PlannedRoute {
   from: string;
   to: string;
   title: L;
-  profile: ProfileId;
+  /** Every constraint this journey was planned under, strictest first in effect. */
+  profiles: ProfileId[];
   sources: string[];
   nodes: RouteNode[];
   /** Every station passed through, for the map line. The nodes are the legs a
@@ -736,13 +774,14 @@ export type PlanResult =
    *  station" need different sentences in front of a traveller. */
   | { ok: false; reason: "unknown_from" | "unknown_to" | "same_place" | "no_route" };
 
-export function plan(fromInput: string, toInput: string, profile: ProfileId): PlanResult {
-  const a = resolveEndpoint(fromInput, profile);
-  const b = resolveEndpoint(toInput, profile);
+export function plan(fromInput: string, toInput: string, sel: ProfileSel): PlanResult {
+  const profiles = asProfiles(sel);
+  const a = resolveEndpoint(fromInput, profiles);
+  const b = resolveEndpoint(toInput, profiles);
   if (!a) return { ok: false, reason: "unknown_from" };
   if (!b) return { ok: false, reason: "unknown_to" };
   if (a.station.id === b.station.id) return { ok: false, reason: "same_place" };
-  const found = search(a.station.id, b.station.id, profile);
+  const found = search(a.station.id, b.station.id, profiles);
   if (!found) return { ok: false, reason: "no_route" };
 
   // Collapse consecutive hops on one line into a single leg, which is how a
@@ -807,7 +846,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
       flush(to);
       if (next) {
         changes += 1;
-        seconds += interchangeCost(profile) + stationPenalty(to, profile);
+        seconds += interchangeCost(profiles) + stationPenalty(to, profiles);
       }
       runLine = null;
       runStops = 0;
@@ -829,7 +868,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
     finalWalk = {
       metres: b.place.walkM,
       climbM: climb,
-      minutes: Math.round(walkSeconds(b.place.walkM, climb, profile) / 60),
+      minutes: Math.round(walkSeconds(b.place.walkM, climb, profiles) / 60),
     };
     shape.push({ lat: b.place.lat, lng: b.place.lng });
     nodes.push({
@@ -841,7 +880,7 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
       walkM: b.place.walkM,
     });
     unknowns.push(b.place.name);
-    seconds += walkSeconds(b.place.walkM, climb, profile);
+    seconds += walkSeconds(b.place.walkM, climb, profiles);
   }
 
   const destination = b.place?.name ?? NET.stations[b.station.id].name;
@@ -849,11 +888,11 @@ export function plan(fromInput: string, toInput: string, profile: ProfileId): Pl
   const heading = `${origin} → ${destination}`;
 
   const route: PlannedRoute = {
-    id: `plan-${a.station.id}-${b.station.id}-${profile}`,
+    id: `plan-${a.station.id}-${b.station.id}-${profiles.join("+")}`,
     from: origin,
     to: destination,
     title: { en: heading, fr: heading, zh: heading },
-    profile,
+    profiles,
     sources: NET.sources.map((s) => `${s.name} (${s.licence})`),
     nodes,
     shape,

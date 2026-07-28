@@ -20,10 +20,16 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const from = (url.searchParams.get("from") ?? "").trim();
   const to = (url.searchParams.get("to") ?? "").trim();
-  const asked = url.searchParams.get("profile") ?? "";
-  const profile = (PROFILES as string[]).includes(asked)
-    ? (asked as ProfileId)
-    : "wheelchair";
+  // One profile or several, comma separated: `profile=wheelchair,lowenergy` is a
+  // wheelchair user at the end of a long day, and the router takes the strictest
+  // of the two on every dimension. A single id is the form this endpoint has
+  // always answered and behaves exactly as it did.
+  const asked = (url.searchParams.get("profile") ?? "").split(",");
+  const profile = asked
+    .map((p) => p.trim())
+    .filter((p): p is ProfileId => (PROFILES as string[]).includes(p))
+    .filter((p, i, a) => a.indexOf(p) === i);
+  if (profile.length === 0) profile.push("wheelchair");
 
   if (!from || !to) {
     // Still a named reason, not a bare 400: whatever asked for this has a screen

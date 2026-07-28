@@ -10,12 +10,10 @@ import AccessibilitySpine from "./AccessibilitySpine";
 import JourneyPicker from "./JourneyPicker";
 import MetroMap, { focusIndex } from "./MetroMap";
 import RouteMap from "./RouteMap";
+import ProfilePicker from "./ProfilePicker";
+import RouteLifts from "./RouteLifts";
 import WeatherChip from "./WeatherChip";
 import {
-  Accessibility,
-  Baby,
-  PersonStanding,
-  BatteryLow,
   TriangleAlert,
   Check,
   MoveVertical,
@@ -25,13 +23,6 @@ import {
   Accessibility as AccessibilityIcon,
   type LucideIcon,
 } from "lucide-react";
-
-const PROFILE_META: { id: ProfileId; labelKey: string; icon: LucideIcon }[] = [
-  { id: "wheelchair", labelKey: "profile_wheelchair", icon: Accessibility },
-  { id: "stroller", labelKey: "profile_stroller", icon: Baby },
-  { id: "senior", labelKey: "profile_senior", icon: PersonStanding },
-  { id: "lowenergy", labelKey: "profile_lowenergy", icon: BatteryLow },
-];
 
 /** What the routing endpoint returns, kept to the fields this page draws. */
 interface Planned extends DemoRoute {
@@ -143,7 +134,9 @@ export default function App({
   };
 }) {
   const { t, lang } = useI18n();
-  const [profile, setProfile] = useState<ProfileId>("wheelchair");
+  // A set, not one answer: see `ProfilePicker`. Empty means "not said", which the
+  // router reads as the strictest profile rather than the loosest.
+  const [profiles, setProfiles] = useState<ProfileId[]>(["wheelchair"]);
   const [mapView, setMapView] = useState<"map" | "3d">("map");
   // The 3D view leans on a free third-party tile service and on WebGL, either of
   // which can be missing on the day. Rather than leave a dead panel on screen,
@@ -158,12 +151,12 @@ export default function App({
   );
 
   const find = useCallback(
-    async (a: string, b: string, who: ProfileId) => {
+    async (a: string, b: string, who: ProfileId[]) => {
       if (!a.trim() || !b.trim()) return;
       setState({ kind: "loading" });
       try {
         const res = await fetch(
-          `/api/plan?from=${encodeURIComponent(a)}&to=${encodeURIComponent(b)}&profile=${who}`,
+          `/api/plan?from=${encodeURIComponent(a)}&to=${encodeURIComponent(b)}&profile=${(who.length ? who : ["wheelchair"]).join(",")}`,
         );
         const data = await res.json();
         // A named reason is worth more than the status code: the endpoint sends
@@ -231,37 +224,25 @@ export default function App({
 
         {/* Controls */}
         <section aria-labelledby="who" className="rounded-2xl border border-ink/10 bg-surface p-4 sm:p-5">
-          <h2 id="who" className="font-display text-[15px] font-bold text-ink">
-            {t("profile_q")}
-          </h2>
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {PROFILE_META.map((p) => {
-              const Icon = p.icon;
-              const on = profile === p.id;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => {
-                    setProfile(p.id);
-                    // The profile is an input to the search, not a filter over
-                    // its result, so the route is recomputed rather than left on
-                    // screen under a label that no longer describes it.
-                    find(from, to, p.id);
-                  }}
-                  aria-pressed={on}
-                  className={`flex min-h-[52px] items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-[14px] font-semibold transition-colors ${
-                    on
-                      ? "border-signal bg-signal/15 text-ink"
-                      : "border-ink/15 bg-surface text-ink hover:border-signal/50"
-                  }`}
-                >
-                  <Icon size={20} strokeWidth={2} aria-hidden className="shrink-0" />
-                  <span className="leading-tight">{t(p.labelKey)}</span>
-                </button>
-              );
-            })}
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <h2 id="who" className="font-display text-[15px] font-bold text-ink">
+              {t("profile_q")}
+            </h2>
+            <span className="text-[12.5px] text-ink-soft">{t("profile_pick_hint")}</span>
           </div>
-          <p className="mt-2.5 text-[12.5px] text-ink-soft">{t("profile_note")}</p>
+          <div className="mt-3">
+            <ProfilePicker
+              selected={profiles}
+              size="roomy"
+              onChange={(next) => {
+                setProfiles(next);
+                // The profile is an input to the search, not a filter over its
+                // result, so the route is recomputed rather than left on screen
+                // under a label that no longer describes it.
+                find(from, to, next);
+              }}
+            />
+          </div>
         </section>
 
         {/* Where to */}
@@ -276,7 +257,7 @@ export default function App({
             busy={state.kind === "loading"}
             onFrom={setFrom}
             onTo={setTo}
-            onSubmit={() => find(from, to, profile)}
+            onSubmit={() => find(from, to, profiles)}
           />
         </section>
 
@@ -382,6 +363,9 @@ export default function App({
                     )}
                   </span>
                 </p>
+                <RouteLifts
+                  stops={route.nodes.map((n) => ({ name: n.name, lat: n.coord.lat, lng: n.coord.lng }))}
+                />
                 <div className="mt-3 border-t border-ink/10 pt-3">
                   <Legend
                     present={
@@ -498,7 +482,9 @@ export default function App({
       </main>
 
       <footer className="mx-auto w-full max-w-5xl px-4 py-6">
-        <p className="text-[12px] leading-relaxed text-ink-soft">{t("disclaimer")}</p>
+        <p className="text-[12px] leading-relaxed text-ink-soft">
+          {t("disclaimer")} {t("disclaimer_gap")}
+        </p>
         <Link
           href="/privacy"
           className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-[12.5px] font-semibold text-signal transition-colors hover:text-ink"
