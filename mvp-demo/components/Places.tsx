@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ExternalLink, Toilet } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { LANGS, useI18n, type Lang } from "@/lib/i18n";
 import { ease, type Ease, type Place } from "@/lib/places";
 import StreetLook from "@/components/StreetLook";
@@ -177,9 +177,6 @@ export default function Places({ places }: { places: Place[] }) {
                     {t("places_official")}
                     <ExternalLink size={13} strokeWidth={2.4} aria-hidden />
                   </a>
-                  {p.accessibleToilet.toLowerCase().startsWith("yes") && (
-                    <Toilet size={15} strokeWidth={2.2} aria-label={t("places_f_toilet")} className="text-ok-ink" />
-                  )}
                 </div>
 
                 {/* One panorama at a time, the same discipline the route card uses:
