@@ -99,7 +99,7 @@ npm run dev
 
 Then open http://localhost:3000.
 
-The gate before any deploy, run from `mvp-demo/`: `npx vitest run` (149 tests), plus
+The gate before any deploy, run from `mvp-demo/`: `npx vitest run` (165 tests), plus
 `npx tsc --noEmit`, `npm run lint` and `npm run build`. Most of those tests exist to
 stop an honesty regression rather than a crash.
 
