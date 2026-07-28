@@ -257,8 +257,11 @@ describe("what a hand-written route may claim", () => {
   });
 
   it("cites only datasets this project has actually read", () => {
-    // The lift dataset answers ForbiddenAccess without a token and /how-it-works
-    // says so, so a route card citing it contradicts the same site.
+    // This app does read the lift feed now, so the reason has changed rather than
+    // gone away: these routes are the ones the team walked, every status in them
+    // came from standing there, and none of it came from the feed. Citing the feed
+    // on a hand-written route would attribute our own observation to somebody
+    // else's dataset, which is the same defect as citing a dataset we never read.
     for (const r of ROUTES) {
       for (const s of r.sources) {
         expect(s, `${r.id} sources`).not.toMatch(/ascenseurs/i);
@@ -266,5 +269,33 @@ describe("what a hand-written route may claim", () => {
         expect(s, `${r.id} sources`).not.toMatch(/^SNCF · gare accessibility$/);
       }
     }
+  });
+
+  /**
+   * The graph has no buses, and the prompt used to ask for one anyway.
+   *
+   * "When a lift is out of service, the reply gives a step-free alternative: a
+   * level-boarding bus" was in the prompt while not one bus route existed in any
+   * file here, so the model supplied the missing half from memory. On production it
+   * told a wheelchair user to "board bus 40 at the tram stop; it is level-boarding
+   * and stops much closer to the basilica entrance", which is three claims this app
+   * cannot make about a route it does not have. Found by reading the reply, not the
+   * code.
+   *
+   * Both directions, because the rule is only honest while the gap is real: if the
+   * graph ever gains a bus, this fails and the prompt has to be revisited.
+   */
+  it("has no bus data, and a prompt that says so", () => {
+    const net = JSON.parse(readFileSync(join(APP, "lib", "network.json"), "utf8")) as {
+      lines: { mode?: string }[];
+    };
+    const modes = new Set(net.lines.map((l) => l.mode));
+    expect(modes.has("bus"), "the graph gained buses, so the prompt's ban is now wrong").toBe(false);
+
+    const prompt = readFileSync(join(APP, "app", "api", "chat", "route.ts"), "utf8");
+    expect(prompt).toMatch(/no bus or Montmartrobus data anywhere in this app/);
+    expect(prompt).toMatch(/never name a bus route/);
+    // And it must not go back to asking for the thing it cannot supply.
+    expect(prompt).not.toMatch(/alternative: a level-boarding bus/);
   });
 });
