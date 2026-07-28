@@ -20,15 +20,24 @@ interface RecognitionResultEvent {
   resultIndex: number;
   results: ArrayLike<ArrayLike<{ transcript: string }>>;
 }
+/** The spec calls this `SpeechRecognitionErrorEvent`; only `error` matters here.
+ *  Values seen in the wild: `not-allowed` and `service-not-allowed` (permission),
+ *  `audio-capture` (no usable microphone, which is what an input-device switch
+ *  looks like), `network`, `no-speech`, `aborted`. */
+interface RecognitionErrorEvent {
+  error?: string;
+}
+
 interface RecognitionLike {
   lang: string;
   interimResults: boolean;
   continuous: boolean;
   onresult: ((e: RecognitionResultEvent) => void) | null;
   onend: (() => void) | null;
-  onerror: (() => void) | null;
+  onerror: ((e: RecognitionErrorEvent) => void) | null;
   start(): void;
   stop(): void;
+  abort?(): void;
 }
 type RecognitionCtor = new () => RecognitionLike;
 
@@ -41,15 +50,32 @@ function recognitionCtor(): RecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-/** Voice input: transcribe speech into text in the given UI language. */
+/**
+ * Voice input: transcribe speech into text in the given UI language.
+ *
+ * `error` exists because the previous version threw the reason away. `onerror`
+ * set `listening` to false and did nothing else, so on a desktop where the
+ * microphone was unavailable or permission had been refused the button lit up,
+ * went dark, and said nothing at all. The user cannot distinguish that from a
+ * broken product, and neither could we: the browser knows exactly which of
+ * `not-allowed`, `audio-capture` and `network` happened, and it was being
+ * discarded one line before it could be shown. Any code we have no wording for is
+ * surfaced verbatim rather than hidden, because a code a person can read out is
+ * worth more than a shrug.
+ */
 export function useSpeechInput(lang: Lang, onText: (text: string) => void) {
   const supported = useSyncExternalStore(noopSubscribe, () => !!recognitionCtor(), serverUnsupported);
   const [listening, setListening] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const recRef = useRef<RecognitionLike | null>(null);
+  /** Set while we are the ones stopping it, so a deliberate stop is not reported
+   *  as a failure: `stop()` and `abort()` both fire `onerror` with `aborted`. */
+  const stoppingRef = useRef(false);
 
   useEffect(() => () => recRef.current?.stop(), []);
 
   const stop = useCallback(() => {
+    stoppingRef.current = true;
     recRef.current?.stop();
     recRef.current = null;
     setListening(false);
@@ -58,7 +84,10 @@ export function useSpeechInput(lang: Lang, onText: (text: string) => void) {
   const start = useCallback(() => {
     const Ctor = recognitionCtor();
     if (!Ctor) return;
+    setError(null);
+    stoppingRef.current = true;
     recRef.current?.stop();
+    stoppingRef.current = false;
     const rec = new Ctor();
     rec.lang = BCP47[lang];
     rec.interimResults = true;
@@ -72,16 +101,22 @@ export function useSpeechInput(lang: Lang, onText: (text: string) => void) {
       recRef.current = null;
       setListening(false);
     };
-    rec.onerror = () => {
+    rec.onerror = (e) => {
       recRef.current = null;
       setListening(false);
+      const code = e?.error ?? "unknown";
+      // A stop we asked for is not a failure, and neither is a silence: both end
+      // the session normally and reporting them would train people to ignore the
+      // line that matters.
+      if (stoppingRef.current || code === "aborted" || code === "no-speech") return;
+      setError(code);
     };
     recRef.current = rec;
     setListening(true);
     rec.start();
   }, [lang, onText]);
 
-  return { supported, listening, start, stop };
+  return { supported, listening, error, start, stop };
 }
 
 /** Read-aloud: speak a piece of text in the given language, one at a time. */

@@ -1,7 +1,9 @@
 import { ROUTES, PROFILES } from "@/lib/data";
 import { ACCESS_LEVELS, findStation, networkFacts, toiletsAt, type NetworkFacts } from "@/lib/idfm";
-import { PLACES, SERVICES } from "@/lib/places";
+import { SERVICES, type Place } from "@/lib/places";
+import { livePlaces } from "@/lib/overrides.server";
 import { cityEvents, joinCounts, rank, type EventFeed } from "@/lib/events";
+import { liftCounts, liftFeed, liftsAt, liftsOut, type LiftFeed } from "@/lib/lifts";
 import { COVERAGE, LINE14, mentionedEndpoints, plan, NETWORK_META, type ProfileId } from "@/lib/router";
 
 // DeepSeek key is server-side only; the browser never sees it.
@@ -127,8 +129,8 @@ function routeCatalogue(): string {
 
 // Referenced knowledge base of Paris attractions (see lib/places.ts). Kept compact
 // so the model is grounded on real budgets, hours and accessibility, never invents them.
-function placeCatalogue(): string {
-  return PLACES.map((p) => {
+function placeCatalogue(places: Place[]): string {
+  return places.map((p) => {
     const bits = [
       `budget:${p.budget}`,
       `visit:${p.visitDuration}`,
@@ -215,11 +217,14 @@ function officialCatalogue(facts: NetworkFacts | null): string {
  * runs first and the model is handed the result, so its prose can only describe
  * what is actually on the card.
  */
-function computedRoute(text: string, profile: string | null): string {
+function computedRoute(text: string, profiles: ProfileId[], lifts: LiftFeed | null): string {
   const ends = mentionedEndpoints(text);
   if (!ends) return "";
-  const who = (PROFILE_IDS.includes(profile ?? "") ? profile : "wheelchair") as ProfileId;
-  const result = plan(ends.from, ends.to, who);
+  // The strictest of the selected constraints decides the route; the label the
+  // model is given names all of them, so its prose cannot describe the journey as
+  // planned for only one.
+  const who = profiles.join(" and ");
+  const result = plan(ends.from, ends.to, profiles);
   if (!result.ok) {
     return `\nThe app tried to route ${ends.fromLabel} to ${ends.toLabel} for a ${who} traveller and could not: ${result.reason}. Say that plainly, and do not invent a line or a station. If the reason is no_route, the published metro, tram, RER and Transilien timetable has no connection between them and a bus might, which this app does not rate.\n`;
   }
@@ -229,6 +234,20 @@ function computedRoute(text: string, profile: string | null): string {
       const bits = [n.name, `access:${n.at}`, `record:"${n.atText.en}"`];
       if (n.line) bits.unshift(`ride ${n.line.label}`);
       if (n.into) bits.push(`leg:"${n.into.text.en}"`);
+      // The lifts the operator lists at this exact stop, matched by distance and
+      // name together. An empty result means the feed lists no lift here, which
+      // is not the same as there being no lift, and the wording says so.
+      const here = liftsAt(lifts, { name: n.name, lat: n.coord.lat, lng: n.coord.lng });
+      const broken = here.filter((l) => l.status === "out");
+      if (broken.length) {
+        bits.push(
+          `lifts at ${n.name}: ${broken.length} of ${here.length} OUT OF SERVICE right now (${broken
+            .map((l) => `${l.situation ?? "location not stated"}${l.reason ? ` (${l.reason})` : ""}, updated ${l.updatedAt ?? "time not stated"}`)
+            .join("; ")})`,
+        );
+      } else if (here.length) {
+        bits.push(`lifts at ${n.name}: ${here.length} listed, none reported out of service`);
+      }
       return `    ${i + 1}. ${bits.join(", ")}`;
     })
     .join("\n");
@@ -278,11 +297,45 @@ function eventCatalogue(feed: EventFeed | null): string {
 ${lines}`;
 }
 
+/**
+ * Which lifts the operator says are broken, right now.
+ *
+ * This block is the newest thing in the prompt and the only one that can change
+ * between two questions asked ten minutes apart. It lists every out-of-service
+ * lift rather than a sample, because a traveller asking about one station is not
+ * helped by a summary of the others, and a silent cap would read as a complete
+ * answer. What it deliberately does not do is turn the operator's own "unknown"
+ * into either verdict: that value is a third of the feed on some days.
+ */
+function liftCatalogue(feed: LiftFeed | null): string {
+  if (!feed || !feed.live) {
+    return 'Not available for this reply: the lift feed did not answer. Say that lift state cannot be checked right now, and do not describe any lift as working or broken.';
+  }
+  const c = liftCounts(feed);
+  const out = liftsOut(feed);
+  const lines = out
+    .map(
+      (l) =>
+        `- ${l.station}${l.mode ? ` (${l.mode})` : ""}: ${l.situation ?? "location not stated"}${
+          l.reason ? `, reason "${l.reason}"` : ""
+        }, last updated ${l.updatedAt ?? "time not stated"}`,
+    )
+    .join("\n");
+  return `Of ${c.total} lifts in the operator's equipment feed, ${c.out} are out of service at this moment, ${c.working} are reported working, and on ${c.unknown} the operator itself publishes no verdict. Every out-of-service lift is listed here, all ${out.length} of them, not a sample:
+
+${lines || "- none: the feed currently reports no lift out of service"}`;
+}
+
 function systemPrompt(
-  profile: string | null,
+  profiles: ProfileId[],
   weather: string | null,
   facts: NetworkFacts | null,
   events: EventFeed | null,
+  lifts: LiftFeed | null,
+  // The knowledge base with the staff console's corrections already applied, so a
+  // fact somebody re-checked this morning reaches the traveller without a deploy,
+  // and so the model cites the corrected date rather than the committed one.
+  places: Place[],
   routeBlock: string,
 ): string {
   return `You are Voie Libre, a Paris step-free travel and sightseeing assistant. You help travellers who cannot take stairs (wheelchair users, people with strollers, older or low-energy travellers) get across Paris and plan accessible visits to its main sights.
@@ -290,16 +343,20 @@ function systemPrompt(
 How Voie Libre works (facts, not rules to recite):
 - RATP publishes Metro Line 14 as step-free from end to end, and that is their claim rather than something this app can confirm. In the registers it reads, ${LINE14.everyPlatform} of the line's ${LINE14.stations} stations have every platform marked accessible and ${LINE14.conditional} carry a station-level class of "booking required" or "ask a member of staff"; ${LINE14.conditionalShared} of those ${LINE14.conditional} are shared with RER or Transilien, so the class is describing the whole station and not line 14's platforms. So the line is still the best bet in Paris and it is not a guarantee, and saying which of the two you are relying on is the useful part.
 - Counted from the operator's own register across the ${COVERAGE.stations} stations in the timetable: ${COVERAGE.autonomous} can be used with no help at all, ${COVERAGE.conditional} only with a booking or a member of staff, ${COVERAGE.notAccessible} are marked not accessible, and ${COVERAGE.silent} have nothing published anywhere.
-- There are two things Voie Libre cannot tell anyone, and both are said plainly rather than filled in. Whether a specific lift is working right now: that dataset exists, 944 lifts, but it is licensed and needs a token we do not have. And RER C through Paris: the open timetable has no trains on that branch at all, so the Eiffel Tower has no step-free station near it that we can see, and a journey there ends in a walk we state in metres and minutes rather than a line drawn to the tower.
+- One thing Voie Libre still cannot tell anyone, said plainly rather than filled in: RER C through Paris. The open timetable has no trains on that branch at all, so the Eiffel Tower has no step-free station near it that we can see, and a journey there ends in a walk we state in metres and minutes rather than a line drawn to the tower.
 - Unknown accessibility data is shown as "unknown"; an honest gap beats a guessed step count, lift status, or route.
 - When a lift is out of service, the reply gives a step-free alternative: a level-boarding bus, another line, or a different station.
-${profile ? `\nThe traveller's mobility profile is: ${profile}. Weigh the route against this profile (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance).` : ""}${weather ? `\nCurrent weather you may use for a weather-aware suggestion: ${weather} If it is raining and the traveller's plan is outdoors, you may suggest a step-free indoor option that is on or near the route, but do not invent opening hours or specifics.` : ""}
+${
+    profiles.length
+      ? `\nThe traveller's mobility profile is: ${profiles.join(" and ")}. Weigh the route against ${profiles.length > 1 ? "all of these at once, taking the strictest requirement wherever they differ" : "this profile"} (a stroller user cares most about step count and gaps; a wheelchair user needs a working lift at every change; a low-energy traveller cares most about total walking distance and any climb; an older traveller cares about the number of changes and about stations whose accessibility nobody has published).`
+      : ""
+  }${weather ? `\nCurrent weather you may use for a weather-aware suggestion: ${weather} If it is raining and the traveller's plan is outdoors, you may suggest a step-free indoor option that is on or near the route, but do not invent opening hours or specifics.` : ""}
 
 Your reasoning is shown to the traveller, so it stays about this specific trip: which lifts are working or unknown, how many steps each leg has, the walking distance, and how it fits the profile. It weighs the trip itself rather than restating these notes or planning the wording of the reply.
 
 You can route any journey across the network. When the traveller asks how to get from somewhere to somewhere, put a routing marker on its own line EARLY in your reply, before the prose, in exactly this form: [[plan:START|DESTINATION]]. Use station names or the names of places in the knowledge base, for example [[plan:Bastille|Eiffel Tower]]. The app answers that marker by searching Ile-de-France Mobilites' published timetable for ${NETWORK_META.stations} stations on ${NETWORK_META.lines} metro, tram, RER and Transilien lines, weighted for the traveller's profile, and renders the result as a card with the accessibility of every change. When the app has already computed the journey, its lines, changes and per-station accessibility are given to you at the end of this prompt, and your prose describes exactly those. When no computed journey is given, you do not know the lines or the times, so you do not state them: the card does that, and inventing a line number is the one thing that would make this product useless. Your prose says why the route suits this traveller and what to watch for.
 
-These journeys carry the team's own on-site notes rather than a dataset, which is why they name a barrier precisely and give the step-free way around it. A third one used to sit here and was removed: it changed onto RER C at a station RER C does not serve, and its centrepiece was a lift "out of service today", which is a live status no free feed gives us.
+These journeys carry the team's own on-site notes rather than a dataset, which is why they name a barrier precisely and give the step-free way around it. A third one used to sit here and was removed: it changed onto RER C at a station RER C does not serve, and its centrepiece was a hand-written lift outage. Lift outages are real data now and they arrive in the block below, so they are never written into a route by hand.
 ${routeCatalogue()}
 
 For those exact pairs, prefer the on-site marker instead: ${ROUTE_IDS.map((id) => `[[route:${id}]]`).join(
@@ -313,8 +370,13 @@ ${officialCatalogue(facts)}
 
 This is the operator's claim, not ours, and it is worth more than ours when the two differ, so name whose claim it is. "Accessible only with a booking made in advance" is not the same as accessible, and a traveller who is told only the second half plans a trip they cannot take: the booking, or the request to a member of staff, goes in the same sentence as the class. Where the register qualifies a station line by line, that qualification is the useful part. A station missing from the register is not "accessible": their register covers RER and rail rather than the metro, and absence means nobody published a class.
 
+Which lifts Ile-de-France Mobilites says are out of service right now, read live from their equipment feed for this reply (etat-des-ascenseurs, Licence Mobilite):
+${liftCatalogue(lifts)}
+
+Four rules for this block, and they are the reason it can be trusted. A lift is named as broken only if it appears above; nothing else in this prompt carries lift state, and no lift anywhere may be described from memory. A station absent from that list is not "all lifts working": it means the operator lists no lift out of service there, and where it publishes no verdict at all the honest word is unknown. The situation string is the operator's own French wording for where in the station the lift sits, so it is quoted rather than translated into a guess about which entrance. And whenever a lift on the traveller's own journey is out, the reply says so in the same breath as the step-free way around it: another entrance, another line, a level-boarding bus, or a different station. In the computed journey below, each "lifts at X" line describes station X only; two neighbouring lines saying different things about different stations are not a contradiction to resolve.
+
 You also have this referenced knowledge base of Paris attractions (verified 2026-07-23; budgets are the adult entry cost in euros; some values are estimates and are marked as such; unknowns are honest):
-${placeCatalogue()}
+${placeCatalogue(places)}
 
 It answers questions about attractions: entry cost and budget, how long a visit takes, opening hours, wheelchair access, and the official site for tickets. Prices, opening times and accessibility facts come only from this data; anything missing is "unknown" or a pointer to the official site. A place marked CLOSED is never recommended; if asked, it is closed for works and an open alternative is offered. Named attractions keep the accessibility lens (their step-free or wheelchair situation).
 
@@ -339,6 +401,8 @@ Always end your reply with a one-line verdict on its own line, separated from th
 Replies are in the language the traveller writes in (English, French, or Chinese), which is decided by the words they typed and nothing else. A traveller who writes in English is answered in English even when they mention that they are visiting from China or Japan, because where someone is from is not the language they chose to ask in.
 
 Replies are concise, warm, practical, free of emoji, and punctuated with commas and full stops rather than dashes.
+
+Length is a hard constraint, not a style note: about 180 words for a single journey, and no more than three short paragraphs before the verdict line. A day plan may run longer, but nothing may run long enough to lose the verdict at the end. This is read on a phone, often standing on a platform, and the traveller needs the decision rather than everything that could be said about it. Do not restate what the route card already shows: the card carries every station, its accessibility and the broken lifts on the way, so the prose says why this route suits this traveller and what to watch for, and nothing else.
 ${routeBlock}`;
 }
 
@@ -371,7 +435,7 @@ export async function POST(req: Request) {
   }
 
   let messages: ChatMessage[];
-  let profile: string | null = null;
+  let profiles: ProfileId[] = [];
   try {
     const body = await req.json();
     // Strict validation: slice the raw array FIRST so filtering never iterates an
@@ -387,7 +451,13 @@ export async function POST(req: Request) {
       )
       .slice(-20)
       .map((m: ChatMessage) => ({ role: m.role, content: m.content.slice(0, 4000) }));
-    if (typeof body.profile === "string" && PROFILE_IDS.includes(body.profile)) profile = body.profile;
+    // One id or several. The single-string form is what every earlier client
+    // sent and still works.
+    const asked: unknown = Array.isArray(body.profile) ? body.profile : [body.profile];
+    profiles = (asked as unknown[]).filter(
+      (p): p is ProfileId => typeof p === "string" && PROFILE_IDS.includes(p),
+    );
+    profiles = profiles.filter((p, i, a) => a.indexOf(p) === i);
   } catch {
     return new Response(JSON.stringify({ error: "bad request" }), { status: 400 });
   }
@@ -400,15 +470,28 @@ export async function POST(req: Request) {
   // the weather, without the operator's register or without this week's listing
   // is still a useful answer, and the prompt says which one is missing rather
   // than filling the hole.
-  const [weather, facts, events] = await Promise.all([
+  const [weather, facts, events, lifts, places] = await Promise.all([
     currentWeather(),
     networkFacts(),
     cityEvents(),
+    liftFeed(),
+    livePlaces(),
   ]);
 
   const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const payload = [
-    { role: "system", content: systemPrompt(profile, weather, facts, events, computedRoute(lastUser, profile)) },
+    {
+      role: "system",
+      content: systemPrompt(
+        profiles,
+        weather,
+        facts,
+        events,
+        lifts,
+        places,
+        computedRoute(lastUser, profiles.length ? profiles : ["wheelchair"], lifts),
+      ),
+    },
     ...messages,
   ];
 
@@ -433,7 +516,17 @@ export async function POST(req: Request) {
         // The input is capped above; this caps the output. Without it a single
         // request can spend an unbounded amount on the key, and the answers this
         // product gives are a few paragraphs, never a thousand of them.
-        body: JSON.stringify({ model, stream: true, messages: payload, max_tokens: 2000 }),
+        //
+        // 4000, not 2000, because on this model the cap counts the chain of thought.
+        // Measured rather than assumed: asked one ordinary routing question with
+        // `max_tokens: 900`, the reply came back `finish_reason: "length"` with 900
+        // reasoning tokens and **zero** content. At 2000 the same thing happened to
+        // real answers, which is what "the reasoning stopped halfway and then it
+        // stopped" was: the model was spending the whole allowance thinking and
+        // being cut off before it could write, or mid-sentence just after starting.
+        // Reasoning on these questions runs 1,700-2,200 tokens, so the answer needs
+        // its own room on top, and the reply length is bounded in the prompt instead.
+        body: JSON.stringify({ model, stream: true, messages: payload, max_tokens: 4000 }),
         signal: ctrl.signal,
       });
     } catch {
@@ -479,6 +572,10 @@ export async function POST(req: Request) {
       // enqueue after that throws. Swallowing it here keeps the failure from
       // escaping start() as an unhandled rejection that takes the request with it.
       let gone = false;
+      /** Set only when the upstream stream is read to its end. */
+      let complete = false;
+      /** The model's own reason for stopping, when it sends one. */
+      let finish: string | null = null;
       const push = (obj: unknown) => {
         if (gone) return;
         try {
@@ -507,7 +604,12 @@ export async function POST(req: Request) {
                 push({ type: "error", text: "stream interrupted" });
                 continue;
               }
-              const delta = json.choices?.[0]?.delta ?? {};
+              const choice = json.choices?.[0] ?? {};
+              // Why the model stopped, kept for the sentinel below. "length" means
+              // it hit `max_tokens` and the last sentence is cut, which is a fact
+              // about the answer the reader is entitled to.
+              if (typeof choice.finish_reason === "string") finish = choice.finish_reason;
+              const delta = choice.delta ?? {};
               if (delta.reasoning_content) {
                 push({ type: "reasoning", text: delta.reasoning_content });
               }
@@ -519,9 +621,24 @@ export async function POST(req: Request) {
             }
           }
         }
+        // The last line of a whole answer, and the only proof the reader has that
+        // it is whole.
+        //
+        // Without it a stream that dies mid-answer is indistinguishable from one
+        // that finished: the socket closes cleanly either way, and the client had
+        // no way to tell, so a killed function or a dropped phone connection
+        // settled as a half-written reply with no error and no Retry to get out of
+        // it. That is the "reasoning stopped halfway" the app was reported for.
+        // A sentinel makes completeness something the client can check rather than
+        // assume, so the failure is loud instead of silent.
+        complete = true;
+        push({ type: "done", finish });
       } catch {
         push({ type: "error", text: "stream interrupted" });
       } finally {
+        // A `return` on the deadline, an upstream reset, an exception in the parse
+        // loop: anything that leaves without the sentinel says so.
+        if (!complete) push({ type: "truncated", finish });
         try {
           controller.close();
         } catch {

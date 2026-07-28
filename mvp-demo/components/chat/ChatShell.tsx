@@ -7,38 +7,84 @@ import { ROUTES, type ProfileId } from "@/lib/data";
 import { useSpeechInput, useSpeechOutput } from "@/lib/useSpeech";
 import { speakable } from "@/lib/speakable";
 import ChatRouteCard from "./ChatRouteCard";
+import ProfilePicker from "../ProfilePicker";
+import LiveRail from "./LiveRail";
 import WeatherChip from "../WeatherChip";
 import {
   ArrowUp,
   Square,
   ChevronRight,
   Plus,
-  Accessibility,
-  Baby,
-  PersonStanding,
-  BatteryLow,
   Map as MapIcon,
   RotateCcw,
   Mic,
   Volume2,
   VolumeX,
   ArrowRight,
-  type LucideIcon,
 } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string; reasoning: string };
 
 const ROUTE_ID_SET = new Set(ROUTES.map((r) => r.id));
 
-// Survives a trip to /routes and back, for this tab session only.
+/**
+ * The conversation, kept on the device.
+ *
+ * `localStorage`, not `sessionStorage`. The session copy survived a trip to
+ * /whats-on and back, which is what it was written for, and died with the tab,
+ * which is not what a person means by "is my conversation saved". Nothing here
+ * leaves the browser: there is no account, no server-side history and nothing to
+ * join a conversation to a person, which for a product that knows a traveller's
+ * disability is a deliberate limit rather than a missing feature. Clearing it is
+ * one press of New chat.
+ */
 const CHAT_STORAGE_KEY = "voie-libre-chat";
 
-const PROFILE_META: { id: ProfileId; labelKey: string; icon: LucideIcon }[] = [
-  { id: "wheelchair", labelKey: "profile_wheelchair", icon: Accessibility },
-  { id: "stroller", labelKey: "profile_stroller", icon: Baby },
-  { id: "senior", labelKey: "profile_senior", icon: PersonStanding },
-  { id: "lowenergy", labelKey: "profile_lowenergy", icon: BatteryLow },
-];
+interface Stored {
+  messages: Msg[];
+  profiles: ProfileId[];
+}
+
+/** Reads either shape: `profiles` as written now, or the single `profile` string
+ *  written before the picker took more than one answer. */
+function readStored(): Stored | null {
+  try {
+    const raw = localStorage.getItem(CHAT_STORAGE_KEY) ?? sessionStorage.getItem(CHAT_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as {
+      messages?: Msg[];
+      profile?: ProfileId | null;
+      profiles?: ProfileId[];
+    };
+    const profiles = Array.isArray(parsed.profiles)
+      ? parsed.profiles
+      : parsed.profile
+        ? [parsed.profile]
+        : [];
+    return {
+      messages: Array.isArray(parsed.messages) ? parsed.messages : [],
+      profiles,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function writeStored(messages: Msg[], profiles: ProfileId[]) {
+  try {
+    if (messages.length) {
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ messages, profiles }));
+    } else {
+      localStorage.removeItem(CHAT_STORAGE_KEY);
+      // The old session copy would otherwise come back the next time the tab
+      // loaded, restoring a conversation the traveller had just cleared.
+      sessionStorage.removeItem(CHAT_STORAGE_KEY);
+    }
+  } catch {
+    // Storage full, or blocked in private mode: persistence is a convenience,
+    // never a blocker.
+  }
+}
 
 const CONCLUSION_PATTERNS = [
   /^(bottom line|verdict|conclusion|key point|recommendation)\s*[:：-]/i,
@@ -110,6 +156,22 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
   });
 }
 
+/**
+ * One block of the model's answer, laid out so it can be read rather than parsed.
+ *
+ * Two shapes the model produces constantly used to come out as a single run-on
+ * paragraph, and both are fixed here by walking the lines instead of testing the
+ * whole block at once.
+ *
+ * A lead-in followed by bullets ("Here is the plan:" then three dashed lines) was
+ * the worse of the two: the old check required *every* line in the block to be a
+ * list item, so one sentence of introduction turned the entire list into prose
+ * with stray hyphens in the middle of it. And a paragraph written with single
+ * newlines lost every one of them, so three stops on three lines arrived as one
+ * wall of text. A step-free itinerary is a sequence, and a sequence that does not
+ * look like one is the hardest kind of answer to follow while standing on a
+ * platform.
+ */
 function renderMarkdownBlock(block: string, keyPrefix: string): ReactNode {
   const lines = block.split("\n");
 
@@ -123,46 +185,91 @@ function renderMarkdownBlock(block: string, keyPrefix: string): ReactNode {
     );
   }
 
-  const heading = lines.length === 1 ? lines[0].match(/^(#{1,6})\s+(.*)$/) : null;
-  if (heading) {
-    const size = heading[1].length <= 2 ? "text-[16px] font-bold" : "text-[15px] font-semibold";
-    return (
-      <p key={keyPrefix} className={`mb-1 mt-2 first:mt-0 ${size} text-ink`}>
-        {renderInline(heading[2], keyPrefix)}
-      </p>
-    );
-  }
+  const BULLET = /^\s*[-*]\s+/;
+  const ORDERED = /^\s*\d+[.)]\s+/;
+  type Kind = "bullet" | "ordered" | "text";
+  const kindOf = (l: string): Kind => (BULLET.test(l) ? "bullet" : ORDERED.test(l) ? "ordered" : "text");
 
-  const nonEmpty = lines.filter((l) => l.trim());
-  const isBulleted = nonEmpty.length > 0 && nonEmpty.every((l) => /^\s*[-*]\s+/.test(l));
-  const isOrdered = !isBulleted && nonEmpty.length > 0 && nonEmpty.every((l) => /^\s*\d+[.)]\s+/.test(l));
-  if (isBulleted || isOrdered) {
-    const items = nonEmpty.map((l) => l.replace(/^\s*(?:[-*]|\d+[.)])\s+/, ""));
-    const ListTag: "ul" | "ol" = isBulleted ? "ul" : "ol";
+  // Consecutive lines of the same kind form a run. A run of list lines becomes a
+  // list; a run of text lines becomes one paragraph whose single newlines are
+  // kept as line breaks.
+  const runs: { kind: Kind; lines: string[] }[] = [];
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const kind = kindOf(line);
+    const last = runs[runs.length - 1];
+    if (last && last.kind === kind) last.lines.push(line);
+    else runs.push({ kind, lines: [line] });
+  }
+  if (runs.length === 0) return null;
+
+  const nodes = runs.map((run, r) => {
+    const key = `${keyPrefix}-${r}`;
+    if (run.kind === "text") {
+      const heading = run.lines.length === 1 ? run.lines[0].match(/^(#{1,6})\s+(.*)$/) : null;
+      if (heading) {
+        const size = heading[1].length <= 2 ? "text-[16px] font-bold" : "text-[15px] font-semibold";
+        return (
+          <p key={key} className={`mb-1 mt-2 first:mt-0 ${size} text-ink`}>
+            {renderInline(heading[2], key)}
+          </p>
+        );
+      }
+      return (
+        <p key={key} className="mb-2 last:mb-0">
+          {run.lines.map((l, i) => (
+            <span key={i}>
+              {i > 0 && <br />}
+              {renderInline(l, `${key}-${i}`)}
+            </span>
+          ))}
+        </p>
+      );
+    }
+    const items = run.lines.map((l) => l.replace(/^\s*(?:[-*]|\d+[.)])\s+/, ""));
+    const ListTag: "ul" | "ol" = run.kind === "bullet" ? "ul" : "ol";
     return (
-      <ListTag key={keyPrefix} className={`my-1 space-y-0.5 pl-5 ${isBulleted ? "list-disc" : "list-decimal"}`}>
+      // Roomier than it was. These carry the stops of a journey, and 2px between
+      // two lines that each name a station reads as one paragraph, not two steps.
+      <ListTag
+        key={key}
+        className={`my-2 space-y-1.5 pl-5 ${run.kind === "bullet" ? "list-disc" : "list-decimal"} marker:text-ink-faint`}
+      >
         {items.map((item, i) => (
-          <li key={i}>{renderInline(item, `${keyPrefix}-li-${i}`)}</li>
+          <li key={i} className="pl-0.5">
+            {renderInline(item, `${key}-li-${i}`)}
+          </li>
         ))}
       </ListTag>
     );
-  }
+  });
 
-  return (
-    <p key={keyPrefix} className="mb-2 last:mb-0">
-      {renderInline(block, keyPrefix)}
-    </p>
-  );
+  return nodes.length === 1 ? nodes[0] : <div key={keyPrefix}>{nodes}</div>;
 }
 
-function Markdown({ text, streaming }: { text: string; streaming: boolean }) {
+function Markdown({ text }: { text: string }) {
   const blocks = text.split(/\n{2,}/).filter((b) => b.trim());
-  const explicit = new Set(blocks.map((b, i) => ({ b, i })).filter(({ b }) => looksLikeConclusion(b)).map(({ i }) => i));
-  const fallbackIndex = !streaming && explicit.size === 0 && blocks.length > 1 ? blocks.length - 1 : undefined;
+  // Only a block that says it is the conclusion gets drawn as one.
+  //
+  // This used to fall back to highlighting the last block whenever the model had
+  // not labelled one, and that was a claim the renderer was in no position to
+  // make: the last paragraph of an answer is as often a caveat, a source line or
+  // a list of side notes as it is the verdict, and the box says "this is the
+  // point". A 20-line paragraph came out as one, which is how it was found.
+  // Same defect as every other summary in this repo that asserted more than its
+  // input supported, and the fix is the same: assert only what is marked.
+  const highlit = new Set(
+    blocks
+      .map((b, i) => ({ b, i }))
+      // A verdict is short. Anything longer is a section, and boxing a section in
+      // bold text is just shouting.
+      .filter(({ b }) => looksLikeConclusion(b) && b.trim().split("\n").length <= 3)
+      .map(({ i }) => i),
+  );
 
   return blocks.map((block, i) => {
     const rendered = renderMarkdownBlock(block, `md-${i}`);
-    if (!(explicit.has(i) || i === fallbackIndex)) return rendered;
+    if (!highlit.has(i)) return rendered;
     return (
       <div
         key={`hl-${i}`}
@@ -232,7 +339,7 @@ function LangSwitch() {
  *  Always hides a half-streamed trailing marker; an unknown id is dropped. */
 const MARKER = /(\[\[route:[\w-]+(?::[\w-]+)?\]\]|\[\[plan:[^|\]]{1,60}\|[^|\]]{1,60}\]\])/g;
 
-function renderAnswer(content: string, streaming: boolean, profile: ProfileId | null) {
+function renderAnswer(content: string, profiles: ProfileId[]) {
   const clean = content.replace(/\[\[[^\]]*$/, "");
   const parts = clean.split(MARKER);
   return parts.map((p, i) => {
@@ -243,7 +350,7 @@ function renderAnswer(content: string, streaming: boolean, profile: ProfileId | 
           key={i}
           from={planned[1].trim()}
           to={planned[2].trim()}
-          profile={profile}
+          profile={profiles}
         />
       );
     }
@@ -252,14 +359,14 @@ function renderAnswer(content: string, streaming: boolean, profile: ProfileId | 
       // Unknown id (model typo/hallucination): drop it silently rather than echo
       // the raw [[route:...]] protocol syntax into the demo. Prose still renders.
       if (ROUTE_ID_SET.has(m[1])) {
-        return <ChatRouteCard key={i} id={m[1]} profile={m[2] ?? profile} />;
+        return <ChatRouteCard key={i} id={m[1]} profile={m[2] ? [m[2]] : profiles} />;
       }
       return null;
     }
     if (!p) return null;
     return (
       <div key={i} className="break-words">
-        <Markdown text={p} streaming={streaming} />
+        <Markdown text={p} />
       </div>
     );
   });
@@ -359,7 +466,7 @@ const MessageItem = memo(function MessageItem({
   message,
   streaming,
   isLast,
-  profile,
+  profiles,
   index,
   speak,
   stopSpeak,
@@ -369,7 +476,7 @@ const MessageItem = memo(function MessageItem({
   message: Msg;
   streaming: boolean;
   isLast: boolean;
-  profile: ProfileId | null;
+  profiles: ProfileId[];
   index: number;
   speak: (key: number, text: string, lang: Lang) => void;
   stopSpeak: () => void;
@@ -399,7 +506,7 @@ const MessageItem = memo(function MessageItem({
       {message.content ? (
         <>
           <div className="text-[15px] leading-relaxed text-ink">
-            {renderAnswer(message.content, streaming, profile)}
+            {renderAnswer(message.content, profiles)}
           </div>
           {speechSupported && !streaming && (
             <button
@@ -431,9 +538,14 @@ export default function ChatShell() {
   const [streaming, setStreaming] = useState(false);
   // "rate" is the abuse guard answering 429, which needs its own copy: the
   // generic failure line plus a Retry that fails again reads as a dead app.
-  const [error, setError] = useState<null | "generic" | "rate">(null);
+  // `truncated` = the answer stopped before the server said it was finished.
+  // `cut` = the model finished but hit its own token ceiling mid-sentence. The two
+  // are different facts and the reader gets told which one happened.
+  const [error, setError] = useState<null | "generic" | "rate" | "truncated" | "cut">(null);
   const [tookLong, setTookLong] = useState(false);
-  const [profile, setProfile] = useState<ProfileId | null>(null);
+  // A set. Empty means the traveller has not said, which the router reads as the
+  // strictest profile rather than the loosest.
+  const [profiles, setProfiles] = useState<ProfileId[]>([]);
   const [announce, setAnnounce] = useState("");
 
   const speech = useSpeechOutput();
@@ -454,35 +566,55 @@ export default function ChatShell() {
   // desync SSR hydration.
   useEffect(() => {
     try {
-      const saved = sessionStorage.getItem(CHAT_STORAGE_KEY);
+      const saved = readStored();
       if (!saved) return;
-      const parsed = JSON.parse(saved) as { messages?: Msg[]; profile?: ProfileId | null };
-      if (Array.isArray(parsed.messages) && parsed.messages.length) {
+      if (saved.messages.length) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setMessages(parsed.messages);
+        setMessages(saved.messages);
       }
-      if (parsed.profile) {
-         
-        setProfile(parsed.profile);
+      if (saved.profiles.length) {
+        setProfiles(saved.profiles);
       }
     } catch {
       // Corrupt or blocked storage is never worth breaking the chat over.
     }
   }, []);
 
+  // What to write, kept current so that the two writers below do not need the
+  // render's closure: `pagehide` fires once, from a listener registered once, and
+  // a stale closure there would save the conversation as it was when the tab
+  // loaded.
+  const stateRef = useRef({ messages, profiles });
+  stateRef.current = { messages, profiles };
+
   // Save once a turn settles, not on every streamed token.
   useEffect(() => {
     if (streaming) return;
-    try {
-      if (messages.length) {
-        sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify({ messages, profile }));
-      } else {
-        sessionStorage.removeItem(CHAT_STORAGE_KEY);
-      }
-    } catch {
-      // Storage full or blocked: persistence is a convenience, never a blocker.
-    }
-  }, [messages, profile, streaming]);
+    writeStored(messages, profiles);
+  }, [messages, profiles, streaming]);
+
+  // And save on the way out, mid-answer included.
+  //
+  // This is the bug behind "my conversation was not there when I came back". The
+  // effect above deliberately skips a streaming turn, so a traveller who opened
+  // /whats-on while an answer was still arriving had nothing written: on a first
+  // question there was nothing stored at all, and the app they returned to was the
+  // home screen, as though they had never asked. `pagehide` covers a link, the
+  // back button and closing the tab; `visibilitychange` covers iOS, which can
+  // discard a backgrounded tab without ever firing `pagehide`.
+  useEffect(() => {
+    const save = () => writeStored(stateRef.current.messages, stateRef.current.profiles);
+    const onHidden = () => {
+      if (document.visibilityState === "hidden") save();
+    };
+    window.addEventListener("pagehide", save);
+    document.addEventListener("visibilitychange", onHidden);
+    return () => {
+      window.removeEventListener("pagehide", save);
+      document.removeEventListener("visibilitychange", onHidden);
+      save();
+    };
+  }, []);
 
   // Keyboard-aware height: drive --app-h from the visual viewport so the composer
   // stays above the iOS keyboard (Android is handled by interactiveWidget).
@@ -567,7 +699,10 @@ export default function ChatShell() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history.map((m) => ({ role: m.role, content: m.content })), profile }),
+        body: JSON.stringify({
+          messages: history.map((m) => ({ role: m.role, content: m.content })),
+          profile: profiles,
+        }),
         signal: ctrl.signal,
       });
       if (!res.ok || !res.body) {
@@ -580,6 +715,10 @@ export default function ChatShell() {
       let buf = "";
       let acc = "";
       let received = false;
+      /** The server's end-of-answer sentinel. Its absence is the only signal that
+       *  an answer which looks finished is not. */
+      let sawDone = false;
+      let cut = false;
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -603,6 +742,14 @@ export default function ChatShell() {
             firstToken();
             received = true;
             patch("reasoning", obj.text);
+          } else if (obj.type === "done") {
+            sawDone = true;
+            // The model stopped because it ran out of its token allowance, so the
+            // answer really does end mid-sentence. Saying so beats leaving the
+            // reader to wonder whether that was the end of the thought.
+            if ((obj as { finish?: string }).finish === "length") cut = true;
+          } else if (obj.type === "truncated") {
+            sawDone = false;
           } else if (obj.type === "error") {
             setError("generic");
           }
@@ -612,6 +759,13 @@ export default function ChatShell() {
       // connection) still ends the stream cleanly, which would otherwise settle as
       // a blank answer with no error and no Retry to get out of it.
       if (!received) setError("generic");
+      // And an upstream that dies *after* its first token used to be worse: it left
+      // a half-written answer, or a chain of reasoning stopped mid-thought, with no
+      // error, no Retry, and nothing to say the answer was not simply short. The
+      // server now ends a whole answer with a sentinel, so its absence is proof of
+      // truncation rather than a guess about one.
+      else if (!sawDone) setError("truncated");
+      else if (cut) setError("cut");
       // Announce the settled answer once via the shell's live region, put through
       // the same markdown-to-speech pass as read-aloud: a screen reader is handed
       // this string verbatim and would otherwise spell out every cited URL.
@@ -637,6 +791,10 @@ export default function ChatShell() {
     const history: Msg[] = [...messages, { role: "user", content: clean, reasoning: "" }];
     const assistantIndex = history.length;
     setMessages([...history, { role: "assistant", content: "", reasoning: "" }]);
+    // Written now rather than when the turn settles. A traveller's own question is
+    // the one thing in this app they typed themselves, and losing it because the
+    // answer to it never arrived is the worst way to fail.
+    writeStored(history, profiles);
     setInput("");
     pinnedRef.current = true;
     stream(history, assistantIndex);
@@ -658,126 +816,42 @@ export default function ChatShell() {
   const last = messages[messages.length - 1];
   const showTakingLong = streaming && tookLong && last?.role === "assistant" && !last.content && !last.reasoning;
 
-  return (
-    <div className="flex h-app flex-col overflow-hidden bg-paper">
-      {/* header */}
-      <header className="z-20 shrink-0 border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-2 px-4 py-2.5">
-          {/* The shell is overflow-hidden, so anything that cannot shrink gets
-              silently clipped on a narrow phone. Let the wordmark absorb the
-              squeeze and keep the controls whole. */}
-          <div className="flex min-w-0 items-center gap-2.5">
-            <Logo />
-            <span className="min-w-0 leading-none">
-              <span className="block truncate font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
-              <span className="hidden text-[11px] text-white/65 sm:block">{t("brand_tag")}</span>
-            </span>
-          </div>
-          <div className="flex shrink-0 items-center gap-1.5">
-            {/* Once the conversation starts the empty-state weather chip is gone,
-                so keep live weather visible here (desktop, where there is room).
-                The visibility lives on this wrapper, not on the chip: the chip sets
-                its own `inline-flex`, and a `hidden` passed down through className
-                loses to it, because which display utility wins is decided by the
-                order Tailwind emits them, not the order they appear in the class
-                attribute. Hiding the wrapper cannot collide with anything. */}
-            {!empty && (
-              <span className="hidden lg:contents">
-                <WeatherChip variant="dark" />
-              </span>
-            )}
-            {!empty && (
-              <button
-                onClick={() => {
-                  if (streaming) return;
-                  speech.stop();
-                  setMessages([]);
-                  setAnnounce("");
-                }}
-                className="grid min-h-11 min-w-11 place-items-center rounded-lg bg-white/10 px-2 text-[13px] font-semibold text-white/80 transition-colors hover:text-white disabled:opacity-40 sm:flex sm:w-auto sm:items-center sm:gap-1"
-                disabled={streaming}
-                aria-label={t("chat_new")}
-              >
-                <Plus size={16} strokeWidth={2.4} aria-hidden />
-                <span className="hidden sm:inline">{t("chat_new")}</span>
-              </button>
-            )}
-            <Link
-              href={routesHref(lang)}
-              className="flex min-h-11 items-center gap-1 rounded-lg bg-white/10 px-2.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white"
-              aria-label={t("routes_link")}
-            >
-              <MapIcon size={16} strokeWidth={2.2} aria-hidden />
-              <span className="hidden sm:inline">{t("routes_link")}</span>
-            </Link>
-            <LangSwitch />
-          </div>
-        </div>
-      </header>
+  /**
+   * The one place a person types, built once and rendered in one of two places.
+   *
+   * On an empty screen it sits directly under the headline, because that screen's
+   * single job is to get a destination typed and a docked grey strip at the bottom
+   * of the viewport is not where a first-time visitor looks for it. The previous
+   * version needed a sentence of instructions saying "the box is at the bottom of
+   * the screen", which is the tell: a control that has to be explained is a control
+   * in the wrong place. Once there is a conversation it docks, because then the
+   * screen's job is reading the answer and the input is a tool you return to.
+   *
+   * One instance either way, so the ref, the focus and the `composer-disclaimer`
+   * id it points at are never duplicated.
+   */
+  /**
+   * Provenance, addressed by the input through `aria-describedby`.
+   *
+   * Separate from the composer because the two want different places: on an empty
+   * screen the input belongs under the headline and this belongs at the foot of the
+   * page, where fine print goes. Between the two it read as a legal notice
+   * interrupting the flow one line after somebody had been invited to type. An id
+   * resolves anywhere in the document, so the screen-reader association survives
+   * the split.
+   */
+  const composerFoot = (
+      <p id="composer-disclaimer" className="mt-1.5 px-1 text-[11px] text-ink-soft">
+        {t("disclaimer")}
+        {/* The gap sentence from sm up only. On a phone the pair ran to four
+            lines of fine print under the input, which is noise at the moment
+            somebody wants to type. /how-it-works carries it at every width. */}
+        <span className="hidden sm:inline"> {t("disclaimer_gap")}</span>
+      </p>
+  );
 
-      {/* conversation */}
-      {/* No aria-label here. There is one main region, and the log inside already
-          carries this exact name, so labelling both made a screen reader say it
-          twice on the way in. */}
-      <main ref={scrollRef} onScroll={onScroll} className="flex-1 overflow-y-auto overscroll-contain">
-        <div className="mx-auto w-full max-w-3xl px-4 py-6">
-          {empty ? (
-            <EmptyState profile={profile} setProfile={setProfile} onSend={send} />
-          ) : (
-            <>
-              <h1 className="sr-only">Voie Libre</h1>
-              <ul role="log" aria-label={t("conversation_label")} className="space-y-5">
-                {messages.map((m, i) => (
-                  <MessageItem
-                    key={i}
-                    message={m}
-                    streaming={streaming && i === messages.length - 1 && m.role === "assistant"}
-                    isLast={i === messages.length - 1}
-                    profile={profile}
-                    index={i}
-                    speak={speech.speak}
-                    stopSpeak={speech.stop}
-                    speakingKey={speech.speakingKey}
-                    speechSupported={speech.supported}
-                  />
-                ))}
-                {/* Announced, not just drawn: this line appears fifteen seconds
-                    into a wait with nothing else on the screen, so for anyone not
-                    watching the screen it is the only sign the app is still alive. */}
-                {showTakingLong && (
-                  <li role="status" className="text-[13px] text-ink-soft">
-                    {t("chat_taking_longer")}
-                  </li>
-                )}
-                {error && (
-                  <li role="alert" className="flex flex-wrap items-center gap-2 text-[13px] text-barrier">
-                    {t(error === "rate" ? "chat_error_busy" : "chat_error")}
-                    <button
-                      onClick={retry}
-                      className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-barrier/40 px-2.5 font-semibold text-barrier hover:bg-barrier/5"
-                    >
-                      <RotateCcw size={13} strokeWidth={2.4} aria-hidden />
-                      {t("chat_retry")}
-                    </button>
-                  </li>
-                )}
-              </ul>
-              {/* Scroll sentinel. It sits outside the list because a bare div
-                  among the <li> children breaks the log's list semantics. */}
-              <div ref={bottomRef} />
-            </>
-          )}
-        </div>
-      </main>
-
-      {/* single polite live region: announces the settled answer once to screen readers */}
-      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-        {announce}
-      </div>
-
-      {/* composer */}
-      <div className="shrink-0 border-t border-ink/10 bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
-        <div className="mx-auto w-full max-w-3xl px-4 py-3">
+  const composer = (
+    <>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -838,134 +912,230 @@ export default function ChatShell() {
               </button>
             )}
           </form>
-          <p id="composer-disclaimer" className="mt-1.5 px-1 text-[11px] text-ink-soft">
-            {t("disclaimer")}
-          </p>
+          {/* Why the microphone stopped, when it stops for a reason a person can
+              act on. It used to fail in silence: the button lit, went dark, and
+              the browser's own diagnosis was discarded in `onerror`. */}
+          {voice.error && (
+            <p role="status" className="mt-1.5 px-1 text-[12px] font-semibold text-barrier-ink">
+              {voice.error === "not-allowed" || voice.error === "service-not-allowed"
+                ? t("voice_err_denied")
+                : voice.error === "audio-capture"
+                  ? t("voice_err_capture")
+                  : voice.error === "network"
+                    ? t("voice_err_network")
+                    : `${t("voice_err_other")} ${voice.error}`}
+            </p>
+          )}
+
+    </>
+  );
+
+  return (
+    <div className="flex h-app flex-col overflow-hidden bg-paper">
+      {/* header */}
+      <header className="z-20 shrink-0 border-b border-white/5 bg-navy pt-[env(safe-area-inset-top)] text-white">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5">
+          {/* The shell is overflow-hidden, so anything that cannot shrink gets
+              silently clipped on a narrow phone. Let the wordmark absorb the
+              squeeze and keep the controls whole. */}
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Logo />
+            <span className="min-w-0 leading-none">
+              <span className="block truncate font-display text-[18px] font-bold tracking-tight">Voie Libre</span>
+              <span className="hidden text-[11px] text-white/65 sm:block">{t("brand_tag")}</span>
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-1.5">
+            {/* Once the conversation starts the empty-state weather chip is gone,
+                so keep live weather visible here (desktop, where there is room).
+                The visibility lives on this wrapper, not on the chip: the chip sets
+                its own `inline-flex`, and a `hidden` passed down through className
+                loses to it, because which display utility wins is decided by the
+                order Tailwind emits them, not the order they appear in the class
+                attribute. Hiding the wrapper cannot collide with anything. */}
+            {!empty && (
+              <span className="hidden lg:contents">
+                <WeatherChip variant="dark" />
+              </span>
+            )}
+            {!empty && (
+              <button
+                onClick={() => {
+                  if (streaming) return;
+                  speech.stop();
+                  setMessages([]);
+                  setAnnounce("");
+                }}
+                className="grid min-h-11 min-w-11 place-items-center rounded-lg bg-white/10 px-2 text-[13px] font-semibold text-white/80 transition-colors hover:text-white disabled:opacity-40 sm:flex sm:w-auto sm:items-center sm:gap-1"
+                disabled={streaming}
+                aria-label={t("chat_new")}
+              >
+                <Plus size={16} strokeWidth={2.4} aria-hidden />
+                <span className="hidden sm:inline">{t("chat_new")}</span>
+              </button>
+            )}
+            {/* Navigation belongs where a person looks for it. These three were
+                a loose row of links sitting between the example prompts and the
+                composer, competing with the one control the screen exists for.
+                From lg up they are here; below lg the empty state keeps them, and
+                the map is the one destination that stays in the header at every
+                width because it is the second surface, not a supporting page. */}
+            <nav aria-label={t("nav_group")} className="hidden items-center gap-0.5 lg:flex">
+              {[
+                { href: "/whats-on", label: t("whats_on_link") },
+                { href: "/how-it-works", label: t("hiw_link") },
+              ].map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="flex min-h-11 items-center rounded-lg px-2.5 text-[13px] font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
+            <Link
+              href={routesHref(lang)}
+              className="flex min-h-11 items-center gap-1 rounded-lg bg-white/10 px-2.5 text-[13px] font-semibold text-white/80 transition-colors hover:text-white"
+              aria-label={t("routes_link")}
+            >
+              <MapIcon size={16} strokeWidth={2.2} aria-hidden />
+              <span className="hidden sm:inline">{t("routes_link")}</span>
+            </Link>
+            <LangSwitch />
+          </div>
         </div>
+      </header>
+
+      {/* conversation */}
+      {/* No aria-label here. There is one main region, and the log inside already
+          carries this exact name, so labelling both made a screen reader say it
+          twice on the way in. */}
+      <main ref={scrollRef} onScroll={onScroll} className="flex-1 overflow-y-auto overscroll-contain">
+        <div className="mx-auto w-full max-w-5xl px-4 py-6">
+          {empty ? (
+            <EmptyState
+              profiles={profiles}
+              setProfiles={setProfiles}
+              onSend={send}
+              composer={composer}
+              composerFoot={composerFoot}
+            />
+          ) : (
+            <>
+              <h1 className="sr-only">Voie Libre</h1>
+              {/* The frame is wide so the empty state can use it; a conversation
+                  cannot. Prose set across 1000px is unreadable, so the log keeps
+                  its own measure inside the wider shell. */}
+              <ul role="log" aria-label={t("conversation_label")} className="mx-auto max-w-3xl space-y-5">
+                {messages.map((m, i) => (
+                  <MessageItem
+                    key={i}
+                    message={m}
+                    streaming={streaming && i === messages.length - 1 && m.role === "assistant"}
+                    isLast={i === messages.length - 1}
+                    profiles={profiles}
+                    index={i}
+                    speak={speech.speak}
+                    stopSpeak={speech.stop}
+                    speakingKey={speech.speakingKey}
+                    speechSupported={speech.supported}
+                  />
+                ))}
+                {/* Announced, not just drawn: this line appears fifteen seconds
+                    into a wait with nothing else on the screen, so for anyone not
+                    watching the screen it is the only sign the app is still alive. */}
+                {showTakingLong && (
+                  <li role="status" className="text-[13px] text-ink-soft">
+                    {t("chat_taking_longer")}
+                  </li>
+                )}
+                {/* A cut answer is not a failed one: it is there, it is just
+                    shorter than the model intended, so it reads as a note and
+                    offers no Retry, which would only hit the same ceiling. A
+                    truncated one lost part of itself and Retry is the way out. */}
+                {error && (
+                  <li
+                    role={error === "cut" ? "status" : "alert"}
+                    className={`flex flex-wrap items-center gap-2 text-[13px] ${
+                      error === "cut" ? "text-ink-soft" : "text-barrier"
+                    }`}
+                  >
+                    {t(
+                      error === "rate"
+                        ? "chat_error_busy"
+                        : error === "truncated"
+                          ? "chat_error_truncated"
+                          : error === "cut"
+                            ? "chat_error_cut"
+                            : "chat_error",
+                    )}
+                    {error !== "cut" && (
+                      <button
+                        onClick={retry}
+                        className="inline-flex min-h-9 items-center gap-1 rounded-lg border border-barrier/40 px-2.5 font-semibold text-barrier hover:bg-barrier/5"
+                      >
+                        <RotateCcw size={13} strokeWidth={2.4} aria-hidden />
+                        {t("chat_retry")}
+                      </button>
+                    )}
+                  </li>
+                )}
+              </ul>
+              {/* Scroll sentinel. It sits outside the list because a bare div
+                  among the <li> children breaks the log's list semantics. */}
+              <div ref={bottomRef} />
+            </>
+          )}
+        </div>
+      </main>
+
+      {/* single polite live region: announces the settled answer once to screen readers */}
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announce}
       </div>
+
+      {/* Docked, and only once there is something above it to read. */}
+      {!empty && (
+        <div className="shrink-0 border-t border-ink/10 bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+          <div className="mx-auto w-full max-w-5xl px-4 py-3">
+            {composer}
+            {composerFoot}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-/** The signature element: a fragment of the actual city, drawn in the network's
- *  own hand.
- *
- *  Paris arrives here through the Métro's drawing language rather than through
- *  postcards. The Seine is the one curve in a city the RATP draws with straight
- *  lines, with the Île de la Cité where it really sits. Line 14 crosses it as the
- *  single confident stroke, because it is the only fully step-free line in the
- *  system and it is in its own RATP purple. Every other line on the diagram is
- *  hatched, which is the literal truth: about thirty of three hundred stations
- *  have a working lift, and most stairways will not even tell you how many steps
- *  they are. The picture makes the product's argument before the headline does.
- */
-function ParisNetwork() {
-  const { t } = useI18n();
-  return (
-    <svg
-      viewBox="0 0 400 196"
-      className="h-auto w-full max-w-[520px]"
-      role="img"
-      aria-label={t("hero_line_label")}
-    >
-      <defs>
-        <pattern id="vl-hero-hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="5" stroke="var(--color-unknown)" strokeWidth="1.8" strokeOpacity="0.5" />
-        </pattern>
-      </defs>
-
-      {/* the river, behind everything */}
-      <path
-        d="M -8 96 C 68 128 138 140 206 112 S 330 62 408 78"
-        fill="none"
-        stroke="var(--line-rerb)"
-        strokeWidth="13"
-        strokeOpacity="0.5"
-        strokeLinecap="round"
-      />
-      {/* The lines you have to change onto, leaving Line 14 at a real
-          interchange and heading off at the diagram's 45 degrees. Dashed rather
-          than coloured, because their lifts are the thing nobody can promise.
-          They branch off 14 instead of crossing it: the story is "ride the one
-          line we can vouch for, then you are on your own", not "here is a
-          tangle". */}
-      <path
-        d="M 306 74 L 366 134 L 366 176"
-        fill="none"
-        stroke="var(--color-unknown)"
-        strokeWidth="3.5"
-        strokeOpacity="0.45"
-        strokeDasharray="8 8"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 232 148 L 172 88 L 100 88"
-        fill="none"
-        stroke="var(--color-unknown)"
-        strokeWidth="3.5"
-        strokeOpacity="0.45"
-        strokeDasharray="8 8"
-        strokeLinecap="round"
-      />
-
-      {/* Line 14: the one continuous stroke. 45-degree geometry, as the Métro
-          diagram draws it. The dash animation runs from a hidden state to this
-          one, so the line is already complete if animation never runs at all. */}
-      <path
-        id="vl-m14"
-        d="M 306 20 L 306 74 L 232 148 L 132 148"
-        fill="none"
-        stroke="var(--line-m14)"
-        strokeWidth="6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="vl-draw"
-      />
-
-      {/* Plain stops on 14 sit on the line; the two interchanges where an
-          unverifiable line branches off get the hatch square the app uses for
-          "unknown" everywhere else. Those two squares are the whole product: the
-          moment a trip either works or quietly does not. */}
-      <circle cx="306" cy="20" r="6" fill="var(--color-paper)" stroke="var(--line-m14)" strokeWidth="3.4" />
-      <circle cx="132" cy="148" r="8.5" fill="var(--line-m14)" />
-      <circle cx="132" cy="148" r="3" fill="var(--color-paper)" />
-      {[
-        [306, 74],
-        [232, 148],
-      ].map(([x, y]) => (
-        <g key={`${x}-${y}`}>
-          <rect x={x - 8} y={y - 8} width="16" height="16" rx="3" fill="var(--color-paper)" />
-          <rect
-            x={x - 8}
-            y={y - 8}
-            width="16"
-            height="16"
-            rx="3"
-            fill="url(#vl-hero-hatch)"
-            stroke="var(--color-unknown)"
-            strokeOpacity="0.75"
-            strokeWidth="1.6"
-          />
-        </g>
-      ))}
-    </svg>
-  );
-}
-
 function EmptyState({
-  profile,
-  setProfile,
+  profiles,
+  setProfiles,
   onSend,
+  composer,
+  composerFoot,
 }: {
-  profile: ProfileId | null;
-  setProfile: (p: ProfileId | null) => void;
+  profiles: ProfileId[];
+  setProfiles: (p: ProfileId[]) => void;
   onSend: (text: string) => void;
+  /** The real input, rendered here rather than docked at the bottom. */
+  composer: ReactNode;
+  /** Its provenance line, which belongs at the foot of the page. */
+  composerFoot: ReactNode;
 }) {
   const { t, lang } = useI18n();
 
   return (
     <div className="relative pt-3">
       <h1 className="sr-only">Voie Libre</h1>
+
+      {/* Only the hero and the rail are two columns. Wrapping the whole screen in
+          the grid left the right side blank from the bottom of the rail all the way
+          down past the examples, because the rail is short and the left column is
+          not. Everything below is full width and lines up with the composer, which
+          is the edge a person's eye is already following. */}
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_17rem] lg:items-start lg:gap-x-10">
+      <div className="min-w-0">
 
       {/* Hero: the product's own transit language as the opening thesis, on bare
           paper (not another white card), with a whisper of the unknown-hatch behind. */}
@@ -976,75 +1146,54 @@ function EmptyState({
             {t("chat_intro_title")}
           </h2>
           <p className="mt-3.5 max-w-md text-[15px] leading-relaxed text-ink-soft">{t("chat_intro_body")}</p>
-          {/* Diagram and evidence side by side. The picture says only Line 14 can
-              be promised; the number says why that matters, and it is our own
-              measurement rather than a claim. */}
-          {/* Side by side at every width, not stacked. Stacked, this pair ate
-              320px of a 390px screen and pushed the profile picker and every
-              suggestion below the fold, so a phone user landed on a diagram with
-              nothing to do. The diagram is the hero on a desktop and a supporting
-              mark on a phone, which is what the height cap encodes. */}
-          <div className="mt-5 grid grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] items-center gap-x-4 sm:mt-7 sm:gap-x-8 lg:grid-cols-[minmax(0,1fr)_auto]">
-            <ParisNetwork />
-            <figure className="border-l-2 border-ink/12 pl-3 sm:max-w-[15rem] sm:pl-4">
-              <div className="font-display text-[30px] font-extrabold leading-none tracking-tight text-ink tabular-nums sm:text-[40px]">
-                59.6<span className="align-top text-[19px] text-ink-soft sm:text-[24px]">%</span>
-              </div>
-              <figcaption className="mt-1.5 text-[12px] leading-snug text-ink-soft sm:text-[12.5px]">
-                {t("hero_stat_caption")}
-              </figcaption>
-              <p className="mt-1.5 hidden font-mono text-[10px] uppercase tracking-wide text-ink-faint sm:mt-2 sm:block">
-                {t("hero_stat_source")}
-              </p>
-            </figure>
-          </div>
-          {/* Two items, because the drawing above uses two marks. A legend that
-              lists a colour the picture does not contain is a legend for a
-              different picture. */}
-          {/* Legend and live weather share one row. Both are small metadata about
-              the drawing above, and giving each its own line cost a phone the
-              example prompts, which are the fastest way to a first answer. */}
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2.5">
-            <ul className="flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-[11px] uppercase tracking-wide text-ink-soft">
-              <li className="inline-flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full" style={{ background: "var(--line-m14)" }} aria-hidden />
-                {t("legend_m14")}
-              </li>
-              <li className="inline-flex items-center gap-1.5">
-                <span className="hatch-unknown inline-block h-2.5 w-2.5 rounded-[2px] ring-1 ring-unknown/50" aria-hidden />
-                {t("legend_interchange_unknown")}
-              </li>
-            </ul>
-            {/* The one runtime data source, made visible. */}
-            <WeatherChip />
-          </div>
+          {/* The drawing, on its own.
+              It used to carry a two-item legend and an inline 59.6% figure beside
+              it, and the three together read as a chart demanding to be decoded
+              on the screen whose only job is to get a destination typed. The
+              figure moved to the evidence rail, where it sits with the live lift
+              count instead of competing with it, and the legend moved to
+              /how-it-works, which is where the product's vocabulary belongs. What
+              is left is a mark: the app's own transit language, once. */}
+          {/* Small on purpose. Given the width of the left column it grew to about
+              200 vertical pixels, which pushed the headline off the top of a laptop
+              screen for a drawing that is a schematic rather than data. A mark
+              earns its place by being a mark. */}
+          {/* The input, first. Everything else on this screen is a way of helping
+              somebody fill it in.
+
+              The transit schematic that used to sit under here is gone. It had
+              already lost its legend, which left a drawing that was not data
+              illustrating nothing in particular, and once the input moved up it was
+              stranded mid-page between the question and the profile chips. The
+              screen's opening argument is now the headline plus a live count of
+              lifts the operator says are broken, which is a stronger thesis than a
+              diagram of a network we drew by hand. */}
+          <div className="mt-5">{composer}</div>
         </div>
       </section>
 
-      {/* Who is travelling, the personalization a generic map can't do. */}
-      <p className="mt-6 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("profile_q")}</p>
-      <div className="mt-3 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-        {PROFILE_META.map((p) => {
-          const Icon = p.icon;
-          const on = profile === p.id;
-          return (
-            <button
-              key={p.id}
-              onClick={() => setProfile(on ? null : p.id)}
-              aria-pressed={on}
-              className={`flex min-h-12 touch-manipulation items-center gap-2 rounded-xl border px-3 py-2.5 text-[13px] font-semibold transition-colors ${
-                on ? "border-signal bg-signal/15 text-ink" : "border-ink/15 bg-surface text-ink hover:border-signal/50"
-              }`}
-            >
-              <Icon size={18} strokeWidth={2} aria-hidden className={`shrink-0 ${on ? "text-signal" : "text-ink-soft"}`} />
-              <span className="leading-tight">{t(p.labelKey)}</span>
-            </button>
-          );
-        })}
+      {/* Who is travelling, and what saying so changes. No step number: that was
+          scaffolding around an input in the wrong place, and with the input under
+          the headline this is what it always was, a modifier on the question above
+          it. The row takes more than one answer, because people do. */}
+      <div className="mt-7 flex flex-wrap items-baseline gap-x-2">
+        <p className="text-[13px] font-semibold text-ink-soft">{t("profile_q")}</p>
+        <span className="text-[12.5px] text-ink-soft/80">{t("profile_pick_hint")}</span>
+      </div>
+      <div className="mt-3">
+        <ProfilePicker selected={profiles} onChange={setProfiles} />
+      </div>
+
+      </div>
+
+      {/* The rail sets this grid row's height, so the profile chips live inside the
+          left cell too: without them the column ran out of content halfway down and
+          left a void under the input. */}
+      <LiveRail />
       </div>
 
       {/* Try, one tidy list with a hover cue, not three identical tiles. */}
-      <p className="mt-6 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint sm:mt-10">{t("chat_try")}</p>
+      <p className="mt-4 text-[12.5px] font-semibold text-ink-soft">{t("chat_try")}</p>
       <ul className="mt-3 divide-y divide-ink/8 overflow-hidden rounded-2xl border border-ink/10 bg-surface">
         {["chat_suggest_1", "chat_suggest_2", "chat_suggest_3"].map((k) => (
           <li key={k}>
@@ -1064,39 +1213,43 @@ function EmptyState({
         ))}
       </ul>
 
-      {/* Both secondary paths stay plainly labelled rather than hidden. The
-          second one is where the "we do not invent lifts" claim is actually
-          backed up, so it needs a door, not a footnote. */}
-      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 sm:mt-8">
-        <Link
-          href={routesHref(lang)}
-          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"
-        >
-          {t("browse_routes")}
-          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
-        </Link>
-        <Link
-          href="/whats-on"
-          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-signal transition-colors hover:text-ink"
-        >
-          {t("whats_on_link")}
-          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
-        </Link>
-        <Link
-          href="/how-it-works"
-          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:text-ink"
-        >
-          {t("hiw_link")}
-          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
-        </Link>
-        <Link
-          href="/privacy"
-          className="inline-flex min-h-11 items-center gap-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:text-ink"
-        >
-          {t("legal_link")}
-          <ArrowRight size={15} strokeWidth={2.4} aria-hidden />
-        </Link>
-      </div>
+      {/* The doors, each with the one line that says what is behind it.
+          These were four bare labels in a row ("Plan a journey on the map", "This
+          week", "How this works", "Data and accessibility") and a first-time
+          visitor could not tell what any of them contained, which is exactly the
+          complaint. The row itself was also sitting directly above the composer,
+          competing with the only control the screen exists for. Sentences cost
+          three lines and buy the answer to "where is the information". */}
+      <p className="mt-10 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+        {t("doors_title")}
+      </p>
+      <nav aria-label={t("nav_group")} className="mt-3 grid gap-2.5 sm:grid-cols-2">
+        {[
+          { href: routesHref(lang), label: t("browse_routes"), body: t("door_routes") },
+          { href: "/whats-on", label: t("whats_on_link"), body: t("door_whats_on") },
+          { href: "/how-it-works", label: t("hiw_link"), body: t("door_hiw") },
+          { href: "/privacy", label: t("legal_link"), body: t("door_legal") },
+        ].map((d) => (
+          <Link
+            key={d.href}
+            href={d.href}
+            className="group flex items-start gap-3 rounded-2xl border border-ink/10 bg-surface px-4 py-3 transition-colors hover:border-signal/50 hover:bg-surface-2"
+          >
+            <span className="min-w-0 flex-1">
+              <span className="block text-[14px] font-semibold leading-snug text-ink">{d.label}</span>
+              <span className="mt-0.5 block text-[12.5px] leading-snug text-ink-soft">{d.body}</span>
+            </span>
+            <ArrowRight
+              size={15}
+              strokeWidth={2.4}
+              aria-hidden
+              className="mt-0.5 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5 group-hover:text-signal"
+            />
+          </Link>
+        ))}
+      </nav>
+
+      <div className="mt-8">{composerFoot}</div>
     </div>
   );
 }
